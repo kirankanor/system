@@ -1,0 +1,12 @@
+{
+  "id": "metadata-filter",
+  "name": "Metadata Filter",
+  "category": "retrieval",
+  "source": "metadata_filter.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Filter retrieval candidates using validated metadata criteria.",
+  "destination": "src/{project_package}/rag/retrieval/metadata_filter.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

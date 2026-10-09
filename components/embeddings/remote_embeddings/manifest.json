@@ -1,0 +1,12 @@
+{
+  "id": "remote-embeddings",
+  "name": "Remote Embeddings",
+  "category": "embeddings",
+  "source": "remote_embeddings.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Provide a remote embedding API adapter with explicit timeout and error behavior.",
+  "destination": "src/{project_package}/rag/embeddings/remote_embeddings.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

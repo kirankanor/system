@@ -1,0 +1,12 @@
+{
+  "id": "markdown-chunker",
+  "name": "Markdown Chunker",
+  "category": "chunking",
+  "source": "markdown_chunker.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Chunk Markdown while preserving heading hierarchy where feasible.",
+  "destination": "src/{project_package}/rag/chunking/markdown_chunker.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

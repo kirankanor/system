@@ -1,0 +1,12 @@
+{
+  "id": "batch-embeddings",
+  "name": "Batch Embeddings",
+  "category": "embeddings",
+  "source": "batch_embeddings.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Batch embedding requests with size limits and predictable failures.",
+  "destination": "src/{project_package}/rag/embeddings/batch_embeddings.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

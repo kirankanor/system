@@ -1,0 +1,12 @@
+{
+  "id": "answer-metrics",
+  "name": "Answer Metrics",
+  "category": "evaluation",
+  "source": "answer_metrics.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Evaluate answer quality using declared metrics and evaluation dependencies.",
+  "destination": "src/{project_package}/rag/evaluation/answer_metrics.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

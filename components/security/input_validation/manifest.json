@@ -1,0 +1,12 @@
+{
+  "id": "input-validation",
+  "name": "Input Validation",
+  "category": "security",
+  "source": "input_validation.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Validate component inputs and apply size/type constraints.",
+  "destination": "src/{project_package}/rag/security/input_validation.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

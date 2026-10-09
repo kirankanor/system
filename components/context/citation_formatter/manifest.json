@@ -1,0 +1,12 @@
+{
+  "id": "citation-formatter",
+  "name": "Citation Formatter",
+  "category": "context",
+  "source": "citation_formatter.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Format source references and citation metadata consistently.",
+  "destination": "src/{project_package}/rag/context/citation_formatter.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

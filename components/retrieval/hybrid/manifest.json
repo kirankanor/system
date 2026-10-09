@@ -1,0 +1,12 @@
+{
+  "id": "hybrid-retrieval",
+  "name": "Hybrid Retrieval",
+  "category": "retrieval",
+  "source": "hybrid_retrieval.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Combine dense and sparse retrieval with documented score fusion.",
+  "destination": "src/{project_package}/rag/retrieval/hybrid_retrieval.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "fixed-size-chunker",
+  "name": "Fixed Size Chunker",
+  "category": "chunking",
+  "source": "fixed_size_chunker.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Split text into fixed-size chunks with explicit overlap semantics.",
+  "destination": "src/{project_package}/rag/chunking/fixed_size_chunker.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

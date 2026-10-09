@@ -1,0 +1,12 @@
+{
+  "id": "local-embeddings",
+  "name": "Local Embeddings",
+  "category": "embeddings",
+  "source": "local_embeddings.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Provide a local model embedding adapter with explicit model dependencies.",
+  "destination": "src/{project_package}/rag/embeddings/local_embeddings.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

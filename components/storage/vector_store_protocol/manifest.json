@@ -1,0 +1,12 @@
+{
+  "id": "vector-store-protocol",
+  "name": "Vector Store Protocol",
+  "category": "storage",
+  "source": "vector_store_protocol.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Define vector-store operations and result contracts.",
+  "destination": "src/{project_package}/rag/storage/vector_store_protocol.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

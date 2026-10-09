@@ -1,0 +1,90 @@
+{
+  "schema_version": 2,
+  "project": {
+    "name": "rag-code-library-production-structure",
+    "mode": "adopt",
+    "profile": "prototype",
+    "objective": "\\ Make the RAG Code Library scaffold production-ready: verify and integrate human-supplied implementation code into the component library and ragkit CLI,with tests - no AI-generated implementation code.\\",
+    "constraints": [],
+    "non_goals": [],
+    "trust_boundary": "local repository",
+    "created_at": "2026-10-09T11:02:18.315Z",
+    "updated_at": "2026-10-09T11:02:36.416Z"
+  },
+  "policy": {
+    "ponytail": "full",
+    "autonomy": "human-in-the-loop",
+    "learned_rule_promotion": "human-required",
+    "cleanup": "propose-only",
+    "traces": {
+      "storage": "local",
+      "commit_raw": false,
+      "redact_secrets": true
+    }
+  },
+  "lifecycle": {
+    "phase": "discovery",
+    "status": "ready",
+    "active_task": null,
+    "blocker": null,
+    "next_action": "Review the adoption report and confirm project invariants."
+  },
+  "commands": {
+    "test": {
+      "command": "python -m pytest",
+      "status": "unverified",
+      "source": "pyproject.toml"
+    }
+  },
+  "workflow": null,
+  "artifacts": [],
+  "assumptions": [],
+  "invariants": [],
+  "decisions": [],
+  "knowledge": [],
+  "tasks": [],
+  "learning_proposals": [],
+  "cleanup_proposals": [],
+  "controls": [],
+  "attempts": [],
+  "authorizations": [],
+  "experiments": [],
+  "incidents": [],
+  "discovery": {
+    "files": 221,
+    "languages": [
+      "javascript/typescript",
+      "python"
+    ],
+    "extensions": {
+      ".css": 1,
+      ".example": 1,
+      ".gitignore": 1,
+      ".html": 1,
+      ".js": 2,
+      ".json": 31,
+      ".lock": 1,
+      ".md": 47,
+      ".py": 131,
+      ".toml": 1,
+      ".yaml": 1,
+      ".yml": 2,
+      "[none]": 1
+    },
+    "commands": {
+      "test": {
+        "command": "python -m pytest",
+        "status": "unverified",
+        "source": "pyproject.toml"
+      }
+    },
+    "legacy_genesis": false,
+    "revision": {
+      "commit": null,
+      "dirty": null,
+      "source_hash": "6382c7e847d48051f43e69202266a8f685318b37998ebbd08b21cec1bccf61bc"
+    }
+  },
+  "checkpoint": null,
+  "legacy": null
+}

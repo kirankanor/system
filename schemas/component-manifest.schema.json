@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RAG Component Manifest",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "category",
+    "source",
+    "version",
+    "dependencies",
+    "description",
+    "destination"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "ingestion",
+        "chunking",
+        "embeddings",
+        "retrieval",
+        "reranking",
+        "context",
+        "evaluation",
+        "security",
+        "storage"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "destination": {
+      "type": "string",
+      "minLength": 1
+    },
+    "documentation": {
+      "type": "string"
+    },
+    "tests": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

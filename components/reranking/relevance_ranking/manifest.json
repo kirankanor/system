@@ -1,0 +1,12 @@
+{
+  "id": "relevance-ranking",
+  "name": "Relevance Ranking",
+  "category": "reranking",
+  "source": "relevance_ranking.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Order candidates using a documented relevance score.",
+  "destination": "src/{project_package}/rag/reranking/relevance_ranking.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

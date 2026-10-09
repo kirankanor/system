@@ -1,0 +1,12 @@
+{
+  "id": "evaluation-dataset",
+  "name": "Evaluation Dataset",
+  "category": "evaluation",
+  "source": "evaluation_dataset.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Represent evaluation cases with explicit schemas and validation.",
+  "destination": "src/{project_package}/rag/evaluation/evaluation_dataset.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

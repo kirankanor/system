@@ -1,0 +1,1675 @@
+{
+  "schemaVersion": 2,
+  "project": "rag-code-library-production-structure",
+  "revision": null,
+  "sourceHash": "23eb40dacfebf66f7833a8cb84286e565c478566edd05a39e71c46ea0d314259",
+  "provenance": {
+    "tool": "genesis-graphizer",
+    "method": "static-analysis",
+    "confidenceScale": "0..1"
+  },
+  "nodes": [
+    {
+      "id": "file:components/chunking/fixed_size/example.py",
+      "type": "file",
+      "label": "components/chunking/fixed_size/example.py",
+      "path": "components/chunking/fixed_size/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "d71cd797fb076d886ebdde8df228bbb651b55fb83d8592dcdef84f9d77f49eba"
+    },
+    {
+      "id": "file:components/chunking/fixed_size/fixed_size_chunker.py",
+      "type": "file",
+      "label": "components/chunking/fixed_size/fixed_size_chunker.py",
+      "path": "components/chunking/fixed_size/fixed_size_chunker.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "1215b4f0943be1b1bfed8ca65a4b397cf8510114192b99930eae5dac536eea5c"
+    },
+    {
+      "id": "file:components/chunking/fixed_size/tests/test_component.py",
+      "type": "file",
+      "label": "components/chunking/fixed_size/tests/test_component.py",
+      "path": "components/chunking/fixed_size/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "1a5c1ecff5d406e159bbe4e9cc5df59a07479021e1af0199c28314f17dfea07f"
+    },
+    {
+      "id": "file:components/chunking/markdown_aware/example.py",
+      "type": "file",
+      "label": "components/chunking/markdown_aware/example.py",
+      "path": "components/chunking/markdown_aware/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "8c4c6089f7df716929420bd57e528cf60dbe06698dcb1a84a6fe093f516ce7ee"
+    },
+    {
+      "id": "file:components/chunking/markdown_aware/markdown_chunker.py",
+      "type": "file",
+      "label": "components/chunking/markdown_aware/markdown_chunker.py",
+      "path": "components/chunking/markdown_aware/markdown_chunker.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2e91c0d0c641fbfdfd3bb9c536ab21dfb38d95f8ce15e67e6333d1ab7f2f8856"
+    },
+    {
+      "id": "file:components/chunking/markdown_aware/tests/test_component.py",
+      "type": "file",
+      "label": "components/chunking/markdown_aware/tests/test_component.py",
+      "path": "components/chunking/markdown_aware/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "9bc91d99b34f84e38b3bb4b38c3febb4d866af476bea91d76f4412af2f7cec36"
+    },
+    {
+      "id": "file:components/chunking/recursive/example.py",
+      "type": "file",
+      "label": "components/chunking/recursive/example.py",
+      "path": "components/chunking/recursive/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "318ea7510396938312006408c4368af41023bc463ab6f07e0ab3cb04fccbc706"
+    },
+    {
+      "id": "file:components/chunking/recursive/recursive_chunker.py",
+      "type": "file",
+      "label": "components/chunking/recursive/recursive_chunker.py",
+      "path": "components/chunking/recursive/recursive_chunker.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "c517711ef67a9ba1af7c17abadb46e309ca722f367cb5697bfb6d65c114f94eb"
+    },
+    {
+      "id": "file:components/chunking/recursive/tests/test_component.py",
+      "type": "file",
+      "label": "components/chunking/recursive/tests/test_component.py",
+      "path": "components/chunking/recursive/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "8c2a2c9b5ad90aaf740d1b18eaf963cd3d72bdec6805c0f133d9f919e5cfbadd"
+    },
+    {
+      "id": "file:components/chunking/structure_aware/example.py",
+      "type": "file",
+      "label": "components/chunking/structure_aware/example.py",
+      "path": "components/chunking/structure_aware/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "6a24f9df2e3b11bd9ff9cb7c22f12058496b5ca771492b37c617c406e19290e0"
+    },
+    {
+      "id": "file:components/chunking/structure_aware/structure_aware_chunker.py",
+      "type": "file",
+      "label": "components/chunking/structure_aware/structure_aware_chunker.py",
+      "path": "components/chunking/structure_aware/structure_aware_chunker.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "c91581536420c48a2eec066174d858a90ece4057707cc4bdfc6b23c471499281"
+    },
+    {
+      "id": "file:components/chunking/structure_aware/tests/test_component.py",
+      "type": "file",
+      "label": "components/chunking/structure_aware/tests/test_component.py",
+      "path": "components/chunking/structure_aware/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "69f299830dc9131b17602cd517398cc3dbfc691fffe82ad05396e3358557e527"
+    },
+    {
+      "id": "file:components/chunking/token_based/example.py",
+      "type": "file",
+      "label": "components/chunking/token_based/example.py",
+      "path": "components/chunking/token_based/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "d0896e9e908eb800f4c40afb1d2715598f54435f75e40dda00e56599948b05e2"
+    },
+    {
+      "id": "file:components/chunking/token_based/tests/test_component.py",
+      "type": "file",
+      "label": "components/chunking/token_based/tests/test_component.py",
+      "path": "components/chunking/token_based/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "42fd05014289fa1fea095e0f1463bd36a0bb77a4d17fa8f7895ad8e1977c8db2"
+    },
+    {
+      "id": "file:components/chunking/token_based/token_chunker.py",
+      "type": "file",
+      "label": "components/chunking/token_based/token_chunker.py",
+      "path": "components/chunking/token_based/token_chunker.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "3f3767d41dbe1f691e5a03846db95f43eabfdd6506790f05786998a0c43c269b"
+    },
+    {
+      "id": "file:components/config/__init__.py",
+      "type": "file",
+      "label": "components/config/__init__.py",
+      "path": "components/config/__init__.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "9d5cef5697340a535a0d370cdd52b311d3fd486ba7a959717439e2a0efd400ff"
+    },
+    {
+      "id": "file:components/config/enums.py",
+      "type": "file",
+      "label": "components/config/enums.py",
+      "path": "components/config/enums.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "3a3bc08da23e2b053fc3168ac086fec12a4ef94c7d284520546f0da4d95c0150"
+    },
+    {
+      "id": "file:components/config/errors.py",
+      "type": "file",
+      "label": "components/config/errors.py",
+      "path": "components/config/errors.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "e9030c18770e6f91f0d3a91af6c3727c0924d78828d4042390d8598e3df705bc"
+    },
+    {
+      "id": "file:components/config/models.py",
+      "type": "file",
+      "label": "components/config/models.py",
+      "path": "components/config/models.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "a8d76b71b1d936f9596e602e5b524131c757e71f8c5a1c101b57feda7f6955b7"
+    },
+    {
+      "id": "file:components/config/prompts.py",
+      "type": "file",
+      "label": "components/config/prompts.py",
+      "path": "components/config/prompts.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "d07f1c343875206b5d816ba26b53451538b9733b643cf73de66babbf4f3599f6"
+    },
+    {
+      "id": "file:components/config/settings.py",
+      "type": "file",
+      "label": "components/config/settings.py",
+      "path": "components/config/settings.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "1312f12f34fd319a84c8bfb08cb9b2855de7ff320b96d0b005ff12f510cb24bd"
+    },
+    {
+      "id": "file:components/config/tests/test_config.py",
+      "type": "file",
+      "label": "components/config/tests/test_config.py",
+      "path": "components/config/tests/test_config.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "647c2a09a1996045e25610c6a2f6af9348b981105dc8a8d1651b9de033a65836"
+    },
+    {
+      "id": "file:components/context/citation_formatter/citation_formatter.py",
+      "type": "file",
+      "label": "components/context/citation_formatter/citation_formatter.py",
+      "path": "components/context/citation_formatter/citation_formatter.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "187e6e03bf2bf42365d7978e7a5bcaf29b109005fcb8fb9c4e6fe5376f349d6a"
+    },
+    {
+      "id": "file:components/context/citation_formatter/example.py",
+      "type": "file",
+      "label": "components/context/citation_formatter/example.py",
+      "path": "components/context/citation_formatter/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "b28bc82e50edd9e85797b794b1848e620a60f9c31ecb004163a6e6c3c211cb35"
+    },
+    {
+      "id": "file:components/context/citation_formatter/tests/test_component.py",
+      "type": "file",
+      "label": "components/context/citation_formatter/tests/test_component.py",
+      "path": "components/context/citation_formatter/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "b48e202433d2ec8d6bf158638c149862791bc70c37c857865c05cbcc15c2b8fa"
+    },
+    {
+      "id": "file:components/context/context_selector/context_selector.py",
+      "type": "file",
+      "label": "components/context/context_selector/context_selector.py",
+      "path": "components/context/context_selector/context_selector.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "c9eb9df10a878bb8bd74661086cc268d29ef8508edc25456cbb407b18590bf66"
+    },
+    {
+      "id": "file:components/context/context_selector/example.py",
+      "type": "file",
+      "label": "components/context/context_selector/example.py",
+      "path": "components/context/context_selector/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "10f11f35fcea0af0588642209c8a946f2ed817c91d4646cc879e649cde872817"
+    },
+    {
+      "id": "file:components/context/context_selector/tests/test_component.py",
+      "type": "file",
+      "label": "components/context/context_selector/tests/test_component.py",
+      "path": "components/context/context_selector/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "eb337f8b7a160fe47d20829dc9eae3640f32697ab5e78154ed7fb37f1c867fe9"
+    },
+    {
+      "id": "file:components/context/token_budget/example.py",
+      "type": "file",
+      "label": "components/context/token_budget/example.py",
+      "path": "components/context/token_budget/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "d2db9a6c7b410085b3890016b139c7896fff8a21c276b5ebfbf93f7e90107500"
+    },
+    {
+      "id": "file:components/context/token_budget/tests/test_component.py",
+      "type": "file",
+      "label": "components/context/token_budget/tests/test_component.py",
+      "path": "components/context/token_budget/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "241946199cb93377f7bb11180798d8b59fe249aa1cab62a98fed130f40c3fba5"
+    },
+    {
+      "id": "file:components/context/token_budget/token_budget.py",
+      "type": "file",
+      "label": "components/context/token_budget/token_budget.py",
+      "path": "components/context/token_budget/token_budget.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "da0520d7f76ba41f384a6851b903511fbca9d92f3bfdd31431545707c6b067bd"
+    },
+    {
+      "id": "file:components/embeddings/batch_embeddings/batch_embeddings.py",
+      "type": "file",
+      "label": "components/embeddings/batch_embeddings/batch_embeddings.py",
+      "path": "components/embeddings/batch_embeddings/batch_embeddings.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "4553254138dd2620971b696f62a136c7718227100b1a005792901d6612d3a049"
+    },
+    {
+      "id": "file:components/embeddings/batch_embeddings/example.py",
+      "type": "file",
+      "label": "components/embeddings/batch_embeddings/example.py",
+      "path": "components/embeddings/batch_embeddings/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "a1c98461263d88429db69c9c3086bca396df8817f4ec89175bf5ea76a8558c50"
+    },
+    {
+      "id": "file:components/embeddings/batch_embeddings/tests/test_component.py",
+      "type": "file",
+      "label": "components/embeddings/batch_embeddings/tests/test_component.py",
+      "path": "components/embeddings/batch_embeddings/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "202890b85395503e01a4c513107e99e9fe889db157c91b908212ffde8949b894"
+    },
+    {
+      "id": "file:components/embeddings/embedding_protocol/embedding_protocol.py",
+      "type": "file",
+      "label": "components/embeddings/embedding_protocol/embedding_protocol.py",
+      "path": "components/embeddings/embedding_protocol/embedding_protocol.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "8fe69ee29b69c0a786a7ca317f830ada8b5636e8c9fb16b23a232644adf16dd3"
+    },
+    {
+      "id": "file:components/embeddings/embedding_protocol/example.py",
+      "type": "file",
+      "label": "components/embeddings/embedding_protocol/example.py",
+      "path": "components/embeddings/embedding_protocol/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "d04b5e272da7f52eef4d1bd3b8a7174b702fc77227e22f34a047fce559a3e37f"
+    },
+    {
+      "id": "file:components/embeddings/embedding_protocol/tests/test_component.py",
+      "type": "file",
+      "label": "components/embeddings/embedding_protocol/tests/test_component.py",
+      "path": "components/embeddings/embedding_protocol/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "04159e92c993fdbf6b8208f0e7ddc6e5114403b30e26a38590b803e724dc5857"
+    },
+    {
+      "id": "file:components/embeddings/local_embeddings/example.py",
+      "type": "file",
+      "label": "components/embeddings/local_embeddings/example.py",
+      "path": "components/embeddings/local_embeddings/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "05a986150201cfb6628d922bb3f842462b670fc75066e79efdd0726c4f40b010"
+    },
+    {
+      "id": "file:components/embeddings/local_embeddings/local_embeddings.py",
+      "type": "file",
+      "label": "components/embeddings/local_embeddings/local_embeddings.py",
+      "path": "components/embeddings/local_embeddings/local_embeddings.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "155a4c56efe9214441ae19306abad02a02757d7abe57f44a3bd996ec2e26bd35"
+    },
+    {
+      "id": "file:components/embeddings/local_embeddings/tests/test_component.py",
+      "type": "file",
+      "label": "components/embeddings/local_embeddings/tests/test_component.py",
+      "path": "components/embeddings/local_embeddings/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "1a2c14cf16edaa6c0899770a8fc1769b9e08224edffdb7a69089c152d74844d1"
+    },
+    {
+      "id": "file:components/embeddings/remote_embeddings/example.py",
+      "type": "file",
+      "label": "components/embeddings/remote_embeddings/example.py",
+      "path": "components/embeddings/remote_embeddings/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "28b1489a9661d0afb9b7206749c1ae08eba2be7a0b976c1b43cc29d12e42bf7b"
+    },
+    {
+      "id": "file:components/embeddings/remote_embeddings/remote_embeddings.py",
+      "type": "file",
+      "label": "components/embeddings/remote_embeddings/remote_embeddings.py",
+      "path": "components/embeddings/remote_embeddings/remote_embeddings.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "a17689a62e2ad866b060a0dc0f93dcfec36af3db02e9327ee7161fd63437c39a"
+    },
+    {
+      "id": "file:components/embeddings/remote_embeddings/tests/test_component.py",
+      "type": "file",
+      "label": "components/embeddings/remote_embeddings/tests/test_component.py",
+      "path": "components/embeddings/remote_embeddings/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "025597896c4362d60e6381754e0cfb021cf429ab6bbf0019e974ec3933c120ba"
+    },
+    {
+      "id": "file:components/evaluation/answer_metrics/answer_metrics.py",
+      "type": "file",
+      "label": "components/evaluation/answer_metrics/answer_metrics.py",
+      "path": "components/evaluation/answer_metrics/answer_metrics.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "d43487dad25ac9554729093b608e6710846c36af2d15f3bbd28943f8e2499492"
+    },
+    {
+      "id": "file:components/evaluation/answer_metrics/example.py",
+      "type": "file",
+      "label": "components/evaluation/answer_metrics/example.py",
+      "path": "components/evaluation/answer_metrics/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "ea4070d8cea4462bc7a3e6de82f9d5d157fd9eae652c3013e1ac75844b952c1a"
+    },
+    {
+      "id": "file:components/evaluation/answer_metrics/tests/test_component.py",
+      "type": "file",
+      "label": "components/evaluation/answer_metrics/tests/test_component.py",
+      "path": "components/evaluation/answer_metrics/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "ccd37e8ba3ade6fadd9b2d1380d4422b33665e18df14cf107616fe6834ebb827"
+    },
+    {
+      "id": "file:components/evaluation/evaluation_dataset/evaluation_dataset.py",
+      "type": "file",
+      "label": "components/evaluation/evaluation_dataset/evaluation_dataset.py",
+      "path": "components/evaluation/evaluation_dataset/evaluation_dataset.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "3786f1a9dcdc0bd5e5788cfc32c327be4d8db4355451ef62e1d2bb1c5d262a30"
+    },
+    {
+      "id": "file:components/evaluation/evaluation_dataset/example.py",
+      "type": "file",
+      "label": "components/evaluation/evaluation_dataset/example.py",
+      "path": "components/evaluation/evaluation_dataset/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "ac56e76ee2498d4766325eb01f46cf2d6d26030834d5338d0e655347b55932e1"
+    },
+    {
+      "id": "file:components/evaluation/evaluation_dataset/tests/test_component.py",
+      "type": "file",
+      "label": "components/evaluation/evaluation_dataset/tests/test_component.py",
+      "path": "components/evaluation/evaluation_dataset/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "7684642a4636b407c02f4f04ee6327e5c9f5f9edff78f92c185dfdf7f51f9745"
+    },
+    {
+      "id": "file:components/evaluation/retrieval_metrics/example.py",
+      "type": "file",
+      "label": "components/evaluation/retrieval_metrics/example.py",
+      "path": "components/evaluation/retrieval_metrics/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "dca0bb6e5b68550f77e1380aa5f29cf3ef9bfd3b231800ebcd477ca6bc55771b"
+    },
+    {
+      "id": "file:components/evaluation/retrieval_metrics/retrieval_metrics.py",
+      "type": "file",
+      "label": "components/evaluation/retrieval_metrics/retrieval_metrics.py",
+      "path": "components/evaluation/retrieval_metrics/retrieval_metrics.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "97d5555db071cab923d39e368a06aa1541b24d75c8bad193d9e89efa95a63a37"
+    },
+    {
+      "id": "file:components/evaluation/retrieval_metrics/tests/test_component.py",
+      "type": "file",
+      "label": "components/evaluation/retrieval_metrics/tests/test_component.py",
+      "path": "components/evaluation/retrieval_metrics/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "5591c1bab60b2e3ecf17740dcc4306706d1ef430e8e2e30e8fa9271f72755d3b"
+    },
+    {
+      "id": "file:components/ingestion/pdf_extraction/example.py",
+      "type": "file",
+      "label": "components/ingestion/pdf_extraction/example.py",
+      "path": "components/ingestion/pdf_extraction/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "37b84a0260354d2d7f77304049ac0246b055a25b065289f3c3d9ccc4755e76bc"
+    },
+    {
+      "id": "file:components/ingestion/pdf_extraction/pdf_extraction.py",
+      "type": "file",
+      "label": "components/ingestion/pdf_extraction/pdf_extraction.py",
+      "path": "components/ingestion/pdf_extraction/pdf_extraction.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "bba7ce21112f027995ba74f77632ea229bed255fe8bbd4b77b94004bd5151ae0"
+    },
+    {
+      "id": "file:components/ingestion/text_normalizer/example.py",
+      "type": "file",
+      "label": "components/ingestion/text_normalizer/example.py",
+      "path": "components/ingestion/text_normalizer/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "8fa77b271763af4b6559890c14deb82e7bfc05891ccdbbc2fe35112a18a3cd01"
+    },
+    {
+      "id": "file:components/ingestion/text_normalizer/tests/test_component.py",
+      "type": "file",
+      "label": "components/ingestion/text_normalizer/tests/test_component.py",
+      "path": "components/ingestion/text_normalizer/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2e57928249a701ca6a36c7dad04a5326ee4424f40dc59dcedf8adf2e5f7f8677"
+    },
+    {
+      "id": "file:components/ingestion/text_normalizer/text_normalizer.py",
+      "type": "file",
+      "label": "components/ingestion/text_normalizer/text_normalizer.py",
+      "path": "components/ingestion/text_normalizer/text_normalizer.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "364986ffeb7a2d88bb7cab2b05c33ed4c3cc1dcdd1b893b75cab8e691ea03d26"
+    },
+    {
+      "id": "file:components/reranking/cross_encoder/cross_encoder_reranker.py",
+      "type": "file",
+      "label": "components/reranking/cross_encoder/cross_encoder_reranker.py",
+      "path": "components/reranking/cross_encoder/cross_encoder_reranker.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2f6ce5af20dc73289c5d2a6833a16cabcccc1e77315ba221c0f128c3162e817b"
+    },
+    {
+      "id": "file:components/reranking/cross_encoder/example.py",
+      "type": "file",
+      "label": "components/reranking/cross_encoder/example.py",
+      "path": "components/reranking/cross_encoder/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "c8b4690c145741fb0e059103092a2a9da724b9850c47ead77d01a5eedf39c1e5"
+    },
+    {
+      "id": "file:components/reranking/cross_encoder/tests/test_component.py",
+      "type": "file",
+      "label": "components/reranking/cross_encoder/tests/test_component.py",
+      "path": "components/reranking/cross_encoder/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "fe8178e787f24ebd3a9e347bd00d1f572fe4e8566303f7c2898ac900ac850c19"
+    },
+    {
+      "id": "file:components/reranking/relevance_ranking/example.py",
+      "type": "file",
+      "label": "components/reranking/relevance_ranking/example.py",
+      "path": "components/reranking/relevance_ranking/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "507a737189b6001c73f6c4faf4be576fc6d38e01045a4baea9cad14958ccda59"
+    },
+    {
+      "id": "file:components/reranking/relevance_ranking/relevance_ranking.py",
+      "type": "file",
+      "label": "components/reranking/relevance_ranking/relevance_ranking.py",
+      "path": "components/reranking/relevance_ranking/relevance_ranking.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "3fc9ebc8675afa65006cb0ff4aa1ea192d07f69b66ffff423a20c01f8dde1e8e"
+    },
+    {
+      "id": "file:components/reranking/relevance_ranking/tests/test_component.py",
+      "type": "file",
+      "label": "components/reranking/relevance_ranking/tests/test_component.py",
+      "path": "components/reranking/relevance_ranking/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "e03205d7d308f4b9815c57ceb104ff5e7cfe43784e58981883866b0ecf457e9d"
+    },
+    {
+      "id": "file:components/retrieval/dense/dense_retrieval.py",
+      "type": "file",
+      "label": "components/retrieval/dense/dense_retrieval.py",
+      "path": "components/retrieval/dense/dense_retrieval.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "c293aa316fb5ab1c033e0ccd1b96c7bd5bfcc9557b00bedf41c4c52d455670f8"
+    },
+    {
+      "id": "file:components/retrieval/dense/example.py",
+      "type": "file",
+      "label": "components/retrieval/dense/example.py",
+      "path": "components/retrieval/dense/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "4623f55e8d1be0d223eba759949ac73aab01772f0cec9c80aacfb610479d2310"
+    },
+    {
+      "id": "file:components/retrieval/dense/tests/test_component.py",
+      "type": "file",
+      "label": "components/retrieval/dense/tests/test_component.py",
+      "path": "components/retrieval/dense/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "03721445453298afae77b1afc8f0f586597c33be8afe561f682fae524ffb59e4"
+    },
+    {
+      "id": "file:components/retrieval/hybrid/example.py",
+      "type": "file",
+      "label": "components/retrieval/hybrid/example.py",
+      "path": "components/retrieval/hybrid/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "bbb1bc116f57fa12b668b1717d6157caaea7e750b37ad2b47f1e8e13a62c1ee9"
+    },
+    {
+      "id": "file:components/retrieval/hybrid/hybrid_retrieval.py",
+      "type": "file",
+      "label": "components/retrieval/hybrid/hybrid_retrieval.py",
+      "path": "components/retrieval/hybrid/hybrid_retrieval.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "1d433ef1023094dac11d4b6635258cf3746494d8609676f53a59475febd93455"
+    },
+    {
+      "id": "file:components/retrieval/hybrid/tests/test_component.py",
+      "type": "file",
+      "label": "components/retrieval/hybrid/tests/test_component.py",
+      "path": "components/retrieval/hybrid/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "d531ffcded1daa268beb4b4f0412c07444007bfd17e82bcdcd0142998e3ebea4"
+    },
+    {
+      "id": "file:components/retrieval/metadata_filter/example.py",
+      "type": "file",
+      "label": "components/retrieval/metadata_filter/example.py",
+      "path": "components/retrieval/metadata_filter/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "90d07deb147584dd99a16733a2c809a7e883ec0edda8df3ae235b31b64e75065"
+    },
+    {
+      "id": "file:components/retrieval/metadata_filter/metadata_filter.py",
+      "type": "file",
+      "label": "components/retrieval/metadata_filter/metadata_filter.py",
+      "path": "components/retrieval/metadata_filter/metadata_filter.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "7b3b48e0a5ab0d76f1fa0ed7545729f8c4df8adb68eee80845b28b809b08e1e2"
+    },
+    {
+      "id": "file:components/retrieval/metadata_filter/tests/test_component.py",
+      "type": "file",
+      "label": "components/retrieval/metadata_filter/tests/test_component.py",
+      "path": "components/retrieval/metadata_filter/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "1faacb363d854318fd55a3bad10e5d4cd8827bd42049532239d4e8bf91a05709"
+    },
+    {
+      "id": "file:components/retrieval/result_normalizer/example.py",
+      "type": "file",
+      "label": "components/retrieval/result_normalizer/example.py",
+      "path": "components/retrieval/result_normalizer/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "da642502bdb87224bc22cbb46ff6b9d404f0a240c16040292f6bc1edd2600be4"
+    },
+    {
+      "id": "file:components/retrieval/result_normalizer/retrieval_result_normalizer.py",
+      "type": "file",
+      "label": "components/retrieval/result_normalizer/retrieval_result_normalizer.py",
+      "path": "components/retrieval/result_normalizer/retrieval_result_normalizer.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "f77a4c70e886c95a3a80b9eddee1ed9f06c78f88096e90a21d2dfbae4ead74c0"
+    },
+    {
+      "id": "file:components/retrieval/result_normalizer/tests/test_component.py",
+      "type": "file",
+      "label": "components/retrieval/result_normalizer/tests/test_component.py",
+      "path": "components/retrieval/result_normalizer/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2da21a41f845c02c23f4f8e758d84727551845129873087f2af2ba57f550d280"
+    },
+    {
+      "id": "file:components/retrieval/sparse/example.py",
+      "type": "file",
+      "label": "components/retrieval/sparse/example.py",
+      "path": "components/retrieval/sparse/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "9b717e504df0cb6445945e7cc3b76a4af265f192bed29b047072eb47587dcab8"
+    },
+    {
+      "id": "file:components/retrieval/sparse/sparse_retrieval.py",
+      "type": "file",
+      "label": "components/retrieval/sparse/sparse_retrieval.py",
+      "path": "components/retrieval/sparse/sparse_retrieval.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "8e1abf18f2b02eecf416133ecefc5f7a023f1f5fc9a928cd49973ee825234605"
+    },
+    {
+      "id": "file:components/retrieval/sparse/tests/test_component.py",
+      "type": "file",
+      "label": "components/retrieval/sparse/tests/test_component.py",
+      "path": "components/retrieval/sparse/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "43c2b1ac17a8aa0fbded0e6e67a4f8174407431e8c892bb4814ec1c97e8b829b"
+    },
+    {
+      "id": "file:components/security/input_validation/example.py",
+      "type": "file",
+      "label": "components/security/input_validation/example.py",
+      "path": "components/security/input_validation/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "b9227dd6368a3f44c018df041541d840cfa8560382c565c3b9289d7c20c7eb2e"
+    },
+    {
+      "id": "file:components/security/input_validation/input_validation.py",
+      "type": "file",
+      "label": "components/security/input_validation/input_validation.py",
+      "path": "components/security/input_validation/input_validation.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "99d339fd3cc7446910dc8ff2df4671042c82a78a70e567ed2182dfa57c8e064a"
+    },
+    {
+      "id": "file:components/security/input_validation/tests/test_component.py",
+      "type": "file",
+      "label": "components/security/input_validation/tests/test_component.py",
+      "path": "components/security/input_validation/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "5c7edc8a0e3b519a15272bad95b06a41be0f0869ab4ea0bb1ff9376e9d3ff95f"
+    },
+    {
+      "id": "file:components/security/metadata_validation/example.py",
+      "type": "file",
+      "label": "components/security/metadata_validation/example.py",
+      "path": "components/security/metadata_validation/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "3f69120de2e4782f80160f8c0559565647d41c31a043d7de9118a0fa00c0e6ec"
+    },
+    {
+      "id": "file:components/security/metadata_validation/metadata_validation.py",
+      "type": "file",
+      "label": "components/security/metadata_validation/metadata_validation.py",
+      "path": "components/security/metadata_validation/metadata_validation.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "0a5e0d4445c1f3672e1365b9fdcd10320edce9ae9d6a5364815c3c6239407205"
+    },
+    {
+      "id": "file:components/security/metadata_validation/tests/test_component.py",
+      "type": "file",
+      "label": "components/security/metadata_validation/tests/test_component.py",
+      "path": "components/security/metadata_validation/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "1cec108bb3552879062632029808fdbcbf75669411ed892ab6fb6c0587b81074"
+    },
+    {
+      "id": "file:components/security/retrieved_content/example.py",
+      "type": "file",
+      "label": "components/security/retrieved_content/example.py",
+      "path": "components/security/retrieved_content/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "a2639e60cfa9dd297135ffa407a8c3ae151a8c67afbdadacdf31be0b5d8e2994"
+    },
+    {
+      "id": "file:components/security/retrieved_content/retrieved_content_safety.py",
+      "type": "file",
+      "label": "components/security/retrieved_content/retrieved_content_safety.py",
+      "path": "components/security/retrieved_content/retrieved_content_safety.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2a340557d6eebd028f81b623e20813aca14d81022ed6a6a5c7992578f3c24d78"
+    },
+    {
+      "id": "file:components/security/retrieved_content/tests/test_component.py",
+      "type": "file",
+      "label": "components/security/retrieved_content/tests/test_component.py",
+      "path": "components/security/retrieved_content/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "6c4f9653e3d444ce55e8f1f5df5233ce4d1d0eb1b89452ba3a2e06445707d229"
+    },
+    {
+      "id": "file:components/storage/adapters/example.py",
+      "type": "file",
+      "label": "components/storage/adapters/example.py",
+      "path": "components/storage/adapters/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2de9b3704718b9f7e3c00dff4c1bdc6b1e83c4b189442905995f42439792bf3d"
+    },
+    {
+      "id": "file:components/storage/adapters/storage_adapters.py",
+      "type": "file",
+      "label": "components/storage/adapters/storage_adapters.py",
+      "path": "components/storage/adapters/storage_adapters.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "ba93f55b0f4b53903652eddd0f7426581aba9b369a014ec566a2f262680047e9"
+    },
+    {
+      "id": "file:components/storage/adapters/tests/test_component.py",
+      "type": "file",
+      "label": "components/storage/adapters/tests/test_component.py",
+      "path": "components/storage/adapters/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "1f5948828f38fb21e63d43a3c2e39cbc1b886defdf9eecc83878c0df9dbca06d"
+    },
+    {
+      "id": "file:components/storage/document_store/document_store.py",
+      "type": "file",
+      "label": "components/storage/document_store/document_store.py",
+      "path": "components/storage/document_store/document_store.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "9eee9011dc21aa835d60f6f50e9766144a244278ec3650671f70552ba1c2300c"
+    },
+    {
+      "id": "file:components/storage/document_store/example.py",
+      "type": "file",
+      "label": "components/storage/document_store/example.py",
+      "path": "components/storage/document_store/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "65712a03a9b20b4796d069e10a3f6173017d84dd77061ad662f5d2cc42076161"
+    },
+    {
+      "id": "file:components/storage/document_store/tests/test_component.py",
+      "type": "file",
+      "label": "components/storage/document_store/tests/test_component.py",
+      "path": "components/storage/document_store/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "6e3c69ad28bccca639c87d5e7bfab4d646b6beb76ffa1844c3d0332a9b3dd62f"
+    },
+    {
+      "id": "file:components/storage/vector_store_protocol/example.py",
+      "type": "file",
+      "label": "components/storage/vector_store_protocol/example.py",
+      "path": "components/storage/vector_store_protocol/example.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "37139e6f8a63b05cb8b062d9414db9583b061fb3ecc310a3da4af2ec8794f3ce"
+    },
+    {
+      "id": "file:components/storage/vector_store_protocol/tests/test_component.py",
+      "type": "file",
+      "label": "components/storage/vector_store_protocol/tests/test_component.py",
+      "path": "components/storage/vector_store_protocol/tests/test_component.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "927c8608995d911c77f363ab980ddd4b4178a6a54f80332cc5a27b41ec77ce5a"
+    },
+    {
+      "id": "file:components/storage/vector_store_protocol/vector_store_protocol.py",
+      "type": "file",
+      "label": "components/storage/vector_store_protocol/vector_store_protocol.py",
+      "path": "components/storage/vector_store_protocol/vector_store_protocol.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "cd14a7c9b2288c2dd2b50c7e3cdb1f218887d4832bc7aec3d57f82416f8ff083"
+    },
+    {
+      "id": "file:cookbook/data.js",
+      "type": "file",
+      "label": "cookbook/data.js",
+      "path": "cookbook/data.js",
+      "language": "javascript",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "22a5882685149a02213b987a9222e05f36e2066640e2c53eb7b7ee9a78111978"
+    },
+    {
+      "id": "file:cookbook/script.js",
+      "type": "file",
+      "label": "cookbook/script.js",
+      "path": "cookbook/script.js",
+      "language": "javascript",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "97e78e5d6f5be64226bbe3171f8cad4d15e26424deed70a53eeb444cde8ba89c"
+    },
+    {
+      "id": "file:scripts/build_cookbook.py",
+      "type": "file",
+      "label": "scripts/build_cookbook.py",
+      "path": "scripts/build_cookbook.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "e0e5792bcad4c5be83d06a747232f22db2b6871ad6f97fd67f19feef2437b870"
+    },
+    {
+      "id": "file:scripts/validate_components.py",
+      "type": "file",
+      "label": "scripts/validate_components.py",
+      "path": "scripts/validate_components.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "5d11afbca3be4043e3f07b18589e9060bc9c71394257ceaf7c5b13000aa56387"
+    },
+    {
+      "id": "file:scripts/verify_generated_code.py",
+      "type": "file",
+      "label": "scripts/verify_generated_code.py",
+      "path": "scripts/verify_generated_code.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "39f5f7723cd8a5f53c9aa1e97b081d69def17053456a606a5c08f86d1b2c66ab"
+    },
+    {
+      "id": "file:src/rag_code_library/__init__.py",
+      "type": "file",
+      "label": "src/rag_code_library/__init__.py",
+      "path": "src/rag_code_library/__init__.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "008de8113362c2cd9b4f7f0085a18225a7651c9ca511280576a47914ddebba6b"
+    },
+    {
+      "id": "file:src/rag_code_library/cli.py",
+      "type": "file",
+      "label": "src/rag_code_library/cli.py",
+      "path": "src/rag_code_library/cli.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "8949c4a4eff1576ba20205919a7e2d5d22a48cd48bf001f3afff0f2905a387ac"
+    },
+    {
+      "id": "file:src/rag_code_library/config.py",
+      "type": "file",
+      "label": "src/rag_code_library/config.py",
+      "path": "src/rag_code_library/config.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "e77f13b00366b4df6465c0d10bf748064ca2c435a11341895eadf203c53f8c59"
+    },
+    {
+      "id": "file:src/rag_code_library/errors.py",
+      "type": "file",
+      "label": "src/rag_code_library/errors.py",
+      "path": "src/rag_code_library/errors.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "fafa156a5831ac3275ddda9d9f2ea01dd8620004bebe4db12d5def33baa7cb93"
+    },
+    {
+      "id": "file:src/rag_code_library/generator/__init__.py",
+      "type": "file",
+      "label": "src/rag_code_library/generator/__init__.py",
+      "path": "src/rag_code_library/generator/__init__.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "1d737a79b49142e5e21e8760920345d030f80fa892bf3185e5e8dc4bf0530906"
+    },
+    {
+      "id": "file:src/rag_code_library/generator/conflict_detector.py",
+      "type": "file",
+      "label": "src/rag_code_library/generator/conflict_detector.py",
+      "path": "src/rag_code_library/generator/conflict_detector.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2b32b2faa11f3692660ffccd842799ba4191ef6e8cc129a397d4695e1b517b85"
+    },
+    {
+      "id": "file:src/rag_code_library/generator/copier.py",
+      "type": "file",
+      "label": "src/rag_code_library/generator/copier.py",
+      "path": "src/rag_code_library/generator/copier.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "43fa77b4ed311d5f49dc059221f6977cb7a2f31a533358fe9c35d9604441f5e5"
+    },
+    {
+      "id": "file:src/rag_code_library/generator/dependency_manager.py",
+      "type": "file",
+      "label": "src/rag_code_library/generator/dependency_manager.py",
+      "path": "src/rag_code_library/generator/dependency_manager.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "0bdd26e1ebed325e621dc7f1f02e147cbb8223308bf77cacfdaa56681425c9fb"
+    },
+    {
+      "id": "file:src/rag_code_library/generator/planner.py",
+      "type": "file",
+      "label": "src/rag_code_library/generator/planner.py",
+      "path": "src/rag_code_library/generator/planner.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2595005112ce53aa4d554a03f246d8e0fbb3f430df333b462a91fa0978e41770"
+    },
+    {
+      "id": "file:src/rag_code_library/generator/provenance.py",
+      "type": "file",
+      "label": "src/rag_code_library/generator/provenance.py",
+      "path": "src/rag_code_library/generator/provenance.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "3e3c99a7de43398a421ac9eaecc5b4f69b8bf4b8b5b332da44b5a82bfc096fed"
+    },
+    {
+      "id": "file:src/rag_code_library/project/__init__.py",
+      "type": "file",
+      "label": "src/rag_code_library/project/__init__.py",
+      "path": "src/rag_code_library/project/__init__.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "c94c7cd5ecdf43ac43c2a906247b85b521a1900404637a5539c7dcb0d45a6632"
+    },
+    {
+      "id": "file:src/rag_code_library/project/detector.py",
+      "type": "file",
+      "label": "src/rag_code_library/project/detector.py",
+      "path": "src/rag_code_library/project/detector.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "ded2fc4b8efce5d7f09205e4f860d750d9b4d2e5afe842a2c8def0cd1a328c7c"
+    },
+    {
+      "id": "file:src/rag_code_library/project/package_detector.py",
+      "type": "file",
+      "label": "src/rag_code_library/project/package_detector.py",
+      "path": "src/rag_code_library/project/package_detector.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "bf30c5029c2d7bdff47ffd6b45857c7a0e85b3380276745e04eaa3838007a3fc"
+    },
+    {
+      "id": "file:src/rag_code_library/project/path_resolver.py",
+      "type": "file",
+      "label": "src/rag_code_library/project/path_resolver.py",
+      "path": "src/rag_code_library/project/path_resolver.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "a7bbd6d5761d9a0d8b4ee69d374b554401661feb5a3535255f1061c5e5eb8709"
+    },
+    {
+      "id": "file:src/rag_code_library/registry/__init__.py",
+      "type": "file",
+      "label": "src/rag_code_library/registry/__init__.py",
+      "path": "src/rag_code_library/registry/__init__.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "17d957337e7109ce03e3e146e8faec20fc1fcb06eb5a764cc22d9d1eb6efd8f2"
+    },
+    {
+      "id": "file:src/rag_code_library/registry/loader.py",
+      "type": "file",
+      "label": "src/rag_code_library/registry/loader.py",
+      "path": "src/rag_code_library/registry/loader.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "c7910a87992a1c1d6e5bdf3fee4dc28cdcfaf1be4ea8915e65416974db27ced9"
+    },
+    {
+      "id": "file:src/rag_code_library/registry/manifest.py",
+      "type": "file",
+      "label": "src/rag_code_library/registry/manifest.py",
+      "path": "src/rag_code_library/registry/manifest.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "c561eb8dd7e24ef40452a7072380c8556bfc73c5a6edb5f09ab3f73fa387cf3e"
+    },
+    {
+      "id": "file:src/rag_code_library/registry/resolver.py",
+      "type": "file",
+      "label": "src/rag_code_library/registry/resolver.py",
+      "path": "src/rag_code_library/registry/resolver.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "485b3bffef9f76ee3bcf834e4af0d3b3bd46a1b5bae52d023a66caca9446f27b"
+    },
+    {
+      "id": "file:src/rag_code_library/registry/validator.py",
+      "type": "file",
+      "label": "src/rag_code_library/registry/validator.py",
+      "path": "src/rag_code_library/registry/validator.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "514d2afa95c08fcdf07fb2099888d7bd337510c418122468447e0308a964b0d1"
+    },
+    {
+      "id": "file:src/rag_code_library/security/__init__.py",
+      "type": "file",
+      "label": "src/rag_code_library/security/__init__.py",
+      "path": "src/rag_code_library/security/__init__.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "8a9aec246655f982c3a4535a1b4e7aacf2e9b611342c8ae6c132974fbcf126b3"
+    },
+    {
+      "id": "file:src/rag_code_library/security/manifest_validation.py",
+      "type": "file",
+      "label": "src/rag_code_library/security/manifest_validation.py",
+      "path": "src/rag_code_library/security/manifest_validation.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "f16fc110548a50e3410a8a2f833ed008d2e0192d827427a0b1d470c711944b3c"
+    },
+    {
+      "id": "file:src/rag_code_library/security/path_safety.py",
+      "type": "file",
+      "label": "src/rag_code_library/security/path_safety.py",
+      "path": "src/rag_code_library/security/path_safety.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "49f1bf85655c492d3f8ca99647afaf06e96cbe643c4dd63d39bbe46dd8b4b664"
+    },
+    {
+      "id": "file:tests/__init__.py",
+      "type": "file",
+      "label": "tests/__init__.py",
+      "path": "tests/__init__.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2058f3e41183f0ad447e8dfc4f9b1683721d5bdad03b28561b9f4b095fe571ce"
+    },
+    {
+      "id": "file:tests/integration/__init__.py",
+      "type": "file",
+      "label": "tests/integration/__init__.py",
+      "path": "tests/integration/__init__.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2058f3e41183f0ad447e8dfc4f9b1683721d5bdad03b28561b9f4b095fe571ce"
+    },
+    {
+      "id": "file:tests/integration/test_cli_workflow.py",
+      "type": "file",
+      "label": "tests/integration/test_cli_workflow.py",
+      "path": "tests/integration/test_cli_workflow.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "c79b21098c99545272c65444f6934e9f35628fba35b143c7ebb499f651231d39"
+    },
+    {
+      "id": "file:tests/integration/test_cookbook_build.py",
+      "type": "file",
+      "label": "tests/integration/test_cookbook_build.py",
+      "path": "tests/integration/test_cookbook_build.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2e7193cc41c421370637f056e960f032e7f5a413f11e09c2629a33ac15a2a93e"
+    },
+    {
+      "id": "file:tests/integration/test_generated_components.py",
+      "type": "file",
+      "label": "tests/integration/test_generated_components.py",
+      "path": "tests/integration/test_generated_components.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "3245419e04a2337151c737672c0d7db8bdd8f756602b8cbf211d0cf4a27138b6"
+    },
+    {
+      "id": "file:tests/unit/__init__.py",
+      "type": "file",
+      "label": "tests/unit/__init__.py",
+      "path": "tests/unit/__init__.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2058f3e41183f0ad447e8dfc4f9b1683721d5bdad03b28561b9f4b095fe571ce"
+    },
+    {
+      "id": "file:tests/unit/test_generator.py",
+      "type": "file",
+      "label": "tests/unit/test_generator.py",
+      "path": "tests/unit/test_generator.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "426e9fcd420d19b29c9c255fcdee6356e744563c1752d05b3a03ca778dcfea57"
+    },
+    {
+      "id": "file:tests/unit/test_project_detection.py",
+      "type": "file",
+      "label": "tests/unit/test_project_detection.py",
+      "path": "tests/unit/test_project_detection.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "86b07767281fce22b1aad873e7443ba979abe2a30f05ad2ac3ef6905c5ba6aab"
+    },
+    {
+      "id": "file:tests/unit/test_registry.py",
+      "type": "file",
+      "label": "tests/unit/test_registry.py",
+      "path": "tests/unit/test_registry.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "2d7fd5becc217205833965b4651dc9788d5540e129d387c3ef76e7db19fce5c6"
+    },
+    {
+      "id": "file:tests/unit/test_security.py",
+      "type": "file",
+      "label": "tests/unit/test_security.py",
+      "path": "tests/unit/test_security.py",
+      "language": "python",
+      "confidence": 1,
+      "extractor": "filesystem",
+      "contentHash": "085cbfe02898fb1f2deb2ef66fe27ab3cbe7527d469e3955ea9932588340f41d"
+    },
+    {
+      "id": "symbol:cookbook/script.js#function:$",
+      "type": "symbol",
+      "kind": "function",
+      "name": "$",
+      "label": "$",
+      "path": "cookbook/script.js",
+      "line": 3,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols",
+      "contentHash": "e3a706e65968f389c5614133f54ee0d2332abe3c52ea3d4b89f1b10958bc330b"
+    },
+    {
+      "id": "symbol:cookbook/script.js#function:code",
+      "type": "symbol",
+      "kind": "function",
+      "name": "code",
+      "label": "code",
+      "path": "cookbook/script.js",
+      "line": 11,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols",
+      "contentHash": "7a88761a03201e4bfbeb8b033cd7ad89abfde44abee21844357efbd095d67789"
+    },
+    {
+      "id": "symbol:cookbook/script.js#function:component",
+      "type": "symbol",
+      "kind": "function",
+      "name": "component",
+      "label": "component",
+      "path": "cookbook/script.js",
+      "line": 5,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols",
+      "contentHash": "854fc5beb61b9842381e6e7e4b00b97049703e5885437f200c1c4d38d106130f"
+    },
+    {
+      "id": "symbol:cookbook/script.js#function:detail",
+      "type": "symbol",
+      "kind": "function",
+      "name": "detail",
+      "label": "detail",
+      "path": "cookbook/script.js",
+      "line": 8,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols",
+      "contentHash": "2e842eac4d610e324606b07bf570f6e19b1ea7490092178b49abad15f11ef2ad"
+    },
+    {
+      "id": "symbol:cookbook/script.js#function:drawDetail",
+      "type": "symbol",
+      "kind": "function",
+      "name": "drawDetail",
+      "label": "drawDetail",
+      "path": "cookbook/script.js",
+      "line": 9,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols",
+      "contentHash": "baf47ed7f004940f7478525923639089d4dc069d1f19c44dab9c2c2bc4680ee0"
+    },
+    {
+      "id": "symbol:cookbook/script.js#function:home",
+      "type": "symbol",
+      "kind": "function",
+      "name": "home",
+      "label": "home",
+      "path": "cookbook/script.js",
+      "line": 7,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols",
+      "contentHash": "13a6f5c9f44f864335cc331f0c93d976e81038ff6904e22b097ae5eb7f544a1a"
+    },
+    {
+      "id": "symbol:cookbook/script.js#function:renderNav",
+      "type": "symbol",
+      "kind": "function",
+      "name": "renderNav",
+      "label": "renderNav",
+      "path": "cookbook/script.js",
+      "line": 6,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols",
+      "contentHash": "b38f46183f55fc837f3bc29b94e3e8cee8e13422ad3043d156468298f480dddc"
+    },
+    {
+      "id": "symbol:cookbook/script.js#variable:data",
+      "type": "symbol",
+      "kind": "variable",
+      "name": "data",
+      "label": "data",
+      "path": "cookbook/script.js",
+      "line": 2,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols",
+      "contentHash": "2099112b0b02a5165375c9a68460326d46a91fef63597582a0e277fe4876318a"
+    },
+    {
+      "id": "symbol:cookbook/script.js#variable:selected",
+      "type": "symbol",
+      "kind": "variable",
+      "name": "selected",
+      "label": "selected",
+      "path": "cookbook/script.js",
+      "line": 4,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols",
+      "contentHash": "5daedc6b216ad20261468d89190ae5ae0c94c80ccc08d84e3c6a42569205e18e"
+    }
+  ],
+  "edges": [
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:code",
+      "target": "symbol:cookbook/script.js#function:$",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:code",
+      "target": "symbol:cookbook/script.js#function:component",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:code",
+      "target": "symbol:cookbook/script.js#function:detail",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:code",
+      "target": "symbol:cookbook/script.js#function:drawDetail",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:code",
+      "target": "symbol:cookbook/script.js#function:home",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:code",
+      "target": "symbol:cookbook/script.js#function:renderNav",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:detail",
+      "target": "symbol:cookbook/script.js#function:component",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:detail",
+      "target": "symbol:cookbook/script.js#function:drawDetail",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:detail",
+      "target": "symbol:cookbook/script.js#function:home",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:drawDetail",
+      "target": "symbol:cookbook/script.js#function:$",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:drawDetail",
+      "target": "symbol:cookbook/script.js#function:code",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:drawDetail",
+      "target": "symbol:cookbook/script.js#function:renderNav",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:home",
+      "target": "symbol:cookbook/script.js#function:$",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:home",
+      "target": "symbol:cookbook/script.js#function:renderNav",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "calls",
+      "source": "symbol:cookbook/script.js#function:renderNav",
+      "target": "symbol:cookbook/script.js#function:$",
+      "tier": "proven",
+      "resolved": true,
+      "confidence": 0.75,
+      "extractor": "conservative-js-calls"
+    },
+    {
+      "type": "defines",
+      "source": "file:cookbook/script.js",
+      "target": "symbol:cookbook/script.js#function:$",
+      "line": 3,
+      "resolved": true,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols"
+    },
+    {
+      "type": "defines",
+      "source": "file:cookbook/script.js",
+      "target": "symbol:cookbook/script.js#function:code",
+      "line": 11,
+      "resolved": true,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols"
+    },
+    {
+      "type": "defines",
+      "source": "file:cookbook/script.js",
+      "target": "symbol:cookbook/script.js#function:component",
+      "line": 5,
+      "resolved": true,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols"
+    },
+    {
+      "type": "defines",
+      "source": "file:cookbook/script.js",
+      "target": "symbol:cookbook/script.js#function:detail",
+      "line": 8,
+      "resolved": true,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols"
+    },
+    {
+      "type": "defines",
+      "source": "file:cookbook/script.js",
+      "target": "symbol:cookbook/script.js#function:drawDetail",
+      "line": 9,
+      "resolved": true,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols"
+    },
+    {
+      "type": "defines",
+      "source": "file:cookbook/script.js",
+      "target": "symbol:cookbook/script.js#function:home",
+      "line": 7,
+      "resolved": true,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols"
+    },
+    {
+      "type": "defines",
+      "source": "file:cookbook/script.js",
+      "target": "symbol:cookbook/script.js#function:renderNav",
+      "line": 6,
+      "resolved": true,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols"
+    },
+    {
+      "type": "defines",
+      "source": "file:cookbook/script.js",
+      "target": "symbol:cookbook/script.js#variable:data",
+      "line": 2,
+      "resolved": true,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols"
+    },
+    {
+      "type": "defines",
+      "source": "file:cookbook/script.js",
+      "target": "symbol:cookbook/script.js#variable:selected",
+      "line": 4,
+      "resolved": true,
+      "confidence": 0.8,
+      "extractor": "conservative-js-symbols"
+    }
+  ],
+  "warnings": [
+    "Python AST unavailable: Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases."
+  ],
+  "stats": {
+    "unresolvedCalls": 6
+  }
+}

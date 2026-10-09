@@ -1,0 +1,12 @@
+{
+  "id": "retrieved-content-safety",
+  "name": "Retrieved Content Safety",
+  "category": "security",
+  "source": "retrieved_content_safety.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Handle retrieved text as untrusted data and document prompt-injection boundaries.",
+  "destination": "src/{project_package}/rag/security/retrieved_content_safety.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

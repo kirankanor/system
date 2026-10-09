@@ -1,0 +1,12 @@
+{
+  "id": "retrieval-metrics",
+  "name": "Retrieval Metrics",
+  "category": "evaluation",
+  "source": "retrieval_metrics.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Calculate retrieval quality metrics over labeled examples.",
+  "destination": "src/{project_package}/rag/evaluation/retrieval_metrics.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

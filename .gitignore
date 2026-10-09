@@ -1,0 +1,1 @@
+# Ignore .venv/, __pycache__/, .pytest_cache/, build output, secrets, local data, and generated temporary files here.

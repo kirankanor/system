@@ -1,0 +1,12 @@
+{
+  "id": "context-selector",
+  "name": "Context Selector",
+  "category": "context",
+  "source": "context_selector.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Select evidence passages for downstream generation.",
+  "destination": "src/{project_package}/rag/context/context_selector.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

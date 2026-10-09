@@ -1,0 +1,12 @@
+{
+  "id": "cross-encoder-reranker",
+  "name": "Cross Encoder Reranker",
+  "category": "reranking",
+  "source": "cross_encoder_reranker.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Rerank candidate passages with a cross-encoder model.",
+  "destination": "src/{project_package}/rag/reranking/cross_encoder_reranker.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

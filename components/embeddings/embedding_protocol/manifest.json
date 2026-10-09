@@ -1,0 +1,12 @@
+{
+  "id": "embedding-protocol",
+  "name": "Embedding Protocol",
+  "category": "embeddings",
+  "source": "embedding_protocol.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Define framework-neutral embedding input/output contracts.",
+  "destination": "src/{project_package}/rag/embeddings/embedding_protocol.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

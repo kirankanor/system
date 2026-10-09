@@ -1,0 +1,12 @@
+{
+  "id": "token-chunker",
+  "name": "Token Chunker",
+  "category": "chunking",
+  "source": "token_chunker.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Split text according to a declared tokenizer's token budget.",
+  "destination": "src/{project_package}/rag/chunking/token_chunker.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

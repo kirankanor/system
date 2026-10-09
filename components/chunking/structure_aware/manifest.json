@@ -1,0 +1,12 @@
+{
+  "id": "structure-aware-chunker",
+  "name": "Structure Aware Chunker",
+  "category": "chunking",
+  "source": "structure_aware_chunker.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Chunk structured documents using their semantic boundaries.",
+  "destination": "src/{project_package}/rag/chunking/structure_aware_chunker.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

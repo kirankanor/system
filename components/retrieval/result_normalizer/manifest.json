@@ -1,0 +1,12 @@
+{
+  "id": "retrieval-result-normalizer",
+  "name": "Retrieval Result Normalizer",
+  "category": "retrieval",
+  "source": "retrieval_result_normalizer.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Normalize retrieval results into a stable framework-neutral contract.",
+  "destination": "src/{project_package}/rag/retrieval/retrieval_result_normalizer.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}

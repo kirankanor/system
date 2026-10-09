@@ -1,0 +1,12 @@
+{
+  "id": "metadata-validation",
+  "name": "Metadata Validation",
+  "category": "security",
+  "source": "metadata_validation.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Validate document metadata against an explicit schema.",
+  "destination": "src/{project_package}/rag/security/metadata_validation.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py"
+}
