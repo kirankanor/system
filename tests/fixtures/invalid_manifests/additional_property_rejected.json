@@ -1,0 +1,11 @@
+{
+  "id": "extra-field-chunker",
+  "name": "Extra Field Chunker",
+  "category": "chunking",
+  "source": "component.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Manifest carrying an undeclared top-level property.",
+  "destination": "src/{project_package}/rag/chunking/component.py",
+  "author": "undeclared"
+}

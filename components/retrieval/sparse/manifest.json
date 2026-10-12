@@ -4,9 +4,18 @@
   "category": "retrieval",
   "source": "sparse_retrieval.py",
   "version": "0.1.0",
-  "dependencies": [],
-  "description": "Retrieve candidates using lexical or sparse signals.",
+  "dependencies": ["core-types"],
+  "description": "Lexical retrieval over a fixed corpus using Okapi BM25, implemented in this component so results do not change with the installed packages.",
   "destination": "src/{project_package}/rag/retrieval/sparse_retrieval.py",
   "documentation": "README.md",
-  "tests": "tests/test_component.py"
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No additional packages required. Copy with: ragkit add <id>",
+  "missing_dependency_message": "sparse-retrieval declares no optional dependencies; BM25 is implemented in this component. If an import fails, restore the project environment with: uv sync"
 }

@@ -1,0 +1,30 @@
+{
+  "task": "T-11",
+  "gate": "verify",
+  "kind": "command",
+  "attempt": "bf82bd0b-6d83-42f0-a4d8-5c8b58cf7ccd",
+  "command": "python scripts/verify_generated_code.py",
+  "started_at": "2026-10-11T13:01:00.359Z",
+  "observed_at": "2026-10-11T13:01:17.477Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "  dense-retrieval pulled in core-types\r\nOK: 16 file(s) across 3 component(s) copied byte-for-byte; none import the library; no dependency file modified\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "1e541d45898af11221ed4ae7d8db9d9c329e0c75",
+    "dirty": true
+  },
+  "source_hash": "1e980a35dff8660639c930bbf187f506acb97c3fb24ff2fc7a516df20d4bd38b",
+  "before_hash": "1e980a35dff8660639c930bbf187f506acb97c3fb24ff2fc7a516df20d4bd38b",
+  "config_hash": "b719e99e8f5a1e979291a48f29e518eb471b1059fb0fcecea9a9221b727c4a91",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "7f4dbb55216a65f1671a3b678aa7f4b7c180eb6c33fb7b7c55fb31252a354b3b"
+}

@@ -4,9 +4,34 @@
   "category": "embeddings",
   "source": "local_embeddings.py",
   "version": "0.1.0",
-  "dependencies": [],
+  "dependencies": [
+    "embedding-protocol"
+  ],
   "description": "Provide a local model embedding adapter with explicit model dependencies.",
   "destination": "src/{project_package}/rag/embeddings/local_embeddings.py",
   "documentation": "README.md",
-  "tests": "tests/test_component.py"
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [
+    {
+      "name": "sentence-transformers",
+      "specifier": ">=2.2.0"
+    }
+  ],
+  "external_services": [
+    {
+      "name": "Hugging Face model hub (initial model download only)",
+      "env_vars": [
+        "RAG_LOCAL_EMBEDDINGS_MODEL",
+        "TRANSFORMERS_OFFLINE"
+      ],
+      "notes": "Model id has no default. Set TRANSFORMERS_OFFLINE=1 to forbid any network access."
+    }
+  ],
+  "install": "Install the optional dependencies first with: uv add sentence-transformers",
+  "missing_dependency_message": "local-embeddings requires 'sentence-transformers', which is not installed. Install it with: uv add sentence-transformers"
 }

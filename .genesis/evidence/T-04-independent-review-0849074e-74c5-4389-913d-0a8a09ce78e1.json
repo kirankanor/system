@@ -1,0 +1,13 @@
+{
+  "task": "T-04",
+  "gate": "independent-review",
+  "kind": "review",
+  "attempt": "0849074e-74c5-4389-913d-0a8a09ce78e1",
+  "human": "agent-delegated-by-kiran",
+  "reason": "Delegated independent review: the human instructed the agent to perform review gates itself (DECISION-c6b1521b), so no human read this diff. Actually checked: read all 361 lines of core_types.py; proved the docstring duplication claims byte-identical against config/models.py (frozen+extra=forbid base, the 64-hex sha256 pattern, _NonEmpty and Metadata all match); grep confirmed core_types.py imports only pydantic plus stdlib - no config, no rag_code_library (AC-13); gate 34 passed; component tests 27 passed covering success and failure paths (AC-4); example.py runs standalone exit 0 from its own directory; full suite 125 passed 2 skipped on BOTH 3.14.5 and 3.12.14; 32 manifests schema-valid; pydantic>=2.13 agrees with pyproject.toml (FR-30). Defects found by this review and fixed: the module docstring cited a reconciliation knowledge record that did not exist (now KNOWLEDGE-491e06aa); README claimed every area holds several implementations (false for config), omitted metadata from the SourceDocument row, claimed other components are pydantic-based (unverified), and stated the issubclass rule loosely (empirically verified - fine for the six method-only protocols, TypeError only for EmbeddingProtocol); two tests asserted nothing real and were replaced; one test named negative_budget actually exercised budget 0; VectorStoreProtocol implied query results carry a backend name while that field is Optional, now stated as an unenforced conformance requirement; the naive ScoredDocument(**chunk.model_dump(), ...) conversion raised TypeError in two files, fixed with ScoredDocument.from_chunk plus a regression test pinning the naive failure. Known limitation deliberately not fixed here: core-types and config each define Chunk and SourceDocument - recorded KNOWLEDGE-491e06aa, unfixable inside T-04 scope. Interchange is demonstrated only against in-test fakes because no real component implements these protocols until T-06 through T-09g.",
+  "observed_at": "2026-10-10T14:32:26.019Z",
+  "source_hash": "ef09fc6cc99143d4d43624a6546cc11a25b0002b801831a211ce4c963d923e64",
+  "config_hash": "efc561c730a3589b9489a0eb9d8cb581e141aba5a615b2757d3a7c6b537b7f61",
+  "reviewed_proofs": "80eb86ca17cbec47e061e29b6881537d16c16fed3275f7eb6a3ea7b4213e1df1",
+  "hash": "8d0d90450e43bd3a485b9a51e4f8519966b1c17e52b074d7bcbd1af6cb961683"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "unknown-category-chunker",
+  "name": "Unknown Category Chunker",
+  "category": "parsing",
+  "source": "component.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Manifest whose category is outside the schema enum.",
+  "destination": "src/{project_package}/rag/chunking/component.py"
+}

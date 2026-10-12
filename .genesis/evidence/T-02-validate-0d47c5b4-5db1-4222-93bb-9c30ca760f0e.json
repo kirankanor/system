@@ -1,0 +1,30 @@
+{
+  "task": "T-02",
+  "gate": "validate",
+  "kind": "command",
+  "attempt": "0d47c5b4-5db1-4222-93bb-9c30ca760f0e",
+  "command": "python scripts/validate_components.py",
+  "started_at": "2026-10-10T12:55:46.256Z",
+  "observed_at": "2026-10-10T12:55:49.654Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "1e541d45898af11221ed4ae7d8db9d9c329e0c75",
+    "dirty": true
+  },
+  "source_hash": "af4fe5af47004dd46b741bd0084525dcf60d0f7474e86661ef93b62d50340bc0",
+  "before_hash": "af4fe5af47004dd46b741bd0084525dcf60d0f7474e86661ef93b62d50340bc0",
+  "config_hash": "691dbd1b9e61401b9a0c5dd6f5da56830b40f6e6a651a86faefe424348fd56b0",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "91b8099cff2d9ec689aac05b29166edb0648c33de16e0e7e505f45c26cd5a8bd"
+}

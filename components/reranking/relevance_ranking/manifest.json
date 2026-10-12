@@ -4,9 +4,18 @@
   "category": "reranking",
   "source": "relevance_ranking.py",
   "version": "0.1.0",
-  "dependencies": [],
-  "description": "Order candidates using a documented relevance score.",
+  "dependencies": ["core-types"],
+  "description": "Deterministic lexical reranking by IDF-weighted query coverage in [0, 1], requiring no model, wheel or corpus index.",
   "destination": "src/{project_package}/rag/reranking/relevance_ranking.py",
   "documentation": "README.md",
-  "tests": "tests/test_component.py"
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No additional packages required. Copy with: ragkit add <id>",
+  "missing_dependency_message": "relevance-ranking declares no optional dependencies. If an import fails, restore the project environment with: uv sync"
 }

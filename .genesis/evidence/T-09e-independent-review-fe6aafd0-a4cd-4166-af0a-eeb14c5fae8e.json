@@ -1,0 +1,13 @@
+{
+  "task": "T-09e",
+  "gate": "independent-review",
+  "kind": "review",
+  "attempt": "fe6aafd0-a4cd-4166-af0a-eeb14c5fae8e",
+  "human": "agent-delegated-by-kiran",
+  "reason": "Independent review by the agent under DECISION-c6b1521b. Two real defects found and fixed before shipping: (1) retrieved-content-safety compiled rules without re.MULTILINE, so the role_override pattern's ^ anchored only at string start - a 'system:' marker on line 2 or later was completely unflagged; rules now use IGNORECASE|MULTILINE and . still refuses to cross a newline so no rule can swallow a document. (2) metadata-validation typed MetadataValueError whenever any string value matched, including one in a key rejected outright as undeclared, so the type cried 'someone attacked you' for a plain schema mistake; _has_injection now mirrors errors() and examines only declared fields plus admitted extras. Also corrected the retrieved-content README, whose line-break limitation was invalidated by fix (1). Gate 112 passed, per-component 48/48/48, all three examples exit 0.",
+  "observed_at": "2026-10-11T06:56:43.797Z",
+  "source_hash": "1358d242deb2b4bde492bf175cee93785ffc05a58771258ca1c7da6219c02f95",
+  "config_hash": "f25500b877ebedafdd3ade0d80bec9aa2a34b04ab13385faa2f9bb986bdedbc6",
+  "reviewed_proofs": "de130dfa7a05cc4a1fbedddf1aac4f48a97fb84ade917bde24e30eff930740c9",
+  "hash": "56f7baf91cee7462894ea561fa39149b45161b3785f286dcf7179e9de91e6481"
+}

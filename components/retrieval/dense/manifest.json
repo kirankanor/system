@@ -4,9 +4,18 @@
   "category": "retrieval",
   "source": "dense_retrieval.py",
   "version": "0.1.0",
-  "dependencies": [],
-  "description": "Retrieve candidates using vector similarity.",
+  "dependencies": ["core-types"],
+  "description": "Embed a query and retrieve its nearest neighbours from a vector store, validating that the embedder and the store agree on the vector space.",
   "destination": "src/{project_package}/rag/retrieval/dense_retrieval.py",
   "documentation": "README.md",
-  "tests": "tests/test_component.py"
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No additional packages required. Copy with: ragkit add <id>",
+  "missing_dependency_message": "dense-retrieval declares no optional dependencies. If an import fails, restore the project environment with: uv sync"
 }

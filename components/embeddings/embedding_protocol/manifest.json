@@ -8,5 +8,14 @@
   "description": "Define framework-neutral embedding input/output contracts.",
   "destination": "src/{project_package}/rag/embeddings/embedding_protocol.py",
   "documentation": "README.md",
-  "tests": "tests/test_component.py"
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No additional packages required. Copy with: ragkit add <id>",
+  "missing_dependency_message": "embedding-protocol declares no optional dependencies. If an import fails, restore the project environment with: uv sync"
 }

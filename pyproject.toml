@@ -1,1 +1,33 @@
-# Define package metadata, supported Python versions, runtime/dev dependencies, build backend, and the `ragkit` CLI entry point here.
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rag-code-library"
+version = "0.1.0"
+description = "Copy-ready RAG components, a local cookbook website, and the ragkit CLI"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.13",
+    "pydantic-settings>=2.14",
+]
+
+[project.scripts]
+ragkit = "rag_code_library.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag_code_library"]
+
+[tool.pytest.ini_options]
+# 28 component test modules share the basename test_component.py. importlib mode
+# imports them by path instead of by package, so collection no longer fails with
+# "import file mismatch" (discovery finding F-1). Keep this even after the
+# component test modules are renamed; removing it re-breaks collection.
+addopts = "--import-mode=importlib"
+testpaths = ["tests", "components"]

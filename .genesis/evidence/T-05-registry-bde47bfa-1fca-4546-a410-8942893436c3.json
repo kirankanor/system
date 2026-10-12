@@ -1,0 +1,30 @@
+{
+  "task": "T-05",
+  "gate": "registry",
+  "kind": "command",
+  "attempt": "bde47bfa-1fca-4546-a410-8942893436c3",
+  "command": "python -m pytest tests/unit/test_registry.py -q",
+  "started_at": "2026-10-10T15:33:31.751Z",
+  "observed_at": "2026-10-10T15:33:47.016Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "..................................                                       [100%]Running teardown with pytest sessionfinish...\r\n\r\n34 passed in 1.54s\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "1e541d45898af11221ed4ae7d8db9d9c329e0c75",
+    "dirty": true
+  },
+  "source_hash": "e4df1ccede9e5456bc0ac1311f6cb348e62fd6d66505a47cf82a95ed89fb8ebb",
+  "before_hash": "e4df1ccede9e5456bc0ac1311f6cb348e62fd6d66505a47cf82a95ed89fb8ebb",
+  "config_hash": "b640d147b63ffc7ebafb22b1e355a74d410386efdb48830497015fa51dd73883",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "e6d58f54fc66569a88d316e4efe4f671ebec97550c63a3f40c61a678060bff61"
+}

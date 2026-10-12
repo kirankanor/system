@@ -1,0 +1,13 @@
+{
+  "task": "T-11",
+  "gate": "independent-review",
+  "kind": "review",
+  "attempt": "f419875c-e00b-4866-8af3-a3b104564b3e",
+  "human": "agent-delegated-by-kiran",
+  "reason": "Independent review performed by the agent under DECISION-c6b1521b, because the human delegated independent-review gates. Reviewed the new generator and project packages line by line plus ruff on all six T-11 files. Three findings were fixed before approval: (1) Registry.get returns None for an unknown id and resolve_order turned that into an AttributeError traceback, now raising UnknownComponentError with the known ids, which FR-19 forbids; (2) a flat destination layout made 'ragkit add storage-adapters' collide with its own dependency inside one run, fixed by putting docs, tests and the manifest in a per-component namespace while the source keeps its declared import path, so the fix was re-verified by a new coexistence test; (3) PartialFailure reported the plan size as written+1 and told the user '9 of 10' when 12 files were planned, understating what was left undone, now using the real total and covered by a test that fails at file 9 of 12. Also cleared 20 ruff findings and recorded two decisions and one knowledge entry. Final state: ruff clean, add gate 18 tests, dryrun gate 6, verify byte-for-byte on 16 files, full suite 2849 passed on 3.14.5 and 2847 on 3.12.14, scope check PASS with 0 files outside, AC-13 sweep 0 violations, pyproject.toml and uv.lock unchanged.",
+  "observed_at": "2026-10-11T13:01:26.650Z",
+  "source_hash": "1e980a35dff8660639c930bbf187f506acb97c3fb24ff2fc7a516df20d4bd38b",
+  "config_hash": "b719e99e8f5a1e979291a48f29e518eb471b1059fb0fcecea9a9221b727c4a91",
+  "reviewed_proofs": "849ea99f6e2d5fe5cd7d4e10af79e0b1939f9428bda0a58527155547c44914b9",
+  "hash": "27cc421317ca6c606f36e3047daf54a9c27b5f255bb7c566c96c100042d0614d"
+}

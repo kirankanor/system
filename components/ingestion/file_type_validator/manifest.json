@@ -1,0 +1,26 @@
+{
+  "id": "file-type-validator",
+  "name": "File Type Validator",
+  "category": "ingestion",
+  "source": "file_type_validator.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Check whether a file is genuinely a supported document before parsing it, by content rather than by extension.",
+  "destination": "src/{project_package}/rag/ingestion/file_type_validator.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [
+    {
+      "name": "python-magic",
+      "specifier": ">=0.4.27"
+    }
+  ],
+  "external_services": [],
+  "install": "Optional content detection: pip install python-magic (needs the libmagic system library). Without it the component runs on its own signature table. Copy with: ragkit add file-type-validator",
+  "missing_dependency_message": "file-type-validator needs no package by default. python-magic is optional and only requested when you construct FileTypeValidator(use_magic=True); install it with pip install python-magic, and note libmagic is a system library rather than a wheel."
+}

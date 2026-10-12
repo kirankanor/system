@@ -4,9 +4,30 @@
   "category": "storage",
   "source": "storage_adapters.py",
   "version": "0.1.0",
-  "dependencies": [],
+  "dependencies": [
+    "core-types",
+    "vector-store-protocol"
+  ],
   "description": "Provide opt-in backend adapters with isolated optional dependencies.",
   "destination": "src/{project_package}/rag/storage/storage_adapters.py",
   "documentation": "README.md",
-  "tests": "tests/test_component.py"
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [
+    {
+      "name": "chromadb",
+      "specifier": ">=0.4.0"
+    },
+    {
+      "name": "faiss",
+      "specifier": ">=1.5.0"
+    }
+  ],
+  "external_services": [],
+  "install": "Install the optional dependencies first with: uv add chromadb faiss",
+  "missing_dependency_message": "storage-adapters requires 'chromadb' and 'faiss', which are not installed. Install them with: uv add chromadb faiss"
 }

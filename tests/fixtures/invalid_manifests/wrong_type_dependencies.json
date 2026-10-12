@@ -1,0 +1,10 @@
+{
+  "id": "wrong-type-deps-chunker",
+  "name": "Wrong Type Dependencies Chunker",
+  "category": "chunking",
+  "source": "component.py",
+  "version": "0.1.0",
+  "dependencies": "fixed-size-chunker",
+  "description": "Manifest whose dependencies field is a string instead of an array.",
+  "destination": "src/{project_package}/rag/chunking/component.py"
+}

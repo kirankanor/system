@@ -1,0 +1,27 @@
+{
+  "id": "core-types",
+  "name": "Core Types",
+  "category": "storage",
+  "source": "core_types.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Provider-neutral data contracts and the seven protocols every area implements, defined once so components stay interchangeable.",
+  "destination": "src/{project_package}/rag/core_types.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py",
+  "status": "stable",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [
+    {
+      "name": "pydantic",
+      "specifier": ">=2.13"
+    }
+  ],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No additional packages required. Copy with: ragkit add core-types",
+  "missing_dependency_message": "core-types declares no optional dependencies. If an import fails, restore the project environment with: uv sync",
+  "tradeoffs": "Add this first: every other component types its output against these contracts. Costs one frozen-model layer (pydantic) between your code and its data, which buys validation and immutability at construction time instead of surprises later. It ships its own Chunk on purpose so it can be copied on its own; if you also copy the destination project's config layer you will have two Chunk definitions until they are reconciled - see the project notes."
+}

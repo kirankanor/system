@@ -1,0 +1,10 @@
+{
+  "id": "empty-description-chunker",
+  "name": "Empty Description Chunker",
+  "category": "chunking",
+  "source": "component.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "",
+  "destination": "src/{project_package}/rag/chunking/component.py"
+}

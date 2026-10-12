@@ -1,1 +1,47 @@
-# Ignore .venv/, __pycache__/, .pytest_cache/, build output, secrets, local data, and generated temporary files here.
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Build output
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Local data and generated temporary files
+*.log
+tmp/
+temp/
+.cache/
+
+# Genesis local traces (state files stay tracked)
+.genesis/local/*
+!.genesis/local/.gitignore
+
+# Genesis hand-made state backups
+.genesis/*.bak*
+
+# Editor and OS noise
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db

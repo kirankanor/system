@@ -1,0 +1,30 @@
+{
+  "task": "T-07",
+  "gate": "embeddings",
+  "kind": "command",
+  "attempt": "fc7419b4-9413-48e4-878b-144502c06f75",
+  "command": "python -m pytest tests/unit/test_embeddings.py -q",
+  "started_at": "2026-10-11T02:01:13.750Z",
+  "observed_at": "2026-10-11T02:01:26.721Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": ".......................................................                  [100%]Running teardown with pytest sessionfinish...\r\n\r\n55 passed in 0.31s\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "1e541d45898af11221ed4ae7d8db9d9c329e0c75",
+    "dirty": true
+  },
+  "source_hash": "da4f629bfbae5457459f21cb39e8e6445e6e4b5a389c79d1c71efa3d704dcc37",
+  "before_hash": "da4f629bfbae5457459f21cb39e8e6445e6e4b5a389c79d1c71efa3d704dcc37",
+  "config_hash": "3a68edf460d88a805471cd026da0944f9cf3e3682c7f1855ad3c8170da69c404",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "751414e2d045c345f121ca1fa64e3d5bfe65d55a9cc2798b8c0edce015f6896c"
+}

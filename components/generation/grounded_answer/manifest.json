@@ -1,0 +1,21 @@
+{
+  "id": "grounded-answer-contract",
+  "name": "Grounded Answer Contract",
+  "category": "generation",
+  "source": "grounded_answer.py",
+  "version": "0.1.0",
+  "dependencies": ["core-types"],
+  "description": "Reject an answer whose claims the supplied evidence does not support, scoring each sentence by the share of its distinctive vocabulary the evidence contains.",
+  "destination": "src/{project_package}/rag/generation/grounded_answer.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No additional packages required. Copy with: ragkit add <id>",
+  "missing_dependency_message": "grounded-answer-contract declares no optional dependencies. If an import fails, restore the project environment with: uv sync"
+}

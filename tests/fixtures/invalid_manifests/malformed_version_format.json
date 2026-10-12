@@ -1,0 +1,10 @@
+{
+  "id": "bad-version-chunker",
+  "name": "Bad Version Chunker",
+  "category": "chunking",
+  "source": "component.py",
+  "version": "v0.1",
+  "dependencies": [],
+  "description": "Manifest whose version is not a three-part semantic version.",
+  "destination": "src/{project_package}/rag/chunking/component.py"
+}

@@ -1,0 +1,30 @@
+{
+  "id": "settings",
+  "name": "Settings",
+  "category": "config",
+  "source": "settings.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Typed, environment-driven settings and shared data contracts for every pipeline stage.",
+  "destination": "src/{project_package}/rag/config/",
+  "documentation": "README.md",
+  "tests": "tests/test_config.py",
+  "status": "stable",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [
+    {
+      "name": "pydantic",
+      "specifier": ">=2.13"
+    },
+    {
+      "name": "pydantic-settings",
+      "specifier": ">=2.14"
+    }
+  ],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No additional packages required. Copy with: ragkit add <id>",
+  "missing_dependency_message": "settings declares no optional dependencies. If an import fails, restore the project environment with: uv sync"
+}

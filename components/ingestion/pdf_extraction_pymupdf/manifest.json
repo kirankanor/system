@@ -1,0 +1,26 @@
+{
+  "id": "pdf-extraction-pymupdf",
+  "name": "Pdf Extraction (pymupdf)",
+  "category": "ingestion",
+  "source": "pymupdf.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Extract text from born-digital PDFs with pymupdf; raises a typed error on an encrypted PDF.",
+  "destination": "src/{project_package}/rag/ingestion/pdf_extraction/pymupdf.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [
+    {
+      "name": "pymupdf",
+      "specifier": ">=1.24.0"
+    }
+  ],
+  "external_services": [],
+  "install": "Install the optional dependency first with: uv add pymupdf",
+  "missing_dependency_message": "pdf-extraction-pymupdf requires 'pymupdf', which is not installed. Install it with: uv add pymupdf"
+}

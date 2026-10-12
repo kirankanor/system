@@ -1,0 +1,10 @@
+{
+  "id": "traversal-destination-chunker",
+  "name": "Traversal Destination Chunker",
+  "category": "chunking",
+  "source": "component.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Manifest whose destination escapes the destination root via path traversal.",
+  "destination": "../../../escaped/{project_package}/component.py"
+}

@@ -1,0 +1,30 @@
+{
+  "task": "T-09d",
+  "gate": "generation",
+  "kind": "command",
+  "attempt": "6ef9ed34-d13f-44bf-9bdd-4d635eea591b",
+  "command": "python -m pytest tests/unit/test_generation.py -q",
+  "started_at": "2026-10-11T06:10:03.238Z",
+  "observed_at": "2026-10-11T06:10:23.689Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "........................................................................ [ 84%]\r\n.............                                                            [100%]Running teardown with pytest sessionfinish...\r\n\r\n85 passed in 0.75s\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "1e541d45898af11221ed4ae7d8db9d9c329e0c75",
+    "dirty": true
+  },
+  "source_hash": "b13403759629eefb0c2ddbc86b7a33883734fe0072fd9f0b72cf3b513b28603f",
+  "before_hash": "b13403759629eefb0c2ddbc86b7a33883734fe0072fd9f0b72cf3b513b28603f",
+  "config_hash": "d4eb4b65a8644848c23aa72c9ba97e4a182a0d0d61499aca0a8a337fd4ff8b82",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "0c8bd5d3a73c012596254b845d1cfb87d74a59656fdbfdb39bc0790825d34fbb"
+}

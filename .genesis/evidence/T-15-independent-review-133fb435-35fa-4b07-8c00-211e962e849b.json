@@ -1,0 +1,13 @@
+{
+  "task": "T-15",
+  "gate": "independent-review",
+  "kind": "review",
+  "attempt": "133fb435-35fa-4b07-8c00-211e962e849b",
+  "human": "agent-delegated-by-kiran",
+  "reason": "Review recorded as DECISION-cc6496b8 under DECISION-c6b1521b. Each of the three scripts was shown able to fail before being accepted; open items (two out-of-scope ruff findings in tests/unit/test_registry.py) are recorded, not closed by assertion.",
+  "observed_at": "2026-10-11T17:40:48.469Z",
+  "source_hash": "1e2e9d446cbac78afbe226eac99ce7e4c6d8bdc305c5f0bf6e38f05f1ca51c05",
+  "config_hash": "0fc02ed40010c2ad4e8a61a4d34a9263cd84c4301c23e89cd5bb03d1a4738224",
+  "reviewed_proofs": "02e1f913be06c94b4fd4850e13000e313e8ccdf8ffb4313a7e5f3530567d54ee",
+  "hash": "5aff11b739d53a40e34d6d37e162525eadf506f2875174c6524a3b79934e5587"
+}

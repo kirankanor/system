@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "RAG Component Manifest",
+  "description": "Canonical metadata for one copy-ready RAG component. This file is the single source of truth consumed by the ragkit CLI, the test suite, and the cookbook generator; no component definition is maintained anywhere else.",
   "type": "object",
   "required": [
     "id",
@@ -10,12 +11,20 @@
     "version",
     "dependencies",
     "description",
-    "destination"
+    "destination",
+    "status",
+    "requires_python",
+    "required_packages",
+    "optional_packages",
+    "external_services",
+    "install",
+    "missing_dependency_message"
   ],
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Stable kebab-case identifier used by ragkit list/info/add."
     },
     "name": {
       "type": "string",
@@ -30,14 +39,19 @@
         "retrieval",
         "reranking",
         "context",
+        "generation",
         "evaluation",
         "security",
-        "storage"
+        "storage",
+        "config",
+        "observability",
+        "integrations"
       ]
     },
     "source": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "description": "Path to the component's primary module, relative to the component directory."
     },
     "version": {
       "type": "string",
@@ -45,8 +59,10 @@
     },
     "dependencies": {
       "type": "array",
+      "description": "IDs of other COMPONENTS this one needs copied first. Package names are never placed here; use required_packages/optional_packages for those.",
       "items": {
-        "type": "string"
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
       }
     },
     "description": {
@@ -55,14 +71,96 @@
     },
     "destination": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "pattern": "^(?![\\\\/])(?!.*(?:^|/)\\.\\.(?:/|$)).*$",
+      "description": "Target path inside the destination project. {project_package} is substituted at add time. Relative, forward-slash, and contained by construction: absolute paths, backslashes, and any `..` segment are rejected here so a manifest can never aim outside the resolved destination root."
     },
     "documentation": {
       "type": "string"
     },
     "tests": {
       "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["stable", "experimental", "v2-deferred"],
+      "description": "Lifecycle status shown by ragkit list/info. ragkit add refuses v2-deferred components and names the deferral."
+    },
+    "requires_python": {
+      "type": "object",
+      "required": ["min"],
+      "additionalProperties": false,
+      "properties": {
+        "min": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$"
+        },
+        "max": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$"
+        }
+      }
+    },
+    "required_packages": {
+      "type": "array",
+      "description": "Third-party distributions imported unconditionally by this component.",
+      "items": { "$ref": "#/$defs/package" }
+    },
+    "optional_packages": {
+      "type": "array",
+      "description": "Third-party distributions imported lazily inside a guarded branch. Absence must raise an ImportError naming the distribution, the component id, and the install command.",
+      "items": { "$ref": "#/$defs/package" }
+    },
+    "external_services": {
+      "type": "array",
+      "description": "Network services this component calls when configured. Empty for local-only components.",
+      "items": {
+        "type": "object",
+        "required": ["name", "env_vars", "notes"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "env_vars": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "notes": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "install": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable install instructions printed by ragkit add. ragkit never runs these; it only prints them."
+    },
+    "missing_dependency_message": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact text the component raises when an optional package is absent. Must name the distribution, the component id, and the install command. Asserted verbatim by tests (FR-3)."
+    },
+    "tradeoffs": {
+      "type": "string",
+      "description": "When to use this component and what it costs. Rendered by ragkit info and the cookbook."
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "$defs": {
+    "package": {
+      "type": "object",
+      "required": ["name", "specifier"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "description": "Distribution name as published, e.g. rank-bm25 or PyMuPDF."
+        },
+        "specifier": {
+          "type": "string",
+          "minLength": 1,
+          "description": "PEP 440 version constraint, e.g. >=0.2.4 or >=2.0.0,<3."
+        }
+      }
+    }
+  }
 }

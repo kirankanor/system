@@ -5,8 +5,22 @@
   "source": "token_budget.py",
   "version": "0.1.0",
   "dependencies": [],
-  "description": "Enforce a model-specific token budget for selected context.",
+  "description": "Count, measure against, and cut text to a model-specific token budget, using tiktoken lazily or any counter the caller supplies.",
   "destination": "src/{project_package}/rag/context/token_budget.py",
   "documentation": "README.md",
-  "tests": "tests/test_component.py"
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [
+    {
+      "name": "tiktoken",
+      "specifier": ">=0.7.0"
+    }
+  ],
+  "external_services": [],
+  "install": "Install the optional dependencies first with: uv add tiktoken",
+  "missing_dependency_message": "token-budget requires 'tiktoken', which is not installed. Install it with: uv add tiktoken"
 }

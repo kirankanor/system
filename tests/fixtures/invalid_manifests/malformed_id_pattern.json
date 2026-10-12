@@ -1,0 +1,10 @@
+{
+  "id": "Fixed_Size Chunker",
+  "name": "Malformed ID Chunker",
+  "category": "chunking",
+  "source": "component.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Manifest whose id violates the kebab-case id pattern.",
+  "destination": "src/{project_package}/rag/chunking/component.py"
+}

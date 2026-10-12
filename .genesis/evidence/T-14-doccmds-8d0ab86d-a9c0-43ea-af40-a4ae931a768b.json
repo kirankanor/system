@@ -1,0 +1,30 @@
+{
+  "task": "T-14",
+  "gate": "doccmds",
+  "kind": "command",
+  "attempt": "8d0ab86d-a9c0-43ea-af40-a4ae931a768b",
+  "command": "python scripts/check_documented_commands.py",
+  "started_at": "2026-10-11T16:50:58.513Z",
+  "observed_at": "2026-10-11T16:52:21.629Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "check_documented_commands: 53 command(s) across 8 file(s)\r\n  ok   README.md:31: python --version\r\n  note README.md:42: uv sync\r\n        manual check required: Mutates the developer's virtual environment and network state. Run it by hand when setting up; the suite runs against the working tree.\r\n  ok   README.md:58: ragkit list --category nope\r\n  ok   README.md:72: ragkit list --category ingestion\r\n  ok   README.md:82: ragkit info text-normalizer\r\n  ok   README.md:90: ragkit info text-normaliser\r\n  ok   README.md:119: ragkit add text-normalizer --destination {scratch} --package mypkg --dry-run\r\n  ok   README.md:132: ragkit add text-normalizer --destination {scratch} --package mypkg\r\n  ok   README.md:155: ragkit add text-normalizer --destination {scratch} --package mypkg\r\n  ok   README.md:157: ragkit add text-normalizer --destination {scratch} --package mypkg\r\n  ok   README.md:159: ragkit add text-normalizer --destination {scratch} --package mypkg --force\r\n  ok   README.md:169: ragkit add dense-retrieval --destination {scratch} --package mypkg --dry-run\r\n  ok   README.md:203: python scripts/check_cookbook_counts.py\r\n  ok   README.md:208: python scripts/build_cookbook.py --check\r\n  note README.md:215: python -m http.server 8000\r\n        manual check required: Long-running foreground server; it never exits, so there is no exit code to check. Verify by opening http://localhost:8000/cookbook/ in a browser -- this is also AC-15, which is owed as a human run.\r\n  ok   README.md:228: python -m pytest -q\r\n  ok   README.md:239: python scripts/validate_components.py\r\n  ok   docs\\architecture.md:19: ragkit list\r\n  ok   docs\\architecture.md:49: python scripts/validate_components.py\r\n  ok   docs\\architecture.md:96: ragkit add dense-retrieval --destination {scratch} --package mypkg --dry-run\r\n  ok   docs\\architecture.md:111: python scripts/build_cookbook.py --check\r\n  ok   docs\\architecture.md:123: python scripts/check_cookbook_counts.py\r\n  ok   docs\\cli_reference.md:23: ragkit info\r\n  ok   docs\\cli_reference.md:31: ragkit info definitely-not-a-component\r\n  ok   docs\\cli_reference.md:41: ragkit --version\r\n  ok   docs\\cli_reference.md:56: ragkit list --category ingestion\r\n  ok   docs\\cli_reference.md:63: ragkit list --category nope\r\n  ok   docs\\cli_reference.md:77: ragkit info text-normalizer\r\n  ok   docs\\cli_reference.md:85: ragkit info text-normaliser\r\n  ok   docs\\cli_reference.md:116: ragkit add text-normalizer --destination {scratch}\r\n  ok   docs\\cli_reference.md:123: ragkit add text-normalizer --destination {scratch} --package mypkg\r\n  ok   docs\\cli_reference.md:134: ragkit add text-normalizer --destination {scratch} --package mypkg --dry-run\r\n  ok   docs\\cli_reference.md:148: ragkit add dense-retrieval --destination {scratch} --package mypkg --dry-run\r\n  ok   docs\\cli_reference.md:165: ragkit add text-normalizer --destination {scratch} --package mypkg\r\n  ok   docs\\cli_reference.md:167: ragkit add text-normalizer --destination {scratch} --package mypkg\r\n  ok   docs\\cli_reference.md:169: ragkit add text-normalizer --destination {scratch} --package mypkg --force\r\n  ok   docs\\component_authoring.md:128: python -m pytest components/ingestion/text_normalizer/tests -q\r\n  ok   docs\\component_authoring.md:150: python scripts/validate_components.py\r\n  ok   docs\\component_authoring.md:162: python scripts/build_cookbook.py --check\r\n  ok   docs\\troubleshooting.md:24: python --version\r\n  ok   docs\\troubleshooting.md:46: cd {scratch} && ragkit list\r\n  ok   docs\\troubleshooting.md:64: ragkit info text-normaliser\r\n  ok   docs\\troubleshooting.md:77: ragkit list --category nope\r\n  ok   docs\\troubleshooting.md:87: ragkit info\r\n  ok   docs\\troubleshooting.md:113: ragkit add text-normalizer --destination {scratch} --package mypkg\r\n  ok   docs\\troubleshooting.md:124: ragkit add text-normalizer --destination {scratch} --package mypkg\r\n  ok   docs\\troubleshooting.md:126: ragkit add text-normalizer --destination {scratch} --package mypkg\r\n  ok   docs\\troubleshooting.md:141: ragkit add text-normalizer --destination {scratch} --package mypkg --dry-run\r\n  ok   docs\\troubleshooting.md:192: python scripts/build_cookbook.py --check\r\n  note docs\\troubleshooting.md:208: python -m http.server 8000\r\n        manual check required: Long-running foreground server; it never exits, so there is no exit code to check. Verify by opening http://localhost:8000/cookbook/ in a browser -- this is also AC-15, which is owed as a human run.\r\n  ok   docs\\versioning.md:75: ragkit add text-normalizer --destination {scratch} --package mypkg\r\n  ok   docs\\versioning.md:77: ragkit add text-normalizer --destination {scratch} --package mypkg\r\n  ok   docs\\versioning.md:97: ragkit add text-normalizer --destination {scratch} --package mypkg --force\r\n\r\n50 passed, 3 manual, 0 failed\r\nOK: every documented command ran and matched what the docs claim.\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "1e541d45898af11221ed4ae7d8db9d9c329e0c75",
+    "dirty": true
+  },
+  "source_hash": "e4878084d2088a7f986bc4c65679512bc7862200d79250fce8fdcf391aa2f8bf",
+  "before_hash": "e4878084d2088a7f986bc4c65679512bc7862200d79250fce8fdcf391aa2f8bf",
+  "config_hash": "1b9d618a0845a3112c98e2c55d0eabe2dcc0b8c07fc25a2ddfec5c98e6822279",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "7ed67acb49b7bd6e508933b020fb850f839da8fdec2b06a1c2b8fd7bee00c785"
+}

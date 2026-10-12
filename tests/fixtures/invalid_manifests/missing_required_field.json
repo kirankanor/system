@@ -1,0 +1,9 @@
+{
+  "id": "missing-version-chunker",
+  "name": "Missing Version Chunker",
+  "category": "chunking",
+  "source": "component.py",
+  "dependencies": [],
+  "description": "Manifest that omits the required version field.",
+  "destination": "src/{project_package}/rag/chunking/component.py"
+}

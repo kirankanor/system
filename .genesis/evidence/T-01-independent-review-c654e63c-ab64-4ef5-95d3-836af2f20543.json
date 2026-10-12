@@ -1,0 +1,13 @@
+{
+  "task": "T-01",
+  "gate": "independent-review",
+  "kind": "review",
+  "attempt": "c654e63c-ab64-4ef5-95d3-836af2f20543",
+  "human": "agent-delegated-by-kiran",
+  "reason": "Human delegated independent review (DECISION-c6b1521b): instructed the agent to review directly rather than prompt. Agent review performed: version consistency 0.1.0 across pyproject.toml and __init__.py; build_parser returns add/info/list; exit policy 0/1/2 verified; list and add degrade cleanly with exit 1 and no traceback while T-10/T-11 are unbuilt; no-command prints usage with exit 2. Two defects found in the agent's own code and fixed before approval: (1) a broad except ImportError wrapped both the lazy import and the subcommand call, so an ImportError raised inside a subcommand would have been mislabelled as 'not available in this build', defeating FR-3; the import is now isolated from the call. (2) A missing optional dependency escaped as a raw traceback, violating NFR-7; ImportError from a subcommand is now rendered as a clean line with exit 1. Both fixes proven by a 2-probe script that asserts the internal ImportError keeps its own message and that no traceback is printed. Gates re-run against the new source hash and passed. Human did not personally inspect this diff.",
+  "observed_at": "2026-10-10T12:45:19.868Z",
+  "source_hash": "e069f73951abfb1877bf2ecef49a7075288b4234d3bf83b6d4313b82563e8ece",
+  "config_hash": "168e554587a5c053c85d56adfd8b9dd4fe4bb4d58be250c23b705ef673222f6c",
+  "reviewed_proofs": "5e4ba0f5cf8a8ed131ec5fbffa082c97040344c970686573b66d7f0fa94cb116",
+  "hash": "99443570a8d02871f0f7f68c3e16b56596e2e124fac6193cda32b3f4c63567ca"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "prompt-builder",
+  "name": "Prompt Builder",
+  "category": "generation",
+  "source": "prompt_builder.py",
+  "version": "0.1.0",
+  "dependencies": ["core-types"],
+  "description": "Assemble a grounded prompt from a query and a Context, numbering every passage so an answer's citations can always be resolved.",
+  "destination": "src/{project_package}/rag/generation/prompt_builder.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No additional packages required. Copy with: ragkit add <id>",
+  "missing_dependency_message": "prompt-builder declares no optional dependencies. If an import fails, restore the project environment with: uv sync"
+}

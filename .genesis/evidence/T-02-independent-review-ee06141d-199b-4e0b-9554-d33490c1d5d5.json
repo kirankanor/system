@@ -1,0 +1,13 @@
+{
+  "task": "T-02",
+  "gate": "independent-review",
+  "kind": "review",
+  "attempt": "ee06141d-199b-4e0b-9554-d33490c1d5d5",
+  "human": "agent-delegated-by-kiran",
+  "reason": "Human delegated independent review (DECISION-c6b1521b). Agent review of T-02: (1) Schema extended for all of FR-28 - required/optional packages with specifiers, requires_python min/max, external_services with env vars, install text, missing_dependency_message, lifecycle status; category enum covers config, generation, observability, integrations (FR-10). (2) 30 existing manifests migrated and one new manifest created for components/config (id settings), which had real code but no manifest - 31 total. (3) Verified with a validator that reads the canonical schema rather than a duplicate model: 31 manifests valid, all ids unique, every declared source/doc/test path exists. (4) Verified the validator actually rejects, not just accepts: 9 corruption classes each rejected with a field-named reason (missing field, wrong type, bad category, bad id, bad version, extra property, destination traversal, bad status enum, bad package name). DEFECTS FOUND DURING THIS REVIEW AND FIXED: added a destination pattern to the schema rejecting absolute paths, backslashes and .. segments - without it a manifest could name ../../escape and still validate, which T-13's path-traversal fixture requires; and fixed broken user-facing grammar in missing_dependency_message ('requires tiktoken is not installed' -> 'requires tiktoken, which is not installed') per NFR-7. DELIBERATE HONEST DEVIATIONS: pdf-extraction's declared tests file does not exist, so the tests pointer was removed rather than fabricated (NFR-8) - T-09f must restore it with the pymupdf/ocr split; status is 'experimental' for the 30 comment-stub sources and 'stable' only for the implemented config component, so no unimplemented component is presented as done (NFR-8). DISCLOSED LIMITATION: this task's mandatory 'validate' gate runs a comment-only stub and therefore proves nothing; real AC-18 proof is owed by T-05 which owns that script (KNOWLEDGE-704d681e). That gate is green here and must not be cited as AC-18 evidence. Human did not personally inspect this diff.",
+  "observed_at": "2026-10-10T13:08:47.692Z",
+  "source_hash": "faeae08fcd6ce4d5347e0bf200283707cfa2fcce291fa32811b8a01d02d7e8e9",
+  "config_hash": "691dbd1b9e61401b9a0c5dd6f5da56830b40f6e6a651a86faefe424348fd56b0",
+  "reviewed_proofs": "102ea07559e045674fa3e804710d3b7f3f848af5152b0b9bebe46e27f33a40e3",
+  "hash": "e6a2d8152cb515be8ec0a71028a881c134598a8585b26273373b9232a034fdb4"
+}

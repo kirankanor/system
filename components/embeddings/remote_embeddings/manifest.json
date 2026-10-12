@@ -4,9 +4,35 @@
   "category": "embeddings",
   "source": "remote_embeddings.py",
   "version": "0.1.0",
-  "dependencies": [],
+  "dependencies": [
+    "embedding-protocol"
+  ],
   "description": "Provide a remote embedding API adapter with explicit timeout and error behavior.",
   "destination": "src/{project_package}/rag/embeddings/remote_embeddings.py",
   "documentation": "README.md",
-  "tests": "tests/test_component.py"
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [
+    {
+      "name": "httpx",
+      "specifier": ">=0.27.0"
+    }
+  ],
+  "external_services": [
+    {
+      "name": "Embedding provider HTTP API",
+      "env_vars": [
+        "RAG_EMBEDDINGS_URL",
+        "RAG_EMBEDDINGS_API_KEY",
+        "RAG_EMBEDDINGS_MODEL"
+      ],
+      "notes": "No default provider, endpoint or model. All three must be set explicitly before the component will call out."
+    }
+  ],
+  "install": "Install the optional dependencies first with: uv add httpx",
+  "missing_dependency_message": "remote-embeddings requires 'httpx', which is not installed. Install it with: uv add httpx"
 }
