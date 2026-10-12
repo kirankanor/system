@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "project": "rag-code-library-production-structure",
-  "revision": "1e541d45898af11221ed4ae7d8db9d9c329e0c75",
-  "sourceHash": "67ce49c0a825584de6b183fc589c0fa7b4c008efd1cb98386cbb7a36c512cfed",
+  "revision": "a8dd0d73a37ed73888086d6dd7e0b641e9b97a31",
+  "sourceHash": "9643ecb51d745f6096600e93323fd29c4110d527564724becd97f9c9a5271c21",
   "provenance": {
     "tool": "genesis-graphizer",
     "method": "static-analysis",
@@ -1257,7 +1257,7 @@
       "language": "python",
       "confidence": 1,
       "extractor": "filesystem",
-      "contentHash": "02bca61ab4520a6a46e714f5b55ae47bf6218ff5040863f62fe809fe6cee6a0b"
+      "contentHash": "b6a12a49bcf6812cec0cb8536deeb108f2480cda7a9565d6a441b0c6674864c4"
     },
     {
       "id": "file:scripts/validate_components.py",

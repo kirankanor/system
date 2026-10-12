@@ -15,7 +15,7 @@ Load Genesis and official Ponytail full, then run `genesis brief .` for the curr
 Fetch full records with `genesis context . --id ID` only when needed. Do not load project.json or historical proof wholesale.
 Ask the index before reading code: `genesis query . search|scope|callers|callees|impact|path` (`--json` for parsing). Run `genesis query . impact PATH` before editing shared code. Answers are advisory static analysis; `ambiguous` means candidates were not ruled out, so confirm in source.
 Run `genesis serve .` for a live map of the repository when structure is unclear; it reindexes on save and is read-only. Run `genesis index .` if the index is stale and nothing is watching.
-Context fingerprint: 4ee0650490d9bb020ba8313418dfdd92e8968b15d0eda51a71b8717ed98074c0. Use --since only after receiving that full packet; kickoff is not the packet.
+Context fingerprint: d5a51e22cb021a3b6e544818bfd0b8fd010117c59978c5e13db9043666e8733f. Use --since only after receiving that full packet; kickoff is not the packet.
 - DECISION-129143cc: AC-15 human browser report: cookbook index.html works
 - DECISION-cc6496b8: T-15 independent review: three verification scripts reviewed and shown able to fail
 - DECISION-3e38520b: AC-15's browser checklist is owned by the human, not closed by agent evidence
