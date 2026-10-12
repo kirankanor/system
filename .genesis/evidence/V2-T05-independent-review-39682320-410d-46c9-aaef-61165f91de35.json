@@ -1,0 +1,13 @@
+{
+  "task": "V2-T05",
+  "gate": "independent-review",
+  "kind": "review",
+  "attempt": "39682320-410d-46c9-aaef-61165f91de35",
+  "human": "agent-delegated-by-kiran",
+  "reason": "Standing delegation DECISION-c6b1521b. Reviewed V2-T05: FR-45/46/47/48 each have named tests; the adapter FR-48 gap (page range and index_fingerprint never stored) was found and closed with STORED_FIELDS derived from IDENTITY_FIELDS + CITATION_FIELDS; partial-batch failure is asserted on rows physically present in the store, not on a return value; creation refuses to sit on stored rows and replace demands a recorded reason.",
+  "observed_at": "2026-10-12T05:31:15.011Z",
+  "source_hash": "a246e3ea706e403f931378ae380cecb5c2a20cb3761c41672c5ddde052acb663",
+  "config_hash": "0c47fef5fd2f2ce50e8c2ec22e7be488d06f499ed3338ab7587413db2fb979e6",
+  "reviewed_proofs": "5c691adf0f1c3e0e9bcfd36fdcdb7dfb5c56e771331c384f54c8341f9affaf0e",
+  "hash": "dcd9d2c8af9ebb86de21fbd77c91379bcc2988867ff7718f1f5d5b088a1842f0"
+}

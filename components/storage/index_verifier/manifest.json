@@ -1,0 +1,24 @@
+{
+  "id": "index-verifier",
+  "name": "Index Verifier",
+  "category": "storage",
+  "source": "index_verifier.py",
+  "version": "0.1.0",
+  "dependencies": [
+    "core-types",
+    "vector-store-protocol"
+  ],
+  "description": "Read an index back against what is expected to be in it, separating fatal findings from warnings, naming the offending record, and refusing readiness until every check has actually run.",
+  "destination": "src/{project_package}/rag/storage/index_verifier.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No dependencies beyond core-types and vector-store-protocol. Copy with: ragkit add index-verifier",
+  "missing_dependency_message": "index-verifier needs no package. If it reports NOT READY with no findings, read checks_not_run(): readiness is withheld when a check could not be examined, which is a capability gap rather than a corrupt index."
+}

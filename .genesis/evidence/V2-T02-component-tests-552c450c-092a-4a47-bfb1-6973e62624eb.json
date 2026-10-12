@@ -1,0 +1,30 @@
+{
+  "task": "V2-T02",
+  "gate": "component-tests",
+  "kind": "command",
+  "attempt": "552c450c-092a-4a47-bfb1-6973e62624eb",
+  "command": "python -m pytest components/ingestion/document_loader/tests -q",
+  "started_at": "2026-10-12T04:34:28.274Z",
+  "observed_at": "2026-10-12T04:34:48.679Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "................................................                         [100%]\r\n48 passed in 0.72s\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "4419c64e58043978ea8b1d4185779beac0154620",
+    "dirty": true
+  },
+  "source_hash": "f108dab06d8df1be564c3f6e42d748c8e59fe583ed6b47a1dc9c0fcf654102a6",
+  "before_hash": "f108dab06d8df1be564c3f6e42d748c8e59fe583ed6b47a1dc9c0fcf654102a6",
+  "config_hash": "ad05bf7bb89128fced6efc1685798798d56de9caf535e4ab597490f1828e2a64",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "496fda5c4aba88d936b1c50d0126caed915e653d6425c8da78b97c64ae811ca4"
+}

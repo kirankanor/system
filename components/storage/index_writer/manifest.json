@@ -1,0 +1,24 @@
+{
+  "id": "index-writer",
+  "name": "Index Writer",
+  "category": "storage",
+  "source": "index_writer.py",
+  "version": "0.1.0",
+  "dependencies": [
+    "core-types",
+    "vector-store-protocol"
+  ],
+  "description": "Write embedded chunks in bounded, validated, upserting batches; refuse a payload that does not fit the index before writing; and keep creation and destruction as separate, recorded operations.",
+  "destination": "src/{project_package}/rag/storage/index_writer.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No dependencies beyond core-types and vector-store-protocol. Copy with: ragkit add index-writer",
+  "missing_dependency_message": "index-writer needs no package. If a write silently lands nothing, read the BatchReport rather than the return code: report.ok is False whenever any single item failed, and report.failures names each one."
+}

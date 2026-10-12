@@ -1,0 +1,30 @@
+{
+  "task": "V2-T08",
+  "gate": "deferred",
+  "kind": "command",
+  "attempt": "e493eb3c-587d-4cdf-9577-24bd8e6f8b5d",
+  "command": "python scripts/check_deferred_surface.py",
+  "started_at": "2026-10-12T08:11:23.193Z",
+  "observed_at": "2026-10-12T08:12:08.097Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "check_deferred_surface: verifying no implementation ships in a\r\n  v2-deferred category: observability, integrations\r\n  categories present in the enum: 2/2\r\n  manifests declaring a deferred component: 0\r\n  implementation files under components/observability/: 0\r\n  implementation files under components/integrations/: 0\r\n\r\nOK: the deferred categories are declared in the enum and ship no\r\n    implementation, example or test.\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "4419c64e58043978ea8b1d4185779beac0154620",
+    "dirty": true
+  },
+  "source_hash": "ff1b614f6aae1c467c8db556df6cce287b12b741d48859ff348ab9caf094e022",
+  "before_hash": "ff1b614f6aae1c467c8db556df6cce287b12b741d48859ff348ab9caf094e022",
+  "config_hash": "e9a69cd0770ee3cc434640702463a6f0e7f0c73b943e9d360946cbec765b76a9",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "5fbf337183dbcca6f2f2135e32782e1116b808ebfa982c51f49cf6c97e49c16f"
+}

@@ -4,7 +4,7 @@
 
 - workflow: new-product
 - phase: verify
-- plan approval: agent-delegated-by-kiran at 2026-10-11T15:02:31.516Z
+- plan approval: kiran at 2026-10-12T03:45:36.452Z
 
 ## Tasks
 
@@ -183,4 +183,84 @@
 - scope: scripts/validate_dependencies.py, scripts/check_no_secrets.py, scripts/check_deferred_surface.py
 - gates: full: python -m pytest -q, py312: uv run --python 3.12 python -m pytest -q, deps: python scripts/validate_dependencies.py, secrets: python scripts/check_no_secrets.py, deferred: python scripts/check_deferred_surface.py, independent-review: pass
 - next: Run the full sweep on both interpreters and record per-interpreter evidence
+
+### V2-T01 — Ship a document-discovery component that scans a configured source root and reports added, modified and deleted files
+
+- state/risk: done / low
+- requirements: FR-36, FR-37, AC-23
+- scope: components/ingestion/document_discovery, cookbook/data.js
+- gates: component-tests: python -m pytest components/ingestion/document_discovery/tests -q, validate: python scripts/validate_components.py, cookbook: python scripts/build_cookbook.py --check
+- next: Pre-flight, then implement with manifest, README, example.py and tests covering success and failure paths.
+
+### V2-T02 — Ship a document-loader component with one extraction-result shape and content-detected adapters for PDF, Markdown, plain text and HTML
+
+- state/risk: done / low
+- requirements: FR-38, FR-39, FR-40
+- scope: components/ingestion/document_loader, cookbook/data.js
+- gates: component-tests: python -m pytest components/ingestion/document_loader/tests -q, validate: python scripts/validate_components.py, cookbook: python scripts/build_cookbook.py --check
+- next: Pre-flight. Adapters must be selected by detected content, not filename extension, and must not import each other.
+
+### V2-T03 — Ship a chunk-validator component carrying rule id, severity and reason, with an explicit reject, repair or quarantine policy
+
+- state/risk: done / low
+- requirements: FR-41, FR-42
+- scope: components/chunking/chunk_validator, cookbook/data.js
+- gates: component-tests: python -m pytest components/chunking/chunk_validator/tests -q, validate: python scripts/validate_components.py, cookbook: python scripts/build_cookbook.py --check
+- next: Pre-flight. A whitespace-only chunk must be detectable, which the current chunkers do not flag.
+
+### V2-T04 — Ship a chunk-deduplicator with deterministic content hashing, preserved provenance, and fingerprint-gated embedding reuse
+
+- state/risk: done / low
+- requirements: FR-43, FR-44, AC-24
+- scope: components/chunking/chunk_deduplicator, cookbook/data.js
+- gates: component-tests: python -m pytest components/chunking/chunk_deduplicator/tests -q, validate: python scripts/validate_components.py, cookbook: python scripts/build_cookbook.py --check
+- next: Pre-flight. Near-duplicate similarity matching is explicitly out of scope and must not be claimed.
+
+### V2-T05 — Give the document store a working backend with bounded batch upserts that preserve chunk provenance through to storage
+
+- state/risk: done / medium
+- requirements: FR-45, FR-46, FR-47, FR-48, AC-26
+- scope: components/storage, tests/unit/test_storage.py, cookbook/data.js
+- gates: storage-tests: python -m pytest components/storage -q, unit-storage: python -m pytest tests/unit/test_storage.py -q, cookbook: python scripts/build_cookbook.py --check, independent-review: pass
+- next: Pre-flight and check genesis query . impact on each storage file first. Nothing currently calls document-store put(); that is the gap.
+
+### V2-T06 — Ship an index-verifier component that proves retrieval works rather than that writes succeeded
+
+- state/risk: done / low
+- requirements: FR-49, FR-50, AC-27
+- scope: components/storage/index_verifier, cookbook/data.js
+- gates: component-tests: python -m pytest components/storage/index_verifier/tests -q, validate: python scripts/validate_components.py, cookbook: python scripts/build_cookbook.py --check
+- next: Pre-flight. Faiss count() can include stale rows, so a count match alone is not verification.
+
+### V2-T07 — Close three v1 partials that block V2: the normalization documentation mismatch, unprotected system metadata, and unread retry configuration
+
+- state/risk: done / medium
+- requirements: FR-55, FR-56, FR-57, AC-25, NFR-17
+- scope: components/ingestion/text_normalizer, components/ingestion/metadata_enricher, components/config, components/embeddings, tests/unit/test_ingestion.py, tests/unit/test_embeddings.py, cookbook/data.js
+- gates: normalizer: python -m pytest components/ingestion/text_normalizer/tests -q, metadata: python -m pytest components/ingestion/metadata_enricher/tests -q, retry-config: python -m pytest components/config/tests -q, embeddings: python -m pytest components/embeddings -q, unit-areas: python -m pytest tests/unit/test_ingestion.py tests/unit/test_embeddings.py -q, cookbook: python scripts/build_cookbook.py --check, independent-review: pass
+- next: Pre-flight. This changes documented v1 behavior, so record a decision per NFR-17 and land each test in the same task. Retry belongs in the orchestration layer, not inside components.
+
+### V2-T08 — Add the orchestration layer and a ragkit ingest command that run the pipeline with stages injected as callables
+
+- state/risk: done / medium
+- requirements: FR-51, FR-52, FR-53, FR-54, NFR-14, NFR-15, NFR-16
+- scope: src/rag_code_library, tests/unit/test_pipeline.py
+- gates: pipeline-tests: python -m pytest tests/unit/test_pipeline.py -q, cli-tests: python -m pytest tests/unit/test_registry.py -q, deps: python scripts/validate_dependencies.py, no-secrets: python scripts/check_no_secrets.py, deferred: python scripts/check_deferred_surface.py, independent-review: pass
+- next: Pre-flight and check genesis query . impact on src/rag_code_library/cli.py first. The pipeline must statically import NO component module; components/config exists for exactly this layer.
+
+### V2-T09 — Prove the V2 spine end to end and re-verify every v1 verification script over the enlarged tree
+
+- state/risk: done / medium
+- requirements: AC-21, AC-22, AC-23, AC-28, AC-29, AC-30, AC-31, NFR-17
+- scope: tests/integration, docs, README.md, scripts
+- gates: e2e: python -m pytest tests/integration/test_ingestion_pipeline.py -q, documented-commands: python scripts/check_documented_commands.py, deps: python scripts/validate_dependencies.py, no-secrets: python scripts/check_no_secrets.py, deferred: python scripts/check_deferred_surface.py, full-suite: python -m pytest -q, independent-review: pass
+- next: Pre-flight. Every fenced command added to README.md or docs must actually run, or be listed with a manual-check reason.
+
+### V2-T10 — Publish the V2 completion report classifying all twenty v2.md steps with file and line evidence
+
+- state/risk: done / low
+- requirements: AC-32, NFR-18
+- scope: docs/v2-report.md, tests/unit/test_v2_report.py
+- gates: report-tests: python -m pytest tests/unit/test_v2_report.py -q
+- next: Pre-flight. Do not use fenced shell blocks in the report; check_documented_commands executes them. The test must fail if any of the twenty steps is missing or claimed complete without evidence.
 

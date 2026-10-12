@@ -1,0 +1,30 @@
+{
+  "task": "V2-T07",
+  "gate": "normalizer",
+  "kind": "command",
+  "attempt": "4a6a3c1a-539a-4b89-846e-71bfebb4bc1a",
+  "command": "python -m pytest components/ingestion/text_normalizer/tests -q",
+  "started_at": "2026-10-12T06:28:22.053Z",
+  "observed_at": "2026-10-12T06:28:50.513Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "........................................................................ [ 54%]\r\n.............................................................            [100%]\r\n133 passed in 0.31s\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "4419c64e58043978ea8b1d4185779beac0154620",
+    "dirty": true
+  },
+  "source_hash": "ee9afd390b1849bb3bff0f1942047bac3bf0c822c51b44e7fda82856d27f8e56",
+  "before_hash": "ee9afd390b1849bb3bff0f1942047bac3bf0c822c51b44e7fda82856d27f8e56",
+  "config_hash": "7fc0f6084d58a3b208fe5359d66792cc839d0000495ec44f89e10d36256aa11f",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "51e16caabfec642403d6259b2c08d86d75b8457edf5f621e18fa10d3434dfd0e"
+}

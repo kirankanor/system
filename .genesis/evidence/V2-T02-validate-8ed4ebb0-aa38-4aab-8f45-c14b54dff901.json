@@ -1,0 +1,30 @@
+{
+  "task": "V2-T02",
+  "gate": "validate",
+  "kind": "command",
+  "attempt": "8ed4ebb0-aa38-4aab-8f45-c14b54dff901",
+  "command": "python scripts/validate_components.py",
+  "started_at": "2026-10-12T04:34:58.944Z",
+  "observed_at": "2026-10-12T04:35:19.283Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "OK: 40 manifest(s) valid (schema, unique ids, declared files, dependencies, destinations)\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "4419c64e58043978ea8b1d4185779beac0154620",
+    "dirty": true
+  },
+  "source_hash": "f108dab06d8df1be564c3f6e42d748c8e59fe583ed6b47a1dc9c0fcf654102a6",
+  "before_hash": "f108dab06d8df1be564c3f6e42d748c8e59fe583ed6b47a1dc9c0fcf654102a6",
+  "config_hash": "ad05bf7bb89128fced6efc1685798798d56de9caf535e4ab597490f1828e2a64",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "7ad20adc2cd77dd8fa6740aac70195dedeb0b732c342480894e31343e4411a7f"
+}

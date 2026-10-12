@@ -1,0 +1,30 @@
+{
+  "task": "V2-T09",
+  "gate": "deps",
+  "kind": "command",
+  "attempt": "3734df9b-bff4-4453-9b75-c3e86df9f316",
+  "command": "python scripts/validate_dependencies.py",
+  "started_at": "2026-10-12T11:27:28.123Z",
+  "observed_at": "2026-10-12T11:28:11.801Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "validate_dependencies: checking every shipped .py import is declared\r\n  core dependencies     : pydantic, pydantic_settings\r\n  development group     : pytest\r\n  transitive allowances : numpy (via faiss)\r\n  renamed on PyPI       : magic <- python_magic\r\n  files scanned         : 168\r\n  third-party imports   : 63\r\n\r\n  accepted as transitive (2):\r\n    numpy              via declared faiss          in components/storage/adapters/example.py\r\n    numpy              via declared faiss          in components/storage/adapters/storage_adapters.py\r\n\r\nOK: every third-party import is a core dependency, a development\r\n    dependency of a test, or a guarded import its component declares.\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "4419c64e58043978ea8b1d4185779beac0154620",
+    "dirty": true
+  },
+  "source_hash": "13de5f40ca855ccab3299f3fb5ec507c2a281be38305d41fa2b0c7b8a9d43d77",
+  "before_hash": "13de5f40ca855ccab3299f3fb5ec507c2a281be38305d41fa2b0c7b8a9d43d77",
+  "config_hash": "6cfc68ed15a52127c5ecf78006615ad10b0bda41f898c2efff13e642b7a032ad",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "1ac9d0fe8e08a1e009e6d0c32ae565bcdc17af6a009b955278b57d0b2109473f"
+}

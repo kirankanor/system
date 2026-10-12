@@ -74,6 +74,19 @@ def main() -> int:
     assert contested.merged["title"] == "Title written into the document"
     print("  -> source wins, so the document's own account is preserved")
 
+    # 4b. ...but a document may not write its own provenance (FR-56).
+    forged = enricher.enrich(
+        source_name="uploads/report.pdf",
+        source_metadata={f"{SYSTEM_PREFIX}source_path": "/etc/passwd"},
+    )
+    show("a document claiming where it came from", forged)
+    assert forged.merged[f"{SYSTEM_PREFIX}source_path"] == "uploads/report.pdf"
+    assert forged.source[f"{SYSTEM_PREFIX}source_path"] == "/etc/passwd"
+    print("  -> merged holds the COMPUTED path, not the document's claim")
+    print("     the claim is not hidden -- it is preserved in `source`, and")
+    print("     the overrule is reported rather than applied silently:")
+    print(f"     {forged.omitted[0]}")
+
     # 5. Determinism: the same inputs give the same output, every time.
     again = MetadataEnricher(ingested_at=INGESTED_AT).enrich(
         source_name="uploads/report.pdf",

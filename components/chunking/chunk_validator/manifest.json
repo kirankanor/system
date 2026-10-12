@@ -1,0 +1,21 @@
+{
+  "id": "chunk-validator",
+  "name": "Chunk Validator",
+  "category": "chunking",
+  "source": "chunk_validator.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Decide which chunks may reach the embedder, recording a rule, a severity and a reason for every chunk it holds back.",
+  "destination": "src/{project_package}/rag/chunking/chunk_validator.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No dependencies. Copy with: ragkit add chunk-validator",
+  "missing_dependency_message": "chunk-validator needs no package. If every chunk it accepts still fails downstream, the problem is upstream in the chunker rather than a missing install; check the recorded findings first."
+}

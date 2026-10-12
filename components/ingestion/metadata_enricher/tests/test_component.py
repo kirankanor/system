@@ -102,8 +102,14 @@ def test_everything_lands_in_merged(enricher):
     assert bundle.merged[f"{SYSTEM_PREFIX}source_path"] == "a.txt"
 
 
-def test_system_fields_cannot_collide_with_a_document_field(enricher):
-    """The prefix is the separation mechanism, so it has to be unreachable."""
+def test_a_document_cannot_overwrite_a_computed_system_field(enricher):
+    """FR-56: provenance must not be writable by the thing being provenanced.
+
+    Before this requirement the merge applied ``source`` last, so a document
+    that supplied ``system_source_path`` had it copied straight into
+    ``merged`` -- the field that gets stored. The old test asserted that the
+    attacker's value survived; it now asserts the opposite.
+    """
     bundle = enricher.enrich(
         source_name="a.txt",
         source_metadata={
@@ -112,10 +118,57 @@ def test_system_fields_cannot_collide_with_a_document_field(enricher):
         },
     )
 
+    # The stored bag carries the computed values, not the document's claims.
+    assert bundle.merged[f"{SYSTEM_PREFIX}source_path"] == "a.txt"
+    assert bundle.merged[f"{SYSTEM_PREFIX}ingested_at"] == NOW
+
+    # Nothing is hidden: the document's own account is preserved verbatim in
+    # `source`, so a caller can still see exactly what the file asserted.
     assert bundle.source[f"{SYSTEM_PREFIX}source_path"] == "attacker-controlled"
-    # merged keeps the source copy, but the system bag is untouched by it.
+    assert bundle.source[f"{SYSTEM_PREFIX}ingested_at"] == "1999-01-01"
+
+    # And the system bag was never at risk.
     assert bundle.system[f"{SYSTEM_PREFIX}source_path"] == "a.txt"
     assert bundle.system[f"{SYSTEM_PREFIX}ingested_at"] == NOW
+
+    # The overrule is reported, not applied silently.
+    assert any(
+        reason.startswith(f"{SYSTEM_PREFIX}source_path:")
+        for reason in bundle.omitted
+    )
+    assert any(
+        reason.startswith(f"{SYSTEM_PREFIX}ingested_at:")
+        for reason in bundle.omitted
+    )
+    assert all("reserved system field" in reason for reason in bundle.omitted
+               if reason.startswith(SYSTEM_PREFIX))
+
+
+def test_a_document_that_agrees_is_not_reported_as_a_conflict(enricher):
+    """Agreement costs nothing, so there is nothing to report.
+
+    The value is still the computed one -- agreement is not authority -- but
+    filing a conflict when the outcome is identical would train a caller to
+    ignore `omitted`.
+    """
+    same = enricher.enrich(
+        source_name="a.txt",
+        source_metadata={f"{SYSTEM_PREFIX}source_path": "a.txt"},
+    )
+    assert same.merged[f"{SYSTEM_PREFIX}source_path"] == "a.txt"
+    assert not [r for r in same.omitted if r.startswith(SYSTEM_PREFIX)]
+
+
+def test_non_system_fields_are_still_the_document_s_to_win(enricher):
+    """The exception must not swallow the rule it is an exception to."""
+    bundle = enricher.enrich(
+        source_name="a.txt",
+        title="Supplied by the caller",
+        source_metadata={"title": "Written into the document"},
+    )
+    assert bundle.merged["title"] == "Written into the document"
+    assert bundle.extracted["title"] == "Supplied by the caller"
+    assert bundle.omitted == ()
 
 
 def test_the_title_and_author_properties_read_through(enricher):

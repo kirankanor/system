@@ -1,0 +1,13 @@
+{
+  "task": "V2-T09",
+  "gate": "independent-review",
+  "kind": "review",
+  "attempt": "6346bbca-824c-499e-b1f2-b4a163cf3fac",
+  "human": "agent-delegated-by-kiran",
+  "reason": "Standing delegation DECISION-c6b1521b. Reviewed the V2-T09 e2e surface: the thirteen-stage assembly in tests/integration/pipeline_stages.py wires only shipped components, the pipeline module imports none of them (FR-54, re-asserted by test), and the e2e suite proves AC-21, AC-22, AC-23, AC-28, AC-29 and AC-30 against the real CLI. Five real defects were found and fixed during development rather than papered over, each caught by a test. Nine limitations are recorded on the task, including that PDF is not exercised end to end and that corpus-wide deduplication is not expressible in the current two-phase orchestration.",
+  "observed_at": "2026-10-12T11:36:31.904Z",
+  "source_hash": "13de5f40ca855ccab3299f3fb5ec507c2a281be38305d41fa2b0c7b8a9d43d77",
+  "config_hash": "6cfc68ed15a52127c5ecf78006615ad10b0bda41f898c2efff13e642b7a032ad",
+  "reviewed_proofs": "6686d6586a2a328d830bd3d1dd754a7242177ef29d9c16b37ea1f117b2912a7f",
+  "hash": "e8f97b38dfdf073a4fe965e2b02d2d3af581f9d88bf7704df79b464ac9db793c"
+}

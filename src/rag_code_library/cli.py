@@ -99,6 +99,58 @@ def build_parser() -> argparse.ArgumentParser:
         help="Overwrite existing files inside the destination root",
     )
 
+    ingest_parser = subparsers.add_parser(
+        "ingest",
+        help="Run the ingestion pipeline over a source directory",
+        description=(
+            "Run the stages named by RAG_PIPELINE__STAGES over every document "
+            "in SOURCE, writing results and a run summary into DESTINATION."
+        ),
+    )
+    ingest_parser.add_argument(
+        "source", metavar="SOURCE", help="Directory holding the documents to ingest"
+    )
+    ingest_parser.add_argument(
+        "destination",
+        metavar="DESTINATION",
+        help="Directory the pipeline writes into; also where the run lock is taken",
+    )
+    ingest_parser.add_argument(
+        "--stages",
+        metavar="MODULE:FACTORY",
+        help=(
+            "Override RAG_PIPELINE__STAGES: a dotted reference to a function "
+            "returning the stages to run"
+        ),
+    )
+    ingest_parser.add_argument(
+        "--failure-policy",
+        metavar="POLICY",
+        choices=("stop", "skip", "quarantine"),
+        help=(
+            "What one document's failure does to the rest of the run "
+            "(default: skip, or RAG_PIPELINE__FAILURE_POLICY)"
+        ),
+    )
+    ingest_parser.add_argument(
+        "--fingerprint",
+        metavar="TEXT",
+        help=(
+            "Configuration fingerprint recorded with each document; a document "
+            "whose fingerprint differs is reprocessed rather than skipped"
+        ),
+    )
+    ingest_parser.add_argument(
+        "--summary",
+        metavar="PATH",
+        help="Where to write the run summary, relative to DESTINATION",
+    )
+    ingest_parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Do not print the run summary to stdout (it is still written)",
+    )
+
     return parser
 
 
@@ -298,6 +350,80 @@ def _cmd_add(args: argparse.Namespace) -> int:
     return EXIT_OK
 
 
+def _cmd_ingest(args: argparse.Namespace) -> int:
+    """Run the ingestion pipeline over a source directory (FR-51).
+
+    This function names no parser, no chunker and no storage backend, and
+    imports no component: every stage-shaped decision arrives through
+    configuration as a callable (FR-54). What it does here is the part that is
+    genuinely generic -- check the arguments, resolve the configured factory,
+    run, report the outcome and write the summary.
+    """
+    import json
+
+    from .config import load_pipeline_settings, resolve_stages, with_overrides
+    from .pipeline import CheckpointStore, Pipeline
+    from .security.path_safety import SafeDestination
+
+    source = Path(args.source)
+    if not source.is_dir():
+        raise _CliError(
+            f"source {str(source)!r} is not a directory; ragkit ingest reads "
+            "documents from a directory"
+        )
+
+    overrides = {
+        key: value
+        for key, value in (
+            ("stages", args.stages),
+            ("failure_policy", args.failure_policy),
+            ("fingerprint", args.fingerprint),
+            ("summary_file", args.summary),
+        )
+        if value is not None
+    }
+    try:
+        settings = with_overrides(load_pipeline_settings(), **overrides)
+        stages = resolve_stages(settings)
+    except ValueError as exc:
+        # A configuration mistake is the one failure a user reaches by typing,
+        # so it gets its message rather than a traceback.
+        raise _CliError(str(exc)) from exc
+
+    pipeline = Pipeline(
+        stages,
+        failure_policy=settings.policy(),
+        fingerprint=settings.fingerprint,
+        destination=args.destination,
+        lock_file=settings.lock_file,
+        # Held on disk rather than in memory, so a second `ragkit ingest` over
+        # an unchanged tree skips the work the first one did (FR-53) instead of
+        # quietly redoing it.
+        checkpoints=CheckpointStore(args.destination),
+    )
+    summary = pipeline.run(source)
+
+    # Written through the same guarded path as everything else (NFR-3), so a
+    # summary path that tries to escape the destination is refused rather than
+    # quietly honoured.
+    written = SafeDestination(args.destination).write_text(
+        settings.summary_file,
+        json.dumps(summary.to_dict(), indent=2) + "\n",
+        force=True,
+    )
+
+    if not args.quiet:
+        print(summary.report())
+        print(f"  summary written to {written}")
+
+    # Rejected and skipped documents are normal outcomes, not failures: an
+    # unchanged second run is a success. Only documents the pipeline could not
+    # finish make the run non-zero.
+    if summary.documents_failed or summary.documents_quarantined:
+        return EXIT_DOMAIN_ERROR
+    return EXIT_OK
+
+
 def _dispatch(args: argparse.Namespace) -> int:
     """Route a parsed command to its implementation.
 
@@ -314,6 +440,8 @@ def _dispatch(args: argparse.Namespace) -> int:
         return _cmd_info(args.id)
     if args.command == "add":
         return _cmd_add(args)
+    if args.command == "ingest":
+        return _cmd_ingest(args)
     return EXIT_USAGE_ERROR
 
 

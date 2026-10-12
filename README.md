@@ -1,7 +1,8 @@
 # RAG Code Library
 
-Copy-ready RAG components, a `ragkit` CLI that copies them into a project, and
-a local cookbook website that documents every one of them.
+Copy-ready RAG components, a `ragkit` CLI that copies them into a project and
+runs them as an ingestion pipeline, and a local cookbook website that documents
+every one of them.
 
 The library is a **collection of independent components**, not a framework. Each
 component is a single Python file with no required dependency beyond the standard
@@ -61,7 +62,7 @@ ragkit: unknown category 'nope'; known categories: chunking, config, context
 
 ## Commands
 
-`ragkit` has three commands. `--version` and `--help` work as expected.
+`ragkit` has four commands. `--version` and `--help` work as expected.
 
 ### `ragkit list`
 
@@ -108,6 +109,59 @@ usage: ragkit add [-h] [--destination PATH] [--package NAME] [--dry-run]
   destination that has no package yet.
 - `--dry-run` — print the file operations and exit without writing.
 - `--force` — overwrite files that already exist.
+
+### `ragkit ingest SOURCE DESTINATION`
+
+Runs the ingestion pipeline over every document under `SOURCE`, writing the
+index and a run summary into `DESTINATION`.
+
+```
+usage: ragkit ingest [-h] [--stages MODULE:FACTORY] [--failure-policy POLICY]
+                     [--fingerprint TEXT] [--summary PATH] [--quiet]
+                     SOURCE DESTINATION
+```
+
+- `SOURCE` — directory holding the documents to ingest.
+- `DESTINATION` — directory the pipeline writes into. Created if absent, and
+  the place the run lock and the resume checkpoints live.
+- `--stages MODULE:FACTORY` — the stages to run, as a dotted reference to a
+  function that returns them. Overrides `RAG_PIPELINE__STAGES`.
+- `--failure-policy POLICY` — `stop`, `skip` or `quarantine`: what one
+  document's failure does to the rest of the run.
+- `--fingerprint TEXT` — the configuration fingerprint recorded against each
+  document, so a later run can tell whether its setup changed.
+- `--summary PATH` — where to write the run summary (default
+  `DESTINATION/run-summary.json`).
+
+**This command ships no default pipeline, and that is deliberate.** The
+orchestration layer imports no component and no parsing library, so there is
+nothing built in for it to import back. The stages come from your project, as
+a function that returns them, named in configuration:
+
+```
+export RAG_PIPELINE__STAGES="my_project.pipeline:build_stages"
+```
+
+With nothing configured it says so, rather than inventing a pipeline or
+silently doing nothing:
+
+```console
+$ ragkit ingest {scratch} {scratch}/index # exit:1
+ragkit: no stages are configured; set RAG_PIPELINE__STAGES
+```
+
+A stage receives the pipeline's state, reads what an earlier stage produced,
+and returns its own output. Discovery, loading, chunking, embedding, writing
+and verification are all just stages, so a project picks its own parser,
+chunker and vector store by returning them from its factory. The repository's
+own thirteen-stage assembly, built entirely from the shipped components, is
+`tests/integration/pipeline_stages.py` — a worked example, not a dependency.
+
+A run is resumable. `DESTINATION` holds a checkpoint per document recording
+its content hash, the configuration fingerprint, and how far it got; re-running
+after an interruption picks up where the work stopped, and re-running over
+unchanged content does nothing at all. Two runs over the same source at once
+are refused rather than interleaved.
 
 ## Examples
 

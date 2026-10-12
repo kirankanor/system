@@ -1,0 +1,30 @@
+{
+  "task": "V2-T01",
+  "gate": "cookbook",
+  "kind": "command",
+  "attempt": "5a2744b2-9a35-4708-978c-742eb42474d5",
+  "command": "python scripts/build_cookbook.py --check",
+  "started_at": "2026-10-12T04:10:31.412Z",
+  "observed_at": "2026-10-12T04:10:52.801Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "OK: data.js matches the canonical manifests byte-for-byte\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "4419c64e58043978ea8b1d4185779beac0154620",
+    "dirty": true
+  },
+  "source_hash": "1980036ea4277356468c23570f4071456a6c81a7338723b3678c8c1a572c3329",
+  "before_hash": "1980036ea4277356468c23570f4071456a6c81a7338723b3678c8c1a572c3329",
+  "config_hash": "e8c17b2f0acc44f5d782c48a3b18218199ec73740a5701c4069dfb00ac8dac62",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "4c2bef637f33bdf249407d4fc0a64c4ecf3e0a7fc610365538509e812eb68673"
+}

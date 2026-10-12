@@ -1,6 +1,12 @@
 digraph genesis {
   rankdir=LR;
   node [shape=box,fontname="system-ui"];
+  "file:components/chunking/chunk_deduplicator/chunk_deduplicator.py" [label="components/chunking/chunk_deduplicator/chunk_deduplicator.py",class="file"];
+  "file:components/chunking/chunk_deduplicator/example.py" [label="components/chunking/chunk_deduplicator/example.py",class="file"];
+  "file:components/chunking/chunk_deduplicator/tests/test_component.py" [label="components/chunking/chunk_deduplicator/tests/test_component.py",class="file"];
+  "file:components/chunking/chunk_validator/chunk_validator.py" [label="components/chunking/chunk_validator/chunk_validator.py",class="file"];
+  "file:components/chunking/chunk_validator/example.py" [label="components/chunking/chunk_validator/example.py",class="file"];
+  "file:components/chunking/chunk_validator/tests/test_component.py" [label="components/chunking/chunk_validator/tests/test_component.py",class="file"];
   "file:components/chunking/fixed_size/example.py" [label="components/chunking/fixed_size/example.py",class="file"];
   "file:components/chunking/fixed_size/fixed_size_chunker.py" [label="components/chunking/fixed_size/fixed_size_chunker.py",class="file"];
   "file:components/chunking/fixed_size/tests/test_component.py" [label="components/chunking/fixed_size/tests/test_component.py",class="file"];
@@ -21,6 +27,7 @@ digraph genesis {
   "file:components/config/errors.py" [label="components/config/errors.py",class="file"];
   "file:components/config/models.py" [label="components/config/models.py",class="file"];
   "file:components/config/prompts.py" [label="components/config/prompts.py",class="file"];
+  "file:components/config/retry.py" [label="components/config/retry.py",class="file"];
   "file:components/config/settings.py" [label="components/config/settings.py",class="file"];
   "file:components/config/tests/test_config.py" [label="components/config/tests/test_config.py",class="file"];
   "file:components/context/citation_formatter/citation_formatter.py" [label="components/context/citation_formatter/citation_formatter.py",class="file"];
@@ -59,9 +66,15 @@ digraph genesis {
   "file:components/generation/prompt_builder/example.py" [label="components/generation/prompt_builder/example.py",class="file"];
   "file:components/generation/prompt_builder/prompt_builder.py" [label="components/generation/prompt_builder/prompt_builder.py",class="file"];
   "file:components/generation/prompt_builder/tests/test_component.py" [label="components/generation/prompt_builder/tests/test_component.py",class="file"];
+  "file:components/ingestion/document_discovery/document_discovery.py" [label="components/ingestion/document_discovery/document_discovery.py",class="file"];
+  "file:components/ingestion/document_discovery/example.py" [label="components/ingestion/document_discovery/example.py",class="file"];
+  "file:components/ingestion/document_discovery/tests/test_component.py" [label="components/ingestion/document_discovery/tests/test_component.py",class="file"];
   "file:components/ingestion/document_identity_resolver/document_identity_resolver.py" [label="components/ingestion/document_identity_resolver/document_identity_resolver.py",class="file"];
   "file:components/ingestion/document_identity_resolver/example.py" [label="components/ingestion/document_identity_resolver/example.py",class="file"];
   "file:components/ingestion/document_identity_resolver/tests/test_component.py" [label="components/ingestion/document_identity_resolver/tests/test_component.py",class="file"];
+  "file:components/ingestion/document_loader/document_loader.py" [label="components/ingestion/document_loader/document_loader.py",class="file"];
+  "file:components/ingestion/document_loader/example.py" [label="components/ingestion/document_loader/example.py",class="file"];
+  "file:components/ingestion/document_loader/tests/test_component.py" [label="components/ingestion/document_loader/tests/test_component.py",class="file"];
   "file:components/ingestion/file_type_validator/example.py" [label="components/ingestion/file_type_validator/example.py",class="file"];
   "file:components/ingestion/file_type_validator/file_type_validator.py" [label="components/ingestion/file_type_validator/file_type_validator.py",class="file"];
   "file:components/ingestion/file_type_validator/tests/test_component.py" [label="components/ingestion/file_type_validator/tests/test_component.py",class="file"];
@@ -116,6 +129,12 @@ digraph genesis {
   "file:components/storage/document_store/document_store.py" [label="components/storage/document_store/document_store.py",class="file"];
   "file:components/storage/document_store/example.py" [label="components/storage/document_store/example.py",class="file"];
   "file:components/storage/document_store/tests/test_component.py" [label="components/storage/document_store/tests/test_component.py",class="file"];
+  "file:components/storage/index_verifier/example.py" [label="components/storage/index_verifier/example.py",class="file"];
+  "file:components/storage/index_verifier/index_verifier.py" [label="components/storage/index_verifier/index_verifier.py",class="file"];
+  "file:components/storage/index_verifier/tests/test_component.py" [label="components/storage/index_verifier/tests/test_component.py",class="file"];
+  "file:components/storage/index_writer/example.py" [label="components/storage/index_writer/example.py",class="file"];
+  "file:components/storage/index_writer/index_writer.py" [label="components/storage/index_writer/index_writer.py",class="file"];
+  "file:components/storage/index_writer/tests/test_component.py" [label="components/storage/index_writer/tests/test_component.py",class="file"];
   "file:components/storage/vector_store_protocol/example.py" [label="components/storage/vector_store_protocol/example.py",class="file"];
   "file:components/storage/vector_store_protocol/tests/test_component.py" [label="components/storage/vector_store_protocol/tests/test_component.py",class="file"];
   "file:components/storage/vector_store_protocol/vector_store_protocol.py" [label="components/storage/vector_store_protocol/vector_store_protocol.py",class="file"];
@@ -139,6 +158,7 @@ digraph genesis {
   "file:src/rag_code_library/generator/dependency_manager.py" [label="src/rag_code_library/generator/dependency_manager.py",class="file"];
   "file:src/rag_code_library/generator/planner.py" [label="src/rag_code_library/generator/planner.py",class="file"];
   "file:src/rag_code_library/generator/provenance.py" [label="src/rag_code_library/generator/provenance.py",class="file"];
+  "file:src/rag_code_library/pipeline.py" [label="src/rag_code_library/pipeline.py",class="file"];
   "file:src/rag_code_library/project/__init__.py" [label="src/rag_code_library/project/__init__.py",class="file"];
   "file:src/rag_code_library/project/detector.py" [label="src/rag_code_library/project/detector.py",class="file"];
   "file:src/rag_code_library/project/package_detector.py" [label="src/rag_code_library/project/package_detector.py",class="file"];
@@ -153,12 +173,14 @@ digraph genesis {
   "file:src/rag_code_library/security/path_safety.py" [label="src/rag_code_library/security/path_safety.py",class="file"];
   "file:tests/__init__.py" [label="tests/__init__.py",class="file"];
   "file:tests/integration/__init__.py" [label="tests/integration/__init__.py",class="file"];
+  "file:tests/integration/pipeline_stages.py" [label="tests/integration/pipeline_stages.py",class="file"];
   "file:tests/integration/test_cli_add.py" [label="tests/integration/test_cli_add.py",class="file"];
   "file:tests/integration/test_cli_list.py" [label="tests/integration/test_cli_list.py",class="file"];
   "file:tests/integration/test_cli_workflow.py" [label="tests/integration/test_cli_workflow.py",class="file"];
   "file:tests/integration/test_cookbook_build.py" [label="tests/integration/test_cookbook_build.py",class="file"];
   "file:tests/integration/test_dryrun_parity.py" [label="tests/integration/test_dryrun_parity.py",class="file"];
   "file:tests/integration/test_generated_components.py" [label="tests/integration/test_generated_components.py",class="file"];
+  "file:tests/integration/test_ingestion_pipeline.py" [label="tests/integration/test_ingestion_pipeline.py",class="file"];
   "file:tests/unit/__init__.py" [label="tests/unit/__init__.py",class="file"];
   "file:tests/unit/test_chunking.py" [label="tests/unit/test_chunking.py",class="file"];
   "file:tests/unit/test_context.py" [label="tests/unit/test_context.py",class="file"];
@@ -169,6 +191,7 @@ digraph genesis {
   "file:tests/unit/test_ingestion.py" [label="tests/unit/test_ingestion.py",class="file"];
   "file:tests/unit/test_manifest_validation.py" [label="tests/unit/test_manifest_validation.py",class="file"];
   "file:tests/unit/test_path_safety.py" [label="tests/unit/test_path_safety.py",class="file"];
+  "file:tests/unit/test_pipeline.py" [label="tests/unit/test_pipeline.py",class="file"];
   "file:tests/unit/test_project_detection.py" [label="tests/unit/test_project_detection.py",class="file"];
   "file:tests/unit/test_protocols.py" [label="tests/unit/test_protocols.py",class="file"];
   "file:tests/unit/test_registry.py" [label="tests/unit/test_registry.py",class="file"];
@@ -177,6 +200,7 @@ digraph genesis {
   "file:tests/unit/test_security_components.py" [label="tests/unit/test_security_components.py",class="file"];
   "file:tests/unit/test_security.py" [label="tests/unit/test_security.py",class="file"];
   "file:tests/unit/test_storage.py" [label="tests/unit/test_storage.py",class="file"];
+  "file:tests/unit/test_v2_report.py" [label="tests/unit/test_v2_report.py",class="file"];
   "symbol:cookbook/script.js#function:$" [label="$",class="symbol"];
   "symbol:cookbook/script.js#function:card" [label="card",class="symbol"];
   "symbol:cookbook/script.js#function:categoryOf" [label="categoryOf",class="symbol"];

@@ -29,14 +29,39 @@ ROOT = Path(__file__).resolve().parents[2]
 STORAGE = ROOT / "components" / "storage"
 
 # Every storage component directory, each imported the way a copy of it would
-# be. ``adapters`` last: it imports the other two.
-for name in ("core_types", "vector_store_protocol", "document_store", "adapters"):
+# be. ``adapters`` and ``index_writer`` last: they import the others.
+for name in (
+    "core_types",
+    "vector_store_protocol",
+    "document_store",
+    "adapters",
+    "index_writer",
+):
     sys.path.insert(0, str(STORAGE / name))
+
+# The AC-26 chain test runs chunking and deduplication as real stages, so
+# those two components are reachable too. ``fixed_size`` defines a module
+# named ``chunk``; importing it under an alias keeps it from colliding with
+# anything local to this file.
+CHUNKING = ROOT / "components" / "chunking"
+for name in ("fixed_size", "chunk_deduplicator"):
+    sys.path.insert(0, str(CHUNKING / name))
 
 import core_types as core  # noqa: E402
 import document_store as docs  # noqa: E402
 import storage_adapters as adapters  # noqa: E402
 import vector_store_protocol as protocol  # noqa: E402
+from chunk_deduplicator import Deduplicator, Scope  # noqa: E402
+from fixed_size_chunker import chunk as fixed_size_chunk  # noqa: E402
+from index_writer import (  # noqa: E402
+    PROVENANCE_FIELDS,
+    DestructiveOperationRefused,
+    IndexLifecycle,
+    IndexWriter,
+    IndexWriterError,
+    PayloadMismatchError,
+    record_from,
+)
 
 import pytest  # noqa: E402
 
@@ -598,3 +623,461 @@ def test_non_finite_is_not_silently_accepted():
     )
     with pytest.raises(protocol.StorageInputError):
         _chroma([poisoned])
+
+
+# =========================================================================== #
+# V2 FR-45 -- a document store that actually implements its own contract
+# =========================================================================== #
+
+
+def _doc(
+    document_id: str = "d1",
+    *,
+    source_name: str = "a.txt",
+    page_count: int = 1,
+    metadata: dict | None = None,
+) -> core.SourceDocument:
+    return core.SourceDocument(
+        document_id=document_id,
+        source_name=source_name,
+        sha256="a" * 64,
+        page_count=page_count,
+        metadata=metadata or {},
+    )
+
+
+@pytest.fixture
+def doc_store():
+    return docs.InMemoryDocumentStore()
+
+
+def test_a_stored_document_round_trips(doc_store):
+    doc = _doc()
+    assert doc_store.put(doc) == "d1"
+    assert doc_store.get("d1") == doc
+    assert doc_store.count() == 1
+    assert doc_store.list() == [doc]
+
+
+def test_getting_an_unknown_document_returns_none_rather_than_raising(
+    doc_store,
+):
+    """A chunk referencing a document that was never ingested is expected."""
+    assert doc_store.get("never-ingested") is None
+
+
+def test_the_backend_satisfies_its_own_protocol():
+    """Nothing satisfied this before FR-45; the claim is now checkable."""
+    store = docs.InMemoryDocumentStore()
+    assert isinstance(store, core.DocumentStoreProtocol)
+    assert isinstance(store, docs.DocumentStoreProtocol)
+
+
+def test_the_backend_implements_the_two_methods_the_protocol_lacks():
+    """FR-45 names put, get, delete *and* count."""
+    store = docs.InMemoryDocumentStore()
+    for name in ("put", "get", "delete", "count", "list"):
+        assert callable(getattr(store, name)), name
+
+
+def test_delete_removes_only_what_was_actually_there(doc_store):
+    doc_store.put(_doc("d1"))
+    doc_store.put(_doc("d2"))
+    assert doc_store.delete(["d1", "never-existed"]) == 1
+    assert doc_store.count() == 1
+    assert doc_store.get("d1") is None
+    assert doc_store.get("d2") is not None
+
+
+def test_rewriting_the_same_id_replaces_rather_than_duplicating(doc_store):
+    """FR-46: re-issuing an identical write creates no duplicate record."""
+    doc_store.put(_doc(page_count=1))
+    doc_store.put(_doc(page_count=9))
+    assert doc_store.count() == 1
+    assert doc_store.get("d1").page_count == 9  # the new value, not the old
+    assert doc_store.put_calls == 2
+    assert doc_store.replacements == 1
+
+
+def test_a_genuinely_new_document_is_counted_as_such(doc_store):
+    doc_store.put(_doc("d1"))
+    doc_store.put(_doc("d2"))
+    assert doc_store.count() == 2
+    assert doc_store.replacements == 0
+
+
+def test_reingesting_a_whole_corpus_is_idempotent():
+    store = docs.InMemoryDocumentStore()
+    for _ in range(3):
+        for index in range(5):
+            store.put(_doc(f"doc-{index}"))
+    assert store.count() == 5
+    assert store.replacements == 10  # two rounds of five replaced
+
+
+def test_listing_returns_every_document_in_insertion_order(doc_store):
+    for index in range(3):
+        doc_store.put(_doc(f"doc-{index}"))
+    assert [d.document_id for d in doc_store.list()] == ["doc-0", "doc-1", "doc-2"]
+
+
+def test_listing_can_filter_on_a_top_level_field(doc_store):
+    doc_store.put(_doc("d1", source_name="a.txt"))
+    doc_store.put(_doc("d2", source_name="b.txt"))
+    assert [d.document_id for d in doc_store.list({"source_name": "b.txt"})] == ["d2"]
+    assert [d.document_id for d in doc_store.list({"page_count": 1})] == ["d1", "d2"]
+
+
+def test_listing_can_filter_on_metadata(doc_store):
+    doc_store.put(_doc("d1", metadata={"lang": "en"}))
+    doc_store.put(_doc("d2", metadata={"lang": "fr"}))
+    assert [d.document_id for d in doc_store.list({"lang": "fr"})] == ["d2"]
+
+
+def test_a_filter_matching_nothing_returns_empty_not_an_error(doc_store):
+    doc_store.put(_doc("d1"))
+    assert doc_store.list({"document_id": "other"}) == []
+
+
+def test_a_nested_filter_value_is_refused_not_dropped(doc_store):
+    with pytest.raises(docs.DocumentStoreInputError):
+        doc_store.list({"a": {"b": 1}})
+
+
+def test_writing_something_that_is_not_a_document_is_refused(doc_store):
+    with pytest.raises(docs.DocumentStoreInputError) as exc:
+        doc_store.put(object())
+    assert "SourceDocument" in str(exc.value)
+    assert doc_store.count() == 0
+
+
+def test_reading_with_a_non_string_id_is_refused(doc_store):
+    with pytest.raises(docs.DocumentStoreInputError):
+        doc_store.get(None)  # type: ignore[arg-type]
+
+
+def test_deleting_a_bare_string_is_refused(doc_store):
+    """A str is itself a sequence of characters, which is the classic trap."""
+    with pytest.raises(docs.DocumentStoreInputError) as exc:
+        doc_store.delete("d1")
+    assert "Wrap it" in str(exc.value)
+
+
+# =========================================================================== #
+# V2 FR-47 -- refuse before writing; creation is not destruction
+# =========================================================================== #
+
+
+def test_a_vector_the_index_cannot_hold_is_refused_before_the_first_row():
+    store = _chroma()
+    writer = IndexWriter(store, dimensions=2, batch_size=3)
+    wide = core.EmbeddedChunk(
+        chunk=core.Chunk(chunk_index=0, text="wide", chunk_id="c0"),
+        vector=(1.0, 2.0, 3.0),
+        index_fingerprint="fp",
+    )
+    with pytest.raises(PayloadMismatchError) as exc:
+        writer.upsert([wide])
+    assert "3-dimensional" in str(exc.value)
+    assert store.count() == 0  # not one row landed
+
+
+def test_a_required_field_the_index_declares_is_checked_before_writing(embedded):
+    store = _chroma()
+    writer = IndexWriter(store, dimensions=2, required_fields=("section",))
+    with pytest.raises(PayloadMismatchError) as exc:
+        writer.upsert(embedded[:1])
+    assert "'section'" in str(exc.value)
+    assert store.count() == 0
+
+
+def test_a_batch_that_fails_part_way_through_keeps_its_successes(embedded):
+    """FR-46, asserted on rows actually in the store."""
+    rows: dict[str, Any] = {}
+
+    class HalfBroken:
+        def add(self, items):
+            if any(item.chunk.chunk_id == "c1" for item in items):
+                raise RuntimeError("backend refused this batch")
+            for item in items:
+                rows[item.chunk.chunk_id] = item
+            return len(items)
+
+    report = IndexWriter(HalfBroken(), dimensions=2, batch_size=2).upsert(embedded)
+    assert report.total_items == 2
+    assert report.succeeded == 1
+    assert report.failed == 1
+    assert report.ok is False
+    assert set(rows) == {"c0"}  # the good one is physically there
+    assert report.failures[0].chunk_id == "c1"
+    assert report.failures[0].error.startswith("RuntimeError")
+
+
+def test_reports_are_carried_by_the_writer_across_runs(embedded):
+    writer = IndexWriter(_chroma(), dimensions=2, batch_size=1)
+    writer.upsert(embedded)
+    assert len(writer.reports) == 1
+    assert writer.written == 2
+
+
+def test_creating_an_index_over_stored_rows_is_refused():
+    rows = {"docs": 4}
+    lifecycle = IndexLifecycle(count=lambda name: rows.get(name, 0))
+    with pytest.raises(DestructiveOperationRefused) as exc:
+        lifecycle.create("docs")
+    assert "4" in str(exc.value)
+    assert "replace(" in str(exc.value)
+
+
+def test_creating_an_empty_index_is_allowed_and_records_nothing():
+    lifecycle = IndexLifecycle(count=lambda name: 0)
+    assert lifecycle.create("docs") == 0
+    assert lifecycle.destructions == ()
+
+
+def test_the_only_destructive_path_demands_a_reason_and_records_the_loss():
+    rows = {"docs": 6}
+    lifecycle = IndexLifecycle(count=lambda name: rows.get(name, 0))
+    with pytest.raises(IndexWriterError):
+        lifecycle.replace("docs", reason="  ", clear=lambda name: 0)
+    assert lifecycle.destructions == ()  # nothing was destroyed
+
+    record = lifecycle.replace(
+        "docs", reason="v2 schema", clear=lambda name: rows.__setitem__(name, 0) or 6
+    )
+    assert record.rows_removed == 6
+    assert lifecycle.last_destruction is record
+    assert rows["docs"] == 0
+
+
+# =========================================================================== #
+# V2 FR-48 / AC-26 -- stored records carry their provenance
+# =========================================================================== #
+
+
+def _cited_chunk(index: int = 0) -> core.EmbeddedChunk:
+    """A chunk carrying every provenance field AC-26 names."""
+    return core.EmbeddedChunk(
+        chunk=core.Chunk(
+            chunk_index=index,
+            text="body of the chunk",
+            chunk_id=f"c{index}",
+            document_id="d1",
+            source_name="guide.md",
+            page_start=2,
+            page_end=3,
+            metadata={
+                "start_offset": 100 + index,
+                "end_offset": 180 + index,
+                "section": "setup",
+            },
+        ),
+        vector=(1.0, 2.0),
+        index_fingerprint="model=m|dims=2|chunking=abc",
+    )
+
+
+def test_a_stored_row_carries_every_ac26_field():
+    """AC-26, asserted against what is actually in the backend."""
+    store = _chroma([_cited_chunk()])
+    row = next(iter(store.collection.rows.values()))
+    metadata = row["metadata"]
+    reserved = adapters.RESERVED_PREFIX
+
+    for field in (
+        "document_id",
+        "chunk_id",
+        "source_name",
+        "chunk_index",
+        "page_start",
+        "page_end",
+    ):
+        assert f"{reserved}{field}" in metadata, field
+    for field in ("start_offset", "end_offset", "section"):
+        assert field in metadata, field
+    assert f"{reserved}{adapters.FINGERPRINT_FIELD}" in metadata
+
+
+def test_the_stored_values_are_the_ones_the_chunk_came_in_with():
+    store = _chroma([_cited_chunk()])
+    metadata = next(iter(store.collection.rows.values()))["metadata"]
+    reserved = adapters.RESERVED_PREFIX
+    assert metadata[f"{reserved}document_id"] == "d1"
+    assert metadata[f"{reserved}chunk_id"] == "c0"
+    assert metadata[f"{reserved}source_name"] == "guide.md"
+    assert metadata[f"{reserved}page_start"] == 2
+    assert metadata[f"{reserved}page_end"] == 3
+    assert metadata["start_offset"] == 100
+    assert metadata["end_offset"] == 180
+    assert metadata["section"] == "setup"
+    assert metadata[f"{reserved}{adapters.FINGERPRINT_FIELD}"] == (
+        "model=m|dims=2|chunking=abc"
+    )
+
+
+def test_the_page_range_comes_back_out_as_a_real_field():
+    """A caller should not have to dig a citation location out of metadata."""
+    store = _chroma([_cited_chunk()])
+    hit = store.query([1.0, 2.0], k=1)[0]
+    assert hit.page_start == 2
+    assert hit.page_end == 3
+    assert hit.document_id == "d1"
+    assert hit.chunk_id == "c0"
+    assert hit.metadata["section"] == "setup"
+    # reserved keys stay out of caller-visible metadata
+    assert not any(k.startswith(adapters.RESERVED_PREFIX) for k in hit.metadata)
+
+
+def test_results_still_name_the_backend_while_the_row_keeps_the_file():
+    """Two different facts, deliberately kept in two different places."""
+    store = _chroma([_cited_chunk()])
+    row = next(iter(store.collection.rows.values()))
+    assert row["metadata"][f"{adapters.RESERVED_PREFIX}source_name"] == "guide.md"
+    hit = store.query([1.0, 2.0], k=1)[0]
+    assert hit.source_name == "docs"  # core-types' unenforceable conformance
+
+
+def test_pages_absent_from_the_source_stay_absent_rather_than_invented():
+    plain = core.EmbeddedChunk(
+        chunk=core.Chunk(chunk_index=0, text="no pages here", chunk_id="c0"),
+        vector=(1.0, 2.0),
+        index_fingerprint="fp",
+    )
+    store = _chroma([plain])
+    metadata = next(iter(store.collection.rows.values()))["metadata"]
+    reserved = adapters.RESERVED_PREFIX
+    assert f"{reserved}page_start" not in metadata
+    hit = store.query([1.0, 2.0], k=1)[0]
+    assert hit.page_start is None
+    assert hit.page_end is None
+
+
+def test_a_citation_field_can_be_filtered_on():
+    """Stored under a reserved key, so the filter must be rewritten too."""
+    store = _chroma([_cited_chunk(), _cited_chunk(1)])
+    hits = store.query([1.0, 2.0], k=2, filter={"page_start": 2})
+    assert {hit.chunk_id for hit in hits} == {"c0", "c1"}
+    assert store.query([1.0, 2.0], k=2, filter={"page_start": 99}) == []
+
+
+def test_the_record_builder_agrees_with_what_the_adapter_stored():
+    """Two components, one description of where a chunk came from."""
+    item = _cited_chunk()
+    record = record_from(item)
+    reserved = adapters.RESERVED_PREFIX
+    stored = next(iter(_chroma([item]).collection.rows.values()))["metadata"]
+    assert record.document_id == stored[f"{reserved}document_id"]
+    assert record.chunk_id == stored[f"{reserved}chunk_id"]
+    assert record.source_name == stored[f"{reserved}source_name"]
+    assert record.page_start == stored[f"{reserved}page_start"]
+    assert record.page_end == stored[f"{reserved}page_end"]
+    assert record.index_fingerprint == stored[f"{reserved}index_fingerprint"]
+    assert record.section == stored["section"]
+    assert set(record.provenance) == set(PROVENANCE_FIELDS)
+
+
+def _embed(text: str) -> tuple[float, ...]:
+    """A deterministic stand-in for an embedding model.
+
+    No embedding model is installed, and installing one would modify
+    dependency files (FR-2). The *stage* is real -- chunks become vectors and
+    those vectors are what gets indexed -- only the learned weights are not.
+    """
+    return (
+        float(len(text) % 97),
+        float(sum(text.encode("utf-8")) % 89),
+        float(text.count(" ") % 13),
+        1.0,
+    )
+
+
+def test_ac26_every_field_survives_chunking_dedup_embedding_and_indexing():
+    """AC-26's end-to-end half: each stage is a real component, in order."""
+    body = (
+        "Introduction. This guide explains the setup. "
+        "Install the dependency with pip, then restart the kernel. " * 12
+    )
+
+    # 1. chunking -- the real fixed-size chunker sets the boundaries.
+    produced = fixed_size_chunk(body, size=160, overlap=0)
+    assert len(produced) > 1
+
+    # The app layer then identifies each chunk, exactly as core-types says it
+    # must: a chunker is called as chunk(text, size=...) and cannot know the id.
+    def identify(source, document_id, prefix):
+        return core.Chunk(
+            chunk_index=source.chunk_index,
+            text=source.text,
+            chunk_id=f"{prefix}-{source.chunk_index}",
+            document_id=document_id,
+            source_name=f"{document_id}.md",
+            page_start=1,
+            page_end=1,
+            metadata={
+                "section": "setup",
+                "start_offset": source.chunk_index * 160,
+                "end_offset": (source.chunk_index + 1) * 160,
+            },
+        )
+
+    first = [identify(c, "doc-a", "a") for c in produced]
+    # The same template in a second document -- what dedup exists to catch.
+    second = [identify(c, "doc-b", "b") for c in produced]
+    assert [c.text for c in first] == [c.text for c in second]
+
+    # 2. deduplication, corpus scope, so the shared copy collapses.
+    outcome = Deduplicator(scope=Scope.CORPUS).dedupe([*first, *second])
+    assert len(outcome.retained) + outcome.removed == len(first) + len(second)
+    assert outcome.removed >= len(second)
+    spanning = [
+        group for group in outcome.groups if set(group.documents) == {"doc-a", "doc-b"}
+    ]
+    assert spanning, "the shared copy was not attributed to both documents"
+
+    # 3. embedding.
+    embedded_chunks = [
+        core.EmbeddedChunk(
+            chunk=chunk,
+            vector=_embed(chunk.text),
+            index_fingerprint="model=stub|dims=4|chunking=size160",
+        )
+        for chunk in outcome.retained
+    ]
+
+    # 4. indexing, through the real adapter.
+    store = _chroma(embedded_chunks)
+    assert store.count() == len(outcome.retained)
+    assert len(store.collection.rows) == len(outcome.retained)
+
+    # Every stored row carries every field AC-26 names...
+    reserved = adapters.RESERVED_PREFIX
+    for row in store.collection.rows.values():
+        metadata = row["metadata"]
+        for field in (
+            "document_id",
+            "chunk_id",
+            "source_name",
+            "chunk_index",
+            "page_start",
+            "page_end",
+        ):
+            assert f"{reserved}{field}" in metadata, field
+        for field in ("start_offset", "end_offset", "section"):
+            assert field in metadata, field
+        assert f"{reserved}index_fingerprint" in metadata
+        assert metadata[f"{reserved}index_fingerprint"].startswith("model=stub")
+
+    # ...and the same fields are readable back as a record, all populated.
+    for item in embedded_chunks:
+        record = record_from(item)
+        for field in PROVENANCE_FIELDS:
+            assert record.provenance[field] is not None, field
+        assert record.is_traceable
+
+    # Retrieval still finds them, with the citation location intact.
+    hits = store.query(_embed(outcome.retained[0].text), k=2)
+    assert hits
+    best = hits[0]
+    assert best.document_id == "doc-a"
+    assert best.page_start == 1 and best.page_end == 1
+    assert best.metadata["section"] == "setup"

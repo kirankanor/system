@@ -40,11 +40,18 @@ What the rules are, in order
    keep the break visible and survive the whitespace pass below.
 4. **Remaining C0 controls, DEL and C1** are removed. ``\\t`` and ``\\n`` are
    kept -- indentation and structure are content.
-5. **Unicode normalization** in the chosen form.
-6. **Horizontal whitespace** runs collapse to one space; trailing whitespace
+5. **Invisible format characters** -- soft hyphen ``U+00AD``, byte-order mark
+   ``U+FEFF`` and zero-width space ``U+200B`` -- are removed. These are *not*
+   controls (Unicode category ``Cf``), so rule 4 never caught them, yet they
+   render as nothing while defeating an exact match: for an index that is a
+   correctness problem, not a cosmetic one. ``U+200D`` (ZWJ) is deliberately
+   left alone -- removing it changes what an emoji *says*, and this component
+   reports repairs rather than reinterpreting content.
+6. **Unicode normalization** in the chosen form.
+7. **Horizontal whitespace** runs collapse to one space; trailing whitespace
    is dropped per line. Leading indentation is preserved, because in a code
    corpus it is meaning.
-7. **Three or more blank lines** collapse to two.
+8. **Three or more blank lines** collapse to two.
 
 NFC by default, on purpose
 --------------------------
@@ -95,6 +102,24 @@ _REMOVED: Final[frozenset[str]] = frozenset(
 )
 
 _HORIZONTAL: Final[frozenset[str]] = frozenset(" \t")
+
+#: Invisible *format* characters (Unicode category ``Cf``), not controls --
+#: which is exactly why rule 4 never touched them and why they are called out
+#: by name here. All three render as nothing while defeating substring
+#: matching, so for an index they are a correctness problem, not a cosmetic
+#: one: ``soft hyphen`` in a line-wrapped PDF splits a word at every wrap
+#: point, a ``byte-order mark`` sitting anywhere in the text breaks an exact
+#: match on the first token it precedes, and a ``zero-width space`` inserted
+#: by a hostile author defeats a keyword filter (see ``retrieved-content-
+#: safety``, which reports the same characters as ``concealment`` when they
+#: arrive at query time instead).
+#:
+#: ``U+200D`` (ZWJ) is deliberately NOT here. It joins emoji and grapheme
+#: clusters; removing it changes what the text *says*, and this component
+#: reports its repairs rather than reinterpreting content. Neither is
+#: ``U+00A0`` (no-break space) -- that one is whitespace with a rule, and the
+#: whitespace pass already reports what it does with it.
+_INVISIBLE: Final[frozenset[str]] = frozenset("\u00ad\ufeff\u200b")
 
 
 class NormalizerError(Exception):
@@ -225,6 +250,16 @@ class TextNormalizer:
     def _controls(text: str) -> str:
         return "".join(char for char in text if char not in _REMOVED)
 
+    @staticmethod
+    def _invisible(text: str) -> str:
+        """Drop the three format characters documented on ``_INVISIBLE``.
+
+        A static method like ``_controls`` so the rule reads as a pure
+        function of its input -- no configuration can make it keep a
+        character it has decided is an artifact.
+        """
+        return "".join(char for char in text if char not in _INVISIBLE)
+
     def _normalize_form(self, text: str) -> str:
         return unicodedata.normalize(self.form, text)
 
@@ -295,6 +330,7 @@ class TextNormalizer:
             ("vertical-tab", self._vertical_tab),
             ("form-feed", self._form_feed),
             ("controls", self._controls),
+            ("invisible", self._invisible),
             ("unicode-form", self._normalize_form),
         ):
             result = rule(current)

@@ -37,6 +37,18 @@ import remote_embeddings as remote  # noqa: E402
 
 import pytest  # noqa: E402
 
+# The config layer is not a dependency of any component -- components import
+# neither it nor each other -- but a test may stand in for the orchestration
+# code that does, and that is where FR-57's retry lives. The path is dropped
+# again immediately so this file's setup cannot leak into the rest of the
+# session's imports.
+_COMPONENTS = str(ROOT / "components")
+sys.path.insert(0, _COMPONENTS)
+try:
+    from config import RetryPolicy  # noqa: E402
+finally:
+    sys.path.remove(_COMPONENTS)
+
 
 # --------------------------------------------------------------------------- #
 # Test doubles
@@ -515,3 +527,104 @@ def test_remote_embed_one():
 def test_remote_rejects_a_non_positive_dimensions_setting():
     with pytest.raises(protocol.EmbeddingInputError):
         _remote(dimensions=0)
+
+
+# --------------------------------------------------------------------------- #
+# FR-57 -- retry for transient embedding and storage failures
+#
+# The loop lives in `config`, not here: components must not import config,
+# and the task that produced it put retry in the orchestration layer. So
+# these tests stand in for that layer, and what they prove is that the policy
+# composes with the components' real error surface -- the type a caller can
+# actually catch -- rather than with a stub.
+# --------------------------------------------------------------------------- #
+
+
+class FlakyProvider(FakeEmbedder):
+    """Fails the first ``failures`` calls with a transient provider error."""
+
+    def __init__(self, failures: int) -> None:
+        super().__init__()
+        self.failures = failures
+        self.attempts = 0
+
+    def embed(self, texts):
+        self.attempts += 1
+        if self.attempts <= self.failures:
+            raise RuntimeError("HTTP 429 too many requests")
+        return super().embed(texts)
+
+
+def _is_provider_error(exc):
+    """The classifier the call site supplies.
+
+    config's default treats an unrecognised type as permanent -- correct,
+    because config cannot know this package's error types without depending
+    on it. Deciding what counts as transient is therefore the caller's job,
+    which is exactly why retry belongs outside the components.
+    """
+    return isinstance(exc, protocol.EmbeddingProviderError)
+
+
+def test_a_transient_provider_failure_is_retried_until_the_provider_recovers():
+    provider = FlakyProvider(failures=2)
+    policy = RetryPolicy(max_retries=3, backoff_initial=0.25, backoff_multiplier=2.0)
+    slept: list[float] = []
+    wrapped = batch.BatchEmbedder(provider, batch_size=2)
+
+    out = policy.call(
+        lambda: wrapped.embed(["aa", "bbb"]),
+        retry_if=_is_provider_error,
+        sleep=slept.append,
+    )
+
+    # BatchEmbedder wraps the provider's RuntimeError, so the policy sees the
+    # WRAPPED type -- classification works on what a caller can observe.
+    assert [vector[0] for vector in out] == [2.0, 3.0]
+    assert provider.attempts == 3  # two failures, then the success
+    assert slept == [0.25, 0.5]  # bounded and growing, never actually slept
+
+
+def test_a_component_error_is_not_retried_unless_the_call_site_says_so():
+    """The conservative default: a type nobody classified is permanent."""
+    provider = FlakyProvider(failures=99)
+    policy = RetryPolicy(max_retries=5)
+    wrapped = batch.BatchEmbedder(provider, batch_size=2)
+
+    with pytest.raises(protocol.EmbeddingProviderError):
+        policy.call(lambda: wrapped.embed(["aa", "bbb"]), sleep=lambda delay: None)
+
+    assert provider.attempts == 1
+
+
+def test_a_validation_failure_is_reported_once_even_to_a_permissive_caller():
+    """FR-57's other half: validation errors are never retried, only raised."""
+    policy = RetryPolicy(max_retries=5)
+    calls: list[int] = []
+
+    def run():
+        calls.append(1)
+        # EmbeddingInputError is not the type the classifier accepts, so this
+        # is the permanent half of the split, exercised through a real component.
+        return batch.BatchEmbedder(FakeEmbedder()).embed("a bare string")
+
+    with pytest.raises(protocol.EmbeddingInputError) as info:
+        policy.call(run, retry_if=_is_provider_error, sleep=lambda delay: None)
+
+    assert len(calls) == 1
+    assert info.value.__class__ is protocol.EmbeddingInputError  # not wrapped
+
+
+def test_batching_has_not_gained_a_retry_loop_of_its_own():
+    """Retry belongs in the orchestration layer, so the component must not grow one.
+
+    A loop added here would be a second, divergent implementation that every
+    caller had to trust and no settings value could reach.
+    """
+    provider = FlakyProvider(failures=3)
+    wrapped = batch.BatchEmbedder(provider, batch_size=2)
+
+    with pytest.raises(protocol.EmbeddingProviderError):
+        wrapped.embed(["aa", "bbb"])
+
+    assert provider.attempts == 1

@@ -1,0 +1,21 @@
+{
+  "id": "chunk-deduplicator",
+  "name": "Chunk Deduplicator",
+  "category": "chunking",
+  "source": "chunk_deduplicator.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Remove exact duplicates under a declared scope while preserving which document each appearance came from, and gate embedding reuse on a fingerprint that names the field that differs.",
+  "destination": "src/{project_package}/rag/chunking/chunk_deduplicator.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No dependencies. Copy with: ragkit add chunk-deduplicator",
+  "missing_dependency_message": "chunk-deduplicator needs no package. If a vector is being reused that should not be, compare the stored fingerprint against the current configuration -- the gate names the field that differs rather than reporting a bare hash."
+}

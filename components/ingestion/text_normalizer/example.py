@@ -37,6 +37,10 @@ MESS = [
     ("preserved indentation", "def f():\n        return 1"),
     ("an fi ligature", "the \ufb01le"),
     ("full-width latin", "\uff50\uff59\uff54"),
+    # The three format characters rule 5 removes. They are category Cf,
+    # NOT controls, which is why rule 4 never caught them.
+    ("invisible format chars",
+     "soft\u00adhy\u00adphen \ufeffhead\u200bword"),
 ]
 
 
@@ -80,6 +84,20 @@ def main() -> None:
         ("a vertical tab", "a\x0bb"),
     ]:
         print(f"   {label:<16} {text!r:<24} -> {normalizer.clean(text)!r}")
+
+    print("\n   Three more are removed that are NOT controls -- soft hyphen,")
+    print("   byte-order mark and zero-width space are category Cf, so rule 4")
+    print("   never saw them. They render as nothing while breaking an exact")
+    print("   match, which for an index is a correctness problem:")
+    for label, text in [
+        ("soft hyphen U+00AD", "a" + chr(0x00AD) + "b"),
+        ("byte-order mark U+FEFF", "a" + chr(0xFEFF) + "b"),
+        ("zero-width space U+200B", "a" + chr(0x200B) + "b"),
+        ("ZWJ U+200D, left alone", "a" + chr(0x200D) + "b"),
+    ]:
+        print(f"   {label:<26} {ascii(text):<24} -> {ascii(normalizer.clean(text))}")
+    print("   ZWJ survives on purpose: it builds emoji rather than hiding a")
+    print("   word, so removing it would reinterpret content, not repair it.")
 
     print("\n   Tab and newline are content, not commands -- but a tab")
     print("   MID-LINE is horizontal whitespace and does collapse. Only")
@@ -149,8 +167,10 @@ def main() -> None:
     print("   'Resume' and 'resume' are one term -- that is a linguistic")
     print("   decision belonging to the analyzer, and doing it here would")
     print("   silently change what is stored.")
-    print("   zero-width characters survive too: stripping U+200B would")
-    print("   also strip U+200D, which is how emoji sequences are built.")
+    print("   three invisible characters -- U+00AD, U+FEFF and U+200B -- are")
+    print("   removed, but only those three. U+200D (ZWJ) survives: it builds")
+    print("   emoji rather than hiding a word, so keeping it is the difference")
+    print("   between removing an artifact and reinterpreting content.")
 
 
 if __name__ == "__main__":

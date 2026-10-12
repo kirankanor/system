@@ -60,7 +60,7 @@ bundle = enricher.enrich(
 bundle.extracted   # {'author': 'A. Author', 'page_number': 3}
 bundle.system      # {'system_source_path': ..., 'system_ingested_at': ...}
 bundle.source      # {'language': 'en', 'pages': 12}  -- verbatim
-bundle.merged      # all four, with source winning a collision
+bundle.merged      # all four: extracted < source < system, system_ reserved
 bundle.omitted     # ('title: not supplied',) is NOT here: absent is not a fault
 
 # title was never supplied, so it is absent rather than blank:
@@ -111,10 +111,15 @@ meets a declared schema. Enrichment produces; validation checks.
   removed and named in `omitted` rather than accepted and rejected at query
   time. A whole entry is kept if the *container* is bad only when the
   container is not a mapping at all, which does raise.
-- **Source wins a collision, always.** If the caller passes `title="X"` and the
-  document says `title="Y"`, `merged` holds `"Y"`. This is the requirement
-  taken literally -- preserve original source metadata -- but it means a
-  corrected title must be recorded in the source bag, not passed as an argument.
+- **Source wins a collision, except on a reserved `system_` key.** Precedence
+  is documented and ordered low to high: `extracted` < `source` < `system`.
+  If the caller passes `title="X"` and the document says `title="Y"`, `merged`
+  holds `"Y"` -- the document's own account of itself is preserved, and a
+  corrected title must be recorded in the source bag rather than passed as an
+  argument. But if the document supplies `system_source_path`, `merged` holds
+  the *computed* path: provenance a file can rewrite is not provenance. The
+  document's attempt stays verbatim in `source` and is recorded in `omitted`,
+  so nothing disappears -- it simply does not win.
 - **`page_number` refuses `True`.** `bool` subclasses `int`, so `True` would
   otherwise be accepted as page 1. This matches the rule
   `security/metadata-validation` already enforces, so a bundle produced here

@@ -1,0 +1,30 @@
+{
+  "task": "V2-T08",
+  "gate": "pipeline-tests",
+  "kind": "command",
+  "attempt": "f5522fbf-24ab-48a5-a800-2b0e20302f9e",
+  "command": "python -m pytest tests/unit/test_pipeline.py -q",
+  "started_at": "2026-10-12T08:07:16.749Z",
+  "observed_at": "2026-10-12T08:07:54.985Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "........................................................................ [ 91%]\r\n.......                                                                  [100%]\r\n79 passed in 0.90s\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "4419c64e58043978ea8b1d4185779beac0154620",
+    "dirty": true
+  },
+  "source_hash": "ff1b614f6aae1c467c8db556df6cce287b12b741d48859ff348ab9caf094e022",
+  "before_hash": "ff1b614f6aae1c467c8db556df6cce287b12b741d48859ff348ab9caf094e022",
+  "config_hash": "e9a69cd0770ee3cc434640702463a6f0e7f0c73b943e9d360946cbec765b76a9",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "29dd07e1278a0429ad6b2ba3ef7f9aed2ccc38ccc45cbfb10b6e750b116514ab"
+}

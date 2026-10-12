@@ -15,9 +15,9 @@ Load Genesis and official Ponytail full, then run `genesis brief .` for the curr
 Fetch full records with `genesis context . --id ID` only when needed. Do not load project.json or historical proof wholesale.
 Ask the index before reading code: `genesis query . search|scope|callers|callees|impact|path` (`--json` for parsing). Run `genesis query . impact PATH` before editing shared code. Answers are advisory static analysis; `ambiguous` means candidates were not ruled out, so confirm in source.
 Run `genesis serve .` for a live map of the repository when structure is unclear; it reindexes on save and is read-only. Run `genesis index .` if the index is stale and nothing is watching.
-Context fingerprint: d5a51e22cb021a3b6e544818bfd0b8fd010117c59978c5e13db9043666e8733f. Use --since only after receiving that full packet; kickoff is not the packet.
-- DECISION-129143cc: AC-15 human browser report: cookbook index.html works
-- DECISION-cc6496b8: T-15 independent review: three verification scripts reviewed and shown able to fail
-- DECISION-3e38520b: AC-15's browser checklist is owned by the human, not closed by agent evidence
+Context fingerprint: 7f35952806e9191dd3bc8d49a747642188fe21fd2c3e4a6d0628c8ca66ce9797. Use --since only after receiving that full packet; kickoff is not the packet.
+- DECISION-61ee1d16: Authorized commit of the delivered V2 tree, outside the genesis authorize grant mechanism
+- DECISION-03796bdb: TEMP probe B
+- DECISION-8d57f009: TEMP probe A
 Applicable invariants, active rules, authorization and proof references are in the packet. Truncated summaries are retrieval pointers, not the full evidence.
 Reuse fresh gates with --reuse. Reconcile interrupted attempts before replaying commands. Report state → evidence → blocker → next action; checkpoint before stopping.

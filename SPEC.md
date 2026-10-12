@@ -85,6 +85,56 @@ Desired outcome: the human can start a new RAG project, browse the catalog, and 
 - FR-34: Hostile-path tests run against the real Windows filesystem of this host, creating actual symlinks and junctions where the platform permits, and skipping with an explicit recorded reason where it does not.
 - FR-35: `ragkit list` and `ragkit info` display each component's lifecycle status (`stable`, `v2-deferred`, `experimental`), and `ragkit add` refuses `v2-deferred` components with a message naming the deferral.
 
+### V2 ingestion pipeline (v2.md)
+
+This increment delivers the ingestion *spine* end to end — discovery, loading, chunk validation, chunk deduplication, indexing, index verification and orchestration — plus the closures of the specific v1 partials that block v2.md §5.6 and §5.7. Versioning (Step 16), observability (Step 17) and lifecycle management (Step 20) are out of this increment and reported as such under "V2 scope".
+
+**Document discovery (Step 1)**
+
+- FR-36: A discovery stage scans a configured source root, recursively or not, filtered by allowed extensions and exclusion patterns, and emits one typed discovery record per candidate file carrying source location, detected size and modification time. Entries it cannot stat or read produce an error record, never an exception that aborts the scan. Ordering is deterministic under a declared sort policy so two runs over an unchanged tree emit identical output.
+- FR-37: Discovery reports *added*, *modified* and *deleted* files by comparing a new scan against a caller-supplied prior snapshot, never follows a symlink, junction or other reparse point that resolves outside the source root, and collapses duplicate paths by a documented rule.
+
+**Document loading (Step 4)**
+
+- FR-38: One loader interface returns a single extraction-result shape for every format and selects the adapter by *detected* content type, not by filename extension. A format with no adapter raises a typed unsupported-format error naming the detected format and the adapters that do exist.
+- FR-39: Working, tested adapters exist for PDF (through the two existing extractors), Markdown, plain text and HTML. Each is verified by a test that runs real bytes through it; a format is never claimed from documentation alone.
+- FR-40: The two PDF extractors are adapted to the common shape without either importing the other, so OCR is used only as a fallback for pages that carry no text layer, and page-level source locations survive into the result.
+
+**Chunk validation (Step 9)**
+
+- FR-41: A chunk-validation stage applies configured rules — empty or whitespace-only text, minimum and maximum size, required metadata keys, missing document reference, invalid chunk id, invalid source location, extraction anomaly — and returns one result per chunk carrying the rule id, a severity of `warning` or `fatal`, and a human-readable reason.
+- FR-42: Fatal outcomes follow an explicit configured policy of *reject*, *repair* or *quarantine*. Every failed chunk records why it failed, and the orchestration layer guarantees a chunk with a fatal outcome reaches embedding and indexing only when the recorded policy documents and reports that exception.
+
+**Chunk deduplication (Step 10)**
+
+- FR-43: Deduplication computes a deterministic hash over normalized chunk content and removes exact duplicates within a configured scope of document, corpus or both. Each removal records which retained chunk it collapsed into and every source document involved, so shared content keeps its attribution. Near-duplicate similarity matching is **not** implemented and must not be claimed.
+- FR-44: A stored embedding is reused only when its recorded index fingerprint matches the current embedding model, dimensions and chunking configuration. On mismatch the chunk is re-embedded and the mismatch is recorded as the reason; nothing silently reuses a vector from an incompatible configuration.
+
+**Indexing (Step 12)**
+
+- FR-45: The document store gains at least one working backend implementing put, get, delete and count over stable document ids, and every index write is issued in configurable bounded batches.
+- FR-46: Writes are upserts. Re-issuing an identical write creates no duplicate record and no stale vector, update and replacement semantics are documented, and a partially failed batch is reported per item without losing the successful items.
+- FR-47: A payload whose vector dimension or schema does not match the target index is detected before the write and reported as a typed error. Creating or rebuilding an index never silently deletes existing data; a destructive replacement is a separate, explicitly recorded operation.
+- FR-48: Stored chunk records preserve the document id, chunk id, source name, source offsets and page or section reference alongside the vector and the index fingerprint, so a stored chunk is traceable back to the bytes it came from.
+
+**Index verification (Step 13)**
+
+- FR-49: An index-verification stage compares expected and actual record counts, required record presence, embedding presence where required, vector dimension and metadata compatibility, and document-to-chunk-to-source relationships, returning a structured verdict that separates fatal findings from warnings and names the offending record.
+- FR-50: Verification performs a retrieval smoke check against the index it just examined, waits a bounded configurable interval for eventual consistency, and reports readiness only after all checks pass. A successful write is never reported as verification.
+
+**Orchestration (cross-stage B)**
+
+- FR-51: An orchestration layer runs the complete pipeline or a named contiguous range of stages, passes each stage's validated output to the next, and propagates document identity and provenance to every downstream artifact. It is reachable both as a Python API and through a new `ragkit ingest` subcommand.
+- FR-52: Per-document failure handling — stop, skip-and-continue or quarantine — is configurable. Every run produces a summary carrying a correlation id, per-stage status, counts of discovered, accepted, rejected, processed and failed documents and chunks, and per-stage durations. That summary and all emitted log lines contain no credentials and no full document content.
+- FR-53: A run records which stages completed for each document together with the content hash and the index fingerprint, so re-running skips work whose inputs and configuration are unchanged and reprocesses what changed. The concurrency policy is documented and enforced: one writer per document, and no two runs mutate the same document concurrently.
+- FR-54: Stages are selected from configuration and injected into the orchestration layer as callables. The orchestration layer contains no branching on a specific storage backend, parser or provider, and statically imports no component module and no workflow framework.
+
+**Closures of v1 partials that block v2.md §5.6 and §5.7**
+
+- FR-55: Text normalization removes the Unicode artifacts its own documentation already claims — soft hyphen U+00AD, byte-order mark U+FEFF and zero-width space U+200B — closing the current behavior/documentation mismatch in both directions, with a test that fails if either side drifts again.
+- FR-56: System-generated metadata fields are protected: document-supplied metadata cannot overwrite them under a documented precedence order, and the existing test that currently asserts an attacker-supplied `system_source_path` survives is corrected to assert the opposite.
+- FR-57: Transient failures in embedding and storage calls are retried with bounded, configurable backoff honoring the existing `max_retries` setting, which must stop being unread configuration. Validation and permanent errors are never retried and are reported once.
+
 ## Non-functional requirements
 
 - NFR-1: **Test collection succeeds.** `python -m pytest` collects and runs the full suite with no collection errors, no import errors, and no unexplained skips; the duplicate `tests/test_component.py` basename collision is resolved by configuration, not by weakening collection scope.
@@ -100,6 +150,11 @@ Desired outcome: the human can start a new RAG project, browse the catalog, and 
 - NFR-11: **Reproducibility.** Given the committed `uv.lock`, a fresh `uv sync` reproduces an environment in which the full suite passes.
 - NFR-12: **Bounded execution.** Exactly one task is active at a time. A task cannot reach `done` while any of its mandatory gate proofs is pending, failed, missing, or stale against the current source hash. Dependent tasks cannot activate before all their dependencies are `done`.
 - NFR-13: **Deferred-surface discipline.** Components belonging to v2-deferred categories may be declared in manifests and listed by `ragkit list` with status `v2-deferred`, but must ship no implementation file, no example, and no test, and `ragkit add` must refuse them with a message naming the deferral.
+- NFR-14: **V2 dependency discipline.** V2 adds no mandatory runtime dependency beyond `pydantic` and `pydantic-settings`. Format parsers, OCR engines and vector backends are optional per-component dependencies, each guarded by a specific missing-dependency message; AC-14 keeps verifying this over the enlarged file set.
+- NFR-15: **No workflow framework.** The orchestration layer is ordinary Python shipped in this repository. No LangChain, LlamaIndex, Prefect, Airflow or other workflow engine is required or permitted to run the pipeline.
+- NFR-16: **Deferred categories stay empty.** No implementation file appears under `components/observability/` or `components/integrations/`. Run summaries and correlation ids are emitted by the orchestration layer itself, so telemetry stays optional and separate from core processing and AC-19 keeps passing unmodified (DECISION-544dc702).
+- NFR-17: **Backward compatibility.** Every v1 component keeps its public behavior, no v1 manifest field is removed or renamed, and the v1 suite stays green on both verified interpreters. Any deliberate behavior change to a v1 component — including FR-55 and FR-56 — is recorded as a decision and lands with its test updated in the same task.
+- NFR-18: **Honest V2 reporting.** The completion report classifies all twenty of v2.md's steps as complete, partial, missing or blocked, each with file and line evidence. No step is reported complete because a class, file or placeholder exists.
 
 ## Constraints
 
@@ -118,12 +173,18 @@ Desired outcome: the human can start a new RAG project, browse the catalog, and 
 
 - Publishing to PyPI, or any public API-stability or semver commitment.
 - A hosted cookbook, a web backend, authentication, or multi-tenancy.
-- Observability (structured logging, tracing, token/latency reporting) — deferred to v2; the category is declared with `v2-deferred` status and ships no code.
-- Integration adapters for third-party frameworks — deferred to v2; same treatment.
-- LLM provider clients — deferred to v2. v1 generation is a prompt builder and a grounded-answer contract only, both network-free.
+- Observability beyond a pipeline run summary (tracing, metrics backends, token/latency reporting) — the `observability` category stays declared with `v2-deferred` status and ships no code, by decision DECISION-544dc702.
+- Integration adapters for third-party frameworks — the `integrations` category stays `v2-deferred` and ships no code; V2 adds no integrations surface.
+- LLM provider clients — deferred; v1 generation is a prompt builder and a grounded-answer contract only, both network-free. V2 does not change this.
 - Any agent, planner, or autonomous orchestration layer.
 - Performance benchmarking or a published benchmark suite.
 - Supporting languages other than Python.
+
+## V2 scope
+
+**In this increment — the ingestion spine:** v2.md Steps 1, 4, 9, 10, 12 and 13, plus cross-stage orchestration (§4.B), plus the three v1 partial closures in FR-55 to FR-57. Five new components are added — `document-discovery`, `document-loader`, `chunk-validator`, `chunk-deduplicator`, `index-verifier` — all inside existing categories, so no manifest schema or category change is needed. The orchestration layer is deliberately *not* a component: components may import neither each other nor `rag_code_library` (an AST-asserted property), so the pipeline injects stages as callables and lives in `rag_code_library` itself, reached through `ragkit ingest`.
+
+**Explicitly not implemented, and reported as such:** DOCX loading (would add a mandatory parser dependency for a format this project does not use, and v2.md rule 6 forbids claiming unimplemented formats); near-duplicate similarity matching, which §10 makes optional; Qdrant and pgvector backends, which §12 qualifies with "where implemented"; Step 16 versioning beyond the index fingerprint; Step 17 observability beyond the pipeline run summary; Step 20 lifecycle management in full. Steps 2, 3, 5, 8, 11, 14, 15, 18 and 19 remain *partial* when this increment ends, except where FR-55 to FR-57 close a specific gap.
 
 ## Acceptance criteria
 
@@ -147,6 +208,21 @@ Desired outcome: the human can start a new RAG project, browse the catalog, and 
 - AC-18: `python scripts/validate_components.py` exits 0 over the full registry, and exits non-zero listing each invalid component when any one manifest is corrupted in a test fixture; every v1 component in the inventory below is present in the registry with a manifest satisfying the schema.
 - AC-19: `python scripts/check_deferred_surface.py` exits 0; no file under the v2-deferred categories (`observability`, `integrations`) exists as implementation code at v1 release.
 - AC-20: The authoritative decision record on implementation-code ownership matches the responsibility split stated in this specification; any task whose scope is substantive implementation code while the rule forbids agent authorship is marked `blocked` with that exact reason rather than completed or substituted.
+
+### V2 acceptance criteria
+
+- AC-21: `uv run ragkit ingest <source-dir> <destination-dir>` runs one PDF through discover, validate, identify, load, extract, normalize, enrich, chunk, validate, deduplicate, embed, index and verify in a single invocation, exits 0, and writes a run summary naming the correlation id and per-stage counts. A second identical invocation exits 0 and leaves the document and chunk record counts unchanged.
+- AC-22: A corrupt PDF, an empty file, an oversized file and an unsupported format placed in the source directory are each reported as rejected with an actionable reason naming the file and the cause, and an assertion proves no extraction stage was invoked for any of them.
+- AC-23: Across two runs over a source directory in which one file was edited, one added and one deleted, discovery classifies all three correctly and only the affected documents are reprocessed.
+- AC-24: Changing the embedding model or the chunking size causes re-embedding rather than vector reuse, and a stored index fingerprint that disagrees with the current configuration is rejected with a typed error naming the mismatch.
+- AC-25: With a storage or embedding stub that fails transiently the first two attempts, the run succeeds within the configured retry bound and records the retries; with a validation error the run fails once and attempts no retry.
+- AC-26: Every stored chunk record carries its document id, chunk id, source name, source offsets and page or section reference; an end-to-end test asserts each field survives chunking, deduplication, embedding and indexing.
+- AC-27: Index verification passes on a correctly written index and fails — naming the record and the reason — when a record is removed behind its back or a vector's dimension is altered.
+- AC-28: With hostile inputs in the source directory — a path-traversal filename, an oversized file, and a document carrying `system_source_path` and `system_document_id` metadata — the run cannot bypass validation and the protected fields are not overwritten.
+- AC-29: Re-ingesting unchanged content creates no unintended duplicate record and no stale vector, proven by comparing document and chunk counts before and after the second run.
+- AC-30: A new `tests/integration/test_ingestion_pipeline.py` covers discovery, loading, failure paths, partial-failure reporting, idempotency and recovery from an interrupted run, and collects in the normal suite with no collection errors.
+- AC-31: `scripts/validate_dependencies.py`, `check_no_secrets.py`, `check_deferred_surface.py`, `check_documented_commands.py` and `validate_components.py` all still exit 0 over the enlarged tree, and `python -m pytest -q` exits 0 on both verified interpreters with the full NFR-2 report recorded.
+- AC-32: The V2 completion report classifies all twenty steps of v2.md as complete, partial, missing or blocked with file and line evidence, and names every unimplemented file format, service, backend and verification check.
 
 ## Canonical v1 component inventory
 
@@ -215,8 +291,13 @@ Each component must also state its verification command; scoped `pytest` runs pe
 - **Metadata drift risk:** CLI, tests, and website disagreeing about a component. Mitigation: single canonical manifest source, NFR-6, AC-5, AC-6.
 - **Windows-specific risk:** path and symlink behavior differing from POSIX. Mitigation: path-safety tests exercised on the actual host OS, per FR-34.
 - **Tooling risk:** the Genesis CLI on `PATH` may lag the kit source, silently dropping unsupported flags. Mitigation: verify CLI behavior before relying on a flag; treat a silently accepted unknown flag as a defect.
+- **V2 scope risk:** the ingestion spine plus orchestration is a second project layered on a finished v1. Mitigation: bounded per-stage tasks with executable gates, FR-36 to FR-57 traced to AC-21 to AC-32, and NFR-18's per-step reporting so no step is claimed before evidence exists.
+- **V2 architecture risk:** components may import neither each other nor `rag_code_library` (AST-asserted), so the orchestration layer must inject stages rather than import them. A static import from the pipeline into a component breaks the property that makes components selectable and copy-ready. Mitigation: FR-54 plus a test asserting the pipeline statically imports no component module.
+- **Idempotency risk:** re-ingestion silently duplicating or corrupting an index. Mitigation: upsert semantics (FR-46), fingerprint-gated reuse (FR-44), verification that is not a write check (FR-50), and AC-21/AC-27/AC-29.
 
 ## Open questions
 
 - None blocking. All eight review questions (U1 ownership, U2 core types, U3 manifest migration, U4 generation scope, U5 deferred categories, U6 `.gitignore`, U7 `uv.lock` authorization, U8 task granularity) are resolved and recorded as decisions.
 - Carried forward as assumptions to confirm during planning: default embedding/vector-store providers for the shipped examples (kept provider-neutral; no default model is chosen for the human), and whether `structure_aware` chunking should target a specific document format beyond Markdown.
+- V2 questions resolved during specification and recorded: scope is the spine first (DECISION-1aedada9); observability stays deferred with logging in the pipeline (DECISION-544dc702); V2 enters through this spec, re-approval and a plan reopen (DECISION-b0b524c4).
+- V2 questions left open, deliberately: which vector backend the shipped `ragkit ingest` example targets — none is defaulted (NFR-9), and the human must configure it; and whether `index-verifier` belongs under `storage` or under a future `observability` category, currently recorded as `storage` because the deferred category may hold no code.

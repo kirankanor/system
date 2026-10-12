@@ -1,0 +1,21 @@
+{
+  "id": "document-discovery",
+  "name": "Document Discovery",
+  "category": "ingestion",
+  "source": "document_discovery.py",
+  "version": "0.1.0",
+  "dependencies": [],
+  "description": "Walk a source root and report what changed since the last scan, with a reason for every entry it declines to return.",
+  "destination": "src/{project_package}/rag/ingestion/document_discovery.py",
+  "documentation": "README.md",
+  "tests": "tests/test_component.py",
+  "status": "experimental",
+  "requires_python": {
+    "min": "3.12"
+  },
+  "required_packages": [],
+  "optional_packages": [],
+  "external_services": [],
+  "install": "No dependencies. Copy with: ragkit add document-discovery",
+  "missing_dependency_message": "document-discovery needs no package. It walks the filesystem with the standard library only; if a scan returns nothing, check that the source root exists and is a directory rather than looking for a missing install."
+}

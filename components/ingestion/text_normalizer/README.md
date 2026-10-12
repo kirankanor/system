@@ -50,15 +50,23 @@ each form.
    a new page began. Two newlines keep it visible and survive step 7.
 4. **Remaining C0 controls, DEL and C1** are removed. `\t` and `\n` are kept —
    indentation and structure are content.
-5. **Unicode normalization** in the chosen form.
-6. **Horizontal whitespace** runs collapse to one space, and trailing
+5. **Invisible format characters** — soft hyphen `U+00AD`, byte-order mark
+   `U+FEFF` and zero-width space `U+200B` — are removed. These are Unicode
+   category `Cf`, not controls, so rule 4 never caught them; they render as
+   nothing while defeating an exact match, which for an index is a
+   correctness problem rather than a cosmetic one. `U+200D` (ZWJ) is
+   deliberately left alone — removing it changes what an emoji *says*, and
+   this component reports repairs rather than reinterpreting content. Neither
+   is `U+00A0`; that one is whitespace, and the whitespace rule owns it.
+6. **Unicode normalization** in the chosen form.
+7. **Horizontal whitespace** runs collapse to one space, and trailing
    whitespace is dropped per line. *Leading* indentation is preserved,
    because in a code corpus it is meaning. (Mid-line tabs do collapse — a tab
    is horizontal whitespace, not layout that carries meaning.)
-7. **Three or more blank lines** collapse to two. The rule caps the *run*; it
+8. **Three or more blank lines** collapse to two. The rule caps the *run*; it
    does not delete every blank line.
 
-Steps 1–4 and 6–7 each report themselves only if they actually changed
+Steps 1–4 and 6–8 each report themselves only if they actually changed
 something, so `result.rules` is a record of work done, not a checklist.
 
 ## NFC by default, on purpose
@@ -151,15 +159,19 @@ about to reach a model, see `retrieved-content-safety`, which flags.
 the analyzer, not to a normalizer — and doing it here would silently change
 what is stored.
 
-**Zero-width characters are left alone.** `U+200B` and friends are invisible
-but not control characters, so rules 1–4 keep them. Stripping them would
-corrupt emoji sequences built with `U+200D` (ZWJ), which is a real, rendered
-difference. If you need them found, `retrieved-content-safety` reports them
-under `concealment`.
+**Only three invisible characters are removed.** Rule 5 names `U+00AD`,
+`U+FEFF` and `U+200B` and no others. The rest of the zero-width family —
+`U+200D` (ZWJ), `U+200C` (ZWNJ), `U+2060` (word joiner) — is left alone,
+because those carry meaning in emoji and script shaping, and removing them
+changes what the text *says* rather than how it is spelled. A zero-width
+character outside the three still defeats naive substring matching; if you
+need them surfaced rather than assumed absent, `retrieved-content-safety`
+reports them under `concealment` at query time.
 
-**No soft-hyphen folding.** `U+00AD` survives. It is invisible on screen and
-does defeat naive substring matching — a documented gap, and one worth
-closing deliberately rather than by accident.
+**Removal is by codepoint, not by analysis.** The three are dropped wherever
+they appear. This component cannot tell an artifact from content — no
+normalizer can — so the trade is made in favour of exact matching, and the
+input is always retained on `result.original` for a caller that disagrees.
 
 **Leading whitespace is preserved, always.** A paragraph indented with four
 spaces keeps them. That is the cost of not destroying code indentation, and

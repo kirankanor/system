@@ -35,6 +35,7 @@ from .models import (
     make_document_id,
 )
 from .prompts import GROUNDED_QA_SYSTEM, GROUNDED_QA_VERSION, build_user_prompt, format_context
+from .retry import RetryPolicy
 from .settings import Settings, get_settings, load_settings
 
 __all__ = [
@@ -62,6 +63,7 @@ __all__ = [
     "RagError",
     "RetrievalError",
     "RetrievedChunk",
+    "RetryPolicy",
     "Settings",
     "SourceDocument",
     "UnsupportedFormatError",

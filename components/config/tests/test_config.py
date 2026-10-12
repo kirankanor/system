@@ -14,9 +14,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 import config  # noqa: E402
 from config import (  # noqa: E402
     Chunk, Citation, ConfigurationError, DistanceMetric, EmbeddingError, ExtractionError,
-    GenerationError, IngestionError, PipelineStage, Query, RagAnswer, RagError,
-    RetrievedChunk, SourceDocument, build_user_prompt, format_context, is_retryable,
-    load_settings, make_chunk_id, make_document_id,
+    GenerationError, IndexingError, IngestionError, PipelineStage, Query, RagAnswer,
+    RagError, RetrievedChunk, RetryPolicy, SourceDocument, build_user_prompt,
+    format_context, is_retryable, load_settings, make_chunk_id, make_document_id,
 )
 
 REQUIRED_ENV = {
@@ -345,3 +345,189 @@ def test_source_name_newlines_cannot_inject_lines():
 def test_user_prompt_keeps_braces_in_values():
     out = build_user_prompt("what is {x}?", "ctx {y} {0}")
     assert "what is {x}?" in out and "ctx {y} {0}" in out
+
+
+# ---------------------------------------------------------------- retry (FR-57)
+#
+# FR-57 has two halves, and only one of them is easy to test without writing
+# a test that proves nothing. "max_retries stops being unread configuration"
+# is asserted by pushing an env var all the way through to a COUNT OF CALLS;
+# "permanent errors are reported once" by counting calls too. A test that
+# merely asserted the exception type would pass whether or not a retry
+# happened.
+
+
+def _always_fails(error):
+    calls: list[int] = []
+
+    def fn() -> str:
+        calls.append(1)
+        raise error
+
+    return fn, calls
+
+
+def test_max_retries_is_read_from_settings(env):
+    """The requirement's actual complaint: the setting was never read."""
+    env.setenv("RAG_EMBEDDING__MAX_RETRIES", "7")
+    env.setenv("RAG_LLM__MAX_RETRIES", "1")
+    s = load_settings()
+
+    assert RetryPolicy.from_settings(s.embedding).max_retries == 7
+    assert RetryPolicy.from_settings(s.llm).max_retries == 1
+    # Each stage reads its OWN budget; neither inherits the other's.
+    assert RetryPolicy.from_settings(s.embedding).max_attempts == 8
+    assert RetryPolicy.from_settings(s.llm).max_attempts == 2
+
+
+def test_the_env_var_reaches_the_number_of_calls_actually_made(env):
+    """End to end: configuration in, attempts out. This is what 'read' means."""
+    env.setenv("RAG_EMBEDDING__MAX_RETRIES", "2")
+    policy = RetryPolicy.from_settings(load_settings().embedding)
+
+    fn, calls = _always_fails(EmbeddingError("timeout"))
+    with pytest.raises(EmbeddingError):
+        policy.call(fn, sleep=lambda delay: None)
+
+    assert len(calls) == 3 == policy.max_attempts  # 1 try + 2 retries
+
+
+def test_a_transient_failure_is_retried_and_the_recovery_is_returned():
+    policy = RetryPolicy(max_retries=3, backoff_initial=0.5, backoff_multiplier=2.0)
+    attempts: list[int] = []
+    slept: list[float] = []
+
+    def fn() -> str:
+        attempts.append(len(attempts))
+        if len(attempts) < 3:
+            raise EmbeddingError("timeout")
+        return "vector"
+
+    assert policy.call(fn, sleep=slept.append) == "vector"
+    assert len(attempts) == 3
+    # The schedule, asserted exactly because sleep is injected rather than spent.
+    assert slept == [0.5, 1.0]
+
+
+def test_the_budget_is_exactly_one_plus_max_retries():
+    for budget in (0, 1, 3, 5):
+        policy = RetryPolicy(max_retries=budget)
+        fn, calls = _always_fails(IndexingError("connection reset"))
+        with pytest.raises(IndexingError):
+            policy.call(fn, sleep=lambda delay: None)
+        assert len(calls) == budget + 1 == policy.max_attempts, budget
+
+
+def test_a_permanent_error_is_reported_once_and_never_retried():
+    policy = RetryPolicy(max_retries=5)
+    fn, calls = _always_fails(ConfigurationError("max_context_chars"))
+    slept: list[float] = []
+    seen: list[tuple] = []
+
+    with pytest.raises(ConfigurationError) as info:
+        policy.call(
+            fn,
+            sleep=slept.append,
+            on_retry=lambda n, e, d: seen.append((n, e, d)),
+        )
+
+    assert len(calls) == 1, "a permanent error must be attempted exactly once"
+    assert slept == [] and seen == [], "and must not schedule anything"
+    # Reported as itself, not wrapped: one problem, one exception.
+    assert info.value.__class__ is ConfigurationError
+    assert str(info.value) == "max_context_chars"
+
+
+def test_an_unrecognised_exception_is_never_retried():
+    # is_retryable() is False for types this package does not know, so an
+    # error nobody classified cannot turn into an accidental retry loop.
+    policy = RetryPolicy(max_retries=5)
+    fn, calls = _always_fails(ValueError("malformed payload"))
+    with pytest.raises(ValueError):
+        policy.call(fn, sleep=lambda delay: None)
+    assert len(calls) == 1
+
+
+def test_a_retryable_error_can_be_declared_permanent_by_the_caller():
+    # The flag -- not the type -- is what is consulted, so a caller that
+    # knows a particular failure will not change is believed.
+    policy = RetryPolicy(max_retries=5)
+    fn, calls = _always_fails(EmbeddingError("bad api key", retryable=False))
+    with pytest.raises(EmbeddingError):
+        policy.call(fn, sleep=lambda delay: None)
+    assert len(calls) == 1
+
+
+def test_storage_calls_are_retried_too():
+    """FR-57 names embedding AND storage; IndexingError is retryable by default."""
+    policy = RetryPolicy(max_retries=2, backoff_initial=0.0)
+    calls: list[int] = []
+
+    def store() -> str:
+        calls.append(1)
+        if len(calls) < 2:
+            raise IndexingError("connection reset")
+        return "written"
+
+    assert policy.call(store, sleep=lambda delay: None) == "written"
+    assert len(calls) == 2
+
+
+def test_on_retry_reports_each_attempt_as_it_happens():
+    policy = RetryPolicy(max_retries=2, backoff_initial=0.25)
+    fn, _calls = _always_fails(EmbeddingError("timeout"))
+    seen: list[tuple] = []
+
+    with pytest.raises(EmbeddingError):
+        policy.call(
+            fn,
+            sleep=lambda delay: None,
+            on_retry=lambda n, e, d: seen.append((n, type(e).__name__, d)),
+        )
+
+    assert seen == [(1, "EmbeddingError", 0.25), (2, "EmbeddingError", 0.5)]
+
+
+def test_the_backoff_grows_but_is_capped():
+    policy = RetryPolicy(
+        max_retries=10, backoff_initial=1.0, backoff_multiplier=3.0, backoff_max=5.0
+    )
+    assert [policy.backoff_for(n) for n in range(1, 6)] == [1.0, 3.0, 5.0, 5.0, 5.0]
+    # Bounded in BOTH dimensions: the delay is capped, the attempts are fixed.
+    assert policy.max_attempts == 11
+
+
+def test_a_retry_number_below_one_is_refused():
+    # An off-by-one here would silently shorten the first delay.
+    with pytest.raises(ConfigurationError, match="from 1"):
+        RetryPolicy(max_retries=1).backoff_for(0)
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        {"max_retries": -1},
+        {"max_retries": True},  # bool is an int; it must not slip through
+        {"max_retries": "3"},
+        {"max_retries": 1, "backoff_initial": -0.5},
+        {"max_retries": 1, "backoff_multiplier": 0.5},  # would never grow
+    ],
+)
+def test_a_misconfigured_policy_is_refused(kwargs):
+    with pytest.raises(ConfigurationError):
+        RetryPolicy(**kwargs)
+
+
+def test_from_settings_refuses_a_group_with_no_retry_budget(env):
+    s = load_settings()
+    with pytest.raises(ConfigurationError, match="max_retries"):
+        RetryPolicy.from_settings(s.chunking)
+    with pytest.raises(ConfigurationError, match="max_retries"):
+        RetryPolicy.from_settings(object())
+
+
+def test_the_policy_is_frozen():
+    # A shared policy must not be widened by whoever last held it.
+    policy = RetryPolicy(max_retries=3)
+    with pytest.raises(AttributeError):
+        policy.max_retries = 9  # type: ignore[misc]

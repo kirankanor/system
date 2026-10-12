@@ -10,6 +10,7 @@ idempotent, and control characters are stripped while a page break survives.
 
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -147,6 +148,57 @@ def test_tab_and_newline_survive_because_they_are_content(n):
     # documented rule. Only LEADING indentation is preserved.
     assert n.clean("a\tb") == "a b"
     assert n.clean("\t\tindented") == "\t\tindented"
+
+
+# --------------------------------------------------------------------------- #
+# 2b. The three invisible FORMAT characters (FR-55)
+#
+# These are Unicode category Cf, not controls, which is why the rule above
+# never caught them. They are removed because each renders as nothing while
+# defeating an exact match -- a correctness problem for an index, not a
+# cosmetic one.
+# --------------------------------------------------------------------------- #
+
+
+@pytest.mark.parametrize(("label", "char", "codepoint"), [
+    ("soft hyphen", "\u00ad", "U+00AD"),
+    ("byte-order mark", "\ufeff", "U+FEFF"),
+    ("zero-width space", "\u200b", "U+200B"),
+])
+def test_the_three_invisible_format_characters_are_removed(n, label, char, codepoint):
+    before = f"before{char}after"
+    assert n.clean(before) == "beforeafter", codepoint
+    # and the artefact is what is gone, not the characters around it
+    assert char not in n.clean(before)
+
+
+def test_the_invisible_characters_are_removed_even_under_nfkc():
+    # Compatibility folding must not be a way back in for them.
+    for char in ("\u00ad", "\ufeff", "\u200b"):
+        assert TextNormalizer(form="NFKC").clean(f"a{char}b") == "ab"
+
+
+def test_zwj_is_deliberately_left_alone(n):
+    """The exclusion is the point: ZWJ changes what the text says."""
+    assert n.clean("a\u200db") == "a\u200db"
+    # No-break space is whitespace with its own rule, not an artefact here.
+    assert n.clean("a\u00a0b") == "a\u00a0b"
+
+
+def test_the_removal_reports_itself_as_its_own_rule(n):
+    result = n.normalize("soft\u00adhyphen\u200b")
+    assert "invisible" in result.rules
+    assert result.changed is True
+    assert "invisible" in result.report()
+    # ...and reports nothing when there is nothing to remove
+    assert n.normalize("clean text").rules == ()
+
+
+def test_the_removal_is_idempotent_over_every_form():
+    nasty = "".join("\u00ad\ufeff\u200b") * 5
+    for form in FORMS:
+        nn = TextNormalizer(form=form)
+        assert nn.is_idempotent(nasty), form
 
 
 def test_crlf_and_lone_cr_both_become_lf(n):
@@ -357,3 +409,108 @@ def test_no_network_or_optional_dependency_is_used():
         "import requests",
     ):
         assert banned not in source
+
+
+# --------------------------------------------------------------------------- #
+# FR-55: behaviour and documentation must agree, and keep agreeing
+#
+# The defect this requirement closes was a CONTRADICTION INSIDE the docs: the
+# comparison table implied these characters were stripped while the
+# limitations swore they survived. Fixing the behaviour alone would have left
+# a document that still contradicts itself, so the documentation is asserted
+# here as directly as the behaviour is. Written as codepoints rather than as
+# literal characters so a reader of this test can see what it is testing --
+# and so an invisible character cannot hide in its own assertion.
+# --------------------------------------------------------------------------- #
+
+_ARTIFACTS = (
+    ("soft hyphen", chr(0x00AD), "U+00AD"),
+    ("byte-order mark", chr(0xFEFF), "U+FEFF"),
+    ("zero-width space", chr(0x200B), "U+200B"),
+)
+
+#: Sentences this requirement retired. Each is the exact wording that used to
+#: claim the opposite of the current behaviour.
+_RETIRED_CLAIMS = (
+    "No soft-hyphen folding",
+    "Zero-width characters are left alone",
+    "zero-width characters survive too",
+    "U+00AD survives",
+)
+
+#: What a passage must say about a codepoint, and what it must never say.
+#: Both directions are asserted: an earlier draft only required SOME passage
+#: to mention removal, which meant the rules list could revert to "left
+#: alone" while the limitations section still said "removed" -- the exact
+#: self-contradiction this requirement exists to close -- and the test would
+#: have passed.
+_REMOVAL_WORDS = ("remov", "stripp", "delet", "drop")
+_SURVIVAL_WORDS = ("left alone", "surviv", "are kept", "is kept", "not removed")
+
+
+def _passages(text: str) -> list[str]:
+    """Sentences of a source file or markdown document.
+
+    Paragraph splits are too coarse -- README's rules list is one paragraph,
+    so every item in it would vouch for every other. Sentence granularity is
+    what makes the assertions below mean something.
+    """
+    return [
+        sentence
+        for block in re.split(r"\n\s*\n", text)
+        for sentence in re.split(r"(?<=[.!?])\s+", block)
+    ]
+
+
+def test_the_three_artifacts_are_removed_by_the_behaviour():
+    n = TextNormalizer()
+    for label, char, codepoint in _ARTIFACTS:
+        assert n.clean(f"a{char}b") == "ab", codepoint
+
+
+def test_the_documentation_says_the_three_are_removed():
+    """The other half of FR-55.
+
+    Every codepoint must be documented, at least one sentence describing it
+    must say it is removed, and *no* sentence describing it may claim it
+    survives. The last clause is the one that matters: a document that says
+    "removed" in one place and "left alone" in another is the mismatch
+    itself, so a test that only looked for agreement somewhere would certify
+    the contradiction.
+    """
+    component = Path(__file__).resolve().parents[1]
+    for name in ("README.md", "text_normalizer.py"):
+        text = (component / name).read_text(encoding="utf-8")
+        passages = _passages(text)
+        for label, _char, codepoint in _ARTIFACTS:
+            hits = [p for p in passages if codepoint in p]
+            assert hits, f"{name} never documents {codepoint}"
+
+            assert any(
+                any(word in hit.lower() for word in _REMOVAL_WORDS)
+                for hit in hits
+            ), (
+                f"{name}: no sentence mentioning {codepoint} says it is "
+                f"removed, so the documentation no longer describes the "
+                f"behaviour -- the mismatch FR-55 closed is back"
+            )
+
+            for hit in hits:
+                low = hit.lower()
+                assert not any(word in low for word in _SURVIVAL_WORDS), (
+                    f"{name}: a sentence about {codepoint} claims it "
+                    f"survives, contradicting the behaviour and the rest of "
+                    f"the documentation: {hit.strip()!r}"
+                )
+
+
+def test_the_retired_claims_do_not_come_back():
+    component = Path(__file__).resolve().parents[1]
+    everything = "\n".join(
+        (component / name).read_text(encoding="utf-8")
+        for name in ("README.md", "text_normalizer.py", "example.py")
+    )
+    for claim in _RETIRED_CLAIMS:
+        assert claim not in everything, (
+            f"documentation has reverted to claiming {claim!r}"
+        )

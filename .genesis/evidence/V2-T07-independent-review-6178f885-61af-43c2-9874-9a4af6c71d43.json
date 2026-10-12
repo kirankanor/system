@@ -1,0 +1,13 @@
+{
+  "task": "V2-T07",
+  "gate": "independent-review",
+  "kind": "review",
+  "attempt": "6178f885-61af-43c2-9874-9a4af6c71d43",
+  "human": "agent-delegated-by-kiran",
+  "reason": "Standing delegation DECISION-c6b1521b. Reviewed V2-T07 diff: text-normalizer gained rule 'invisible' (U+00AD/U+FEFF/U+200B removed, U+200D and U+00A0 deliberately excluded) with README/docstring/example aligned and a two-sided drift test mutation-verified in 5 modes; metadata-enricher merge precedence changed to extracted < source < system with source preserved verbatim and the overrule recorded in omitted, and the test FR-56 named was corrected to assert the opposite; components/config/retry.py added with max_retries read from settings and proven by pushing an env var through to an exact call count. Both behavior changes recorded as decisions DECISION-90af5d8d and DECISION-a7b54f00 per NFR-17. Executable gates passed, full suite 3382 passed / 9 skipped, validate 44 manifests, cookbook --check clean. Five limitations recorded including a pre-existing ragkit add defect found but deliberately not patched (out of scope).",
+  "observed_at": "2026-10-12T06:36:12.116Z",
+  "source_hash": "ee9afd390b1849bb3bff0f1942047bac3bf0c822c51b44e7fda82856d27f8e56",
+  "config_hash": "7fc0f6084d58a3b208fe5359d66792cc839d0000495ec44f89e10d36256aa11f",
+  "reviewed_proofs": "f4036d78ecdc4b6d112332d2ba8bef7868c3741e44ccf3214e8276615c8f0217",
+  "hash": "20405d22c479e1198372ae7c73d13c9dae169e21f69a099955caec9a51cbba91"
+}

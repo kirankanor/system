@@ -20,12 +20,30 @@ Three bags, kept apart
 * ``extracted`` -- the semantic fields (title, author, page_number), only where
   they were supplied and only where they are well-formed.
 * ``system``     -- what this component computed (source path, ingestion time,
-  content id), all under a reserved ``system_`` prefix so they can never
-  shadow a document's own field.
+  content id), all under a reserved ``system_`` prefix so a document's own
+  fields can never collide with them by accident.
 * ``source``     -- the original metadata bag, verbatim, minus only the entries
   that were not scalars.
-* ``merged``     -- all three, for storage, with ``source`` winning a collision
-  so the document's own account of itself is never overwritten.
+* ``merged``     -- all three, for storage. Precedence is documented and
+  ordered low to high: ``extracted`` < ``source`` < ``system``.
+
+Why the document does not win ``system_``
+-----------------------------------------
+The document wins every field it legitimately owns -- a title written into
+the file beats one supplied by the caller, and that ordering is unchanged.
+What it does not win is the reserved namespace.
+
+The reserved keys are this component's account of where a file came from and
+when it was read. A document supplying ``system_source_path`` is a document
+asserting its own provenance, which is the one fact it is least entitled to
+state: the point of a computed source path is that it is derived from where
+the file was actually opened. Letting the supplied value through would make
+provenance writable by the very thing being provenanced.
+
+So ``merged`` keeps the computed value, ``source`` still holds the document's
+attempt verbatim (nothing is hidden or rewritten), and the overrule is
+recorded in ``omitted`` rather than applied silently -- this component
+reports what it discards.
 
 Why ``page_number`` refuses a ``bool``: ``True`` is an ``int`` equal to 1, and
 a metadata filter that accepts it will quietly treat "page 1" and "yes" as the
@@ -115,11 +133,15 @@ class MetadataBundle:
     system: Metadata
     #: The document's own metadata, preserved rather than rewritten.
     source: Metadata
-    #: The three combined, for storage. ``source`` wins any collision.
+    #: The three combined, for storage. ``source`` wins any collision --
+    #: except on a reserved ``system_`` field, where the computed value wins
+    #: and the document's attempt is recorded in ``omitted``. Documented
+    #: precedence, low to high: ``extracted`` < ``source`` < ``system``.
     merged: Metadata
-    #: Fields dropped for being empty, wrong-typed or out of range, with the
-    #: reason attached. Empty means nothing was wrong -- not that the check
-    #: was skipped.
+    #: Fields dropped, with the reason attached: empty, wrong-typed, out of
+    #: range, or -- for a reserved ``system_`` key -- overruled by the value
+    #: this component computed. Empty means nothing was wrong, not that the
+    #: check was skipped.
     omitted: tuple[str, ...]
 
     @property
@@ -261,11 +283,26 @@ class MetadataEnricher:
         if content_sha256 is not None:
             system[f"{self.system_prefix}content_sha256"] = content_sha256
 
-        # -- merged, source winning -----------------------------------------
+        # -- merged: source wins, except on the reserved system_ keys ------
+        # Precedence, highest last so it overwrites:
+        #   extracted < source < system
+        # The document's own account still wins every field it legitimately
+        # owns -- a title written into the file beats one supplied by the
+        # caller. What it may NOT do is claim the namespace this component
+        # computes into. A document asserting `system_source_path` is a
+        # document asserting where it came from, and that is the one fact a
+        # document is least entitled to state; letting it through would make
+        # provenance attacker-writable (FR-56).
         merged: Metadata = {}
         merged.update(extracted)
-        merged.update(system)
-        merged.update(source)  # the document's own account is never overwritten
+        merged.update(source)
+        for key, value in system.items():
+            if key in source and source[key] != value:
+                omitted.append(
+                    f"{key}: reserved system field supplied by the document; "
+                    "the computed value was kept instead"
+                )
+            merged[key] = value
 
         return MetadataBundle(
             extracted=extracted,

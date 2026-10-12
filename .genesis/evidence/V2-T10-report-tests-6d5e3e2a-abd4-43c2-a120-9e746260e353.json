@@ -1,0 +1,30 @@
+{
+  "task": "V2-T10",
+  "gate": "report-tests",
+  "kind": "command",
+  "attempt": "6d5e3e2a-abd4-43c2-a120-9e746260e353",
+  "command": "python -m pytest tests/unit/test_v2_report.py -q",
+  "started_at": "2026-10-12T12:15:52.877Z",
+  "observed_at": "2026-10-12T12:16:47.849Z",
+  "exit_code": 0,
+  "signal": null,
+  "stdout": "..........                                                               [100%]\r\n10 passed in 0.13s\r\n",
+  "stderr": "",
+  "failure": null,
+  "receipt": null,
+  "revision": {
+    "commit": "4419c64e58043978ea8b1d4185779beac0154620",
+    "dirty": true
+  },
+  "source_hash": "138cfa91b8d2a5ba634eef9d4c78a70aba060a96a2b8d86e06fab9bc0e85530f",
+  "before_hash": "138cfa91b8d2a5ba634eef9d4c78a70aba060a96a2b8d86e06fab9bc0e85530f",
+  "config_hash": "7bab09add2cd05d6355b3fb721868998011c8976bf0d7a0a7b6e15dde65264b9",
+  "environment": {
+    "node": "v24.11.1",
+    "platform": "win32",
+    "arch": "x64",
+    "verifier": "358371454f03eb4fdfd3eda3cb1d18cb1dd8fe9445404bb3d3047267b3977eb9",
+    "variables": {}
+  },
+  "hash": "1698a792dfd2852eb73aa2663ab14e732512558ea5d5587df972f554c016cdf0"
+}

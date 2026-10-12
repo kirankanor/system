@@ -66,11 +66,14 @@ from vector_store_protocol import (
 )
 
 __all__ = [
+    "CITATION_FIELDS",
     "ChromaVectorStore",
+    "FINGERPRINT_FIELD",
     "FaissVectorStore",
     "IDENTITY_FIELDS",
     "MISSING_DEPENDENCY_MESSAGE",
     "MissingStorageDependency",
+    "STORED_FIELDS",
     "StorageBackendError",
     "StorageError",
     "StorageInputError",
@@ -97,34 +100,66 @@ RESERVED_PREFIX = "_rag_"
 #: which reads as "no such document" rather than "wrong field name".
 IDENTITY_FIELDS = ("chunk_id", "document_id", "source_name", "chunk_index")
 
+#: The citation location, stored the same way (FR-48). Without a page range a
+#: retrieved chunk says which document its text came from but not where in it,
+#: which is not enough to cite.
+CITATION_FIELDS = ("page_start", "page_end")
+
+#: Everything carried under a reserved key, and therefore rewritten when a
+#: filter names it. Derived from the two above so a field added to either is
+#: stored *and* filterable without a second edit that could be forgotten.
+STORED_FIELDS = IDENTITY_FIELDS + CITATION_FIELDS
+
+#: The vector this row was produced from, kept beside it so a later run can
+#: decide whether reuse is still safe (FR-44 / AC-26). Stored under a reserved
+#: key like the rest, so it never leaks into caller-visible metadata.
+FINGERPRINT_FIELD = "index_fingerprint"
+
 
 def _translate_filter(flat: Mapping[str, Any] | None) -> dict[str, Any] | None:
-    """Rewrite identity field names to the reserved keys the backend stores."""
+    """Rewrite stored field names to the reserved keys the backend holds."""
     if flat is None:
         return None
     return {
-        f"{RESERVED_PREFIX}{field}" if field in IDENTITY_FIELDS else field: value
+        f"{RESERVED_PREFIX}{field}" if field in STORED_FIELDS else field: value
         for field, value in flat.items()
     }
 
 
 def _serialise(items: Sequence[EmbeddedChunk], name: str) -> list[dict[str, Any]]:
-    """Flatten embedded chunks into a backend's flat key/value shape."""
+    """Flatten embedded chunks into a backend's flat key/value shape.
+
+    Everything in ``STORED_FIELDS`` plus the index fingerprint is written under
+    a reserved key, so the row on its own is enough to trace the chunk back to
+    the bytes it came from (FR-48). Caller metadata is copied through
+    untouched.
+    """
     ids, vectors, documents, metadatas = [], [], [], []
     for item in items:
         ids.append(item.chunk.chunk_id or f"{name}-{item.chunk.chunk_index}")
         vectors.append(list(item.vector))
         documents.append(item.chunk.text)
         metadata = dict(item.chunk.metadata or {})
-        for field in ("chunk_id", "document_id", "source_name", "chunk_index"):
+        for field in STORED_FIELDS:
             value = getattr(item.chunk, field, None)
             if value is not None:
                 metadata[f"{RESERVED_PREFIX}{field}"] = value
+        metadata[f"{RESERVED_PREFIX}{FINGERPRINT_FIELD}"] = item.index_fingerprint
         metadatas.append(metadata)
     return [
         {"id": i, "vector": v, "document": d, "metadata": m}
         for i, v, d, m in zip(ids, vectors, documents, metadatas)
     ]
+
+
+def _optional_int(value: Any) -> int | None:
+    """A stored optional int, or ``None`` when it is absent or not an int.
+
+    Absent and unusable both mean "no page known", so neither invents one.
+    """
+    if isinstance(value, bool) or not isinstance(value, int):
+        return None
+    return value
 
 
 def _deserialise(
@@ -135,7 +170,20 @@ def _deserialise(
     score: float,
     name: str,
 ) -> ScoredDocument:
-    """Rebuild a result, restoring the identity fields this adapter stored."""
+    """Rebuild a result, restoring the fields this adapter stored.
+
+    The page range comes back as a real field, because it is the citation
+    location and a caller should not have to dig for it in metadata. The
+    reserved keys themselves are dropped from the result's ``metadata`` -- a
+    result that leaked ``_rag_document_id`` next to ``document_id`` would be
+    telling the caller two different things under two different names.
+
+    ``source_name`` stays the store's name rather than the original file's:
+    ``core-types`` calls naming the backend a conformance requirement the type
+    cannot enforce, and a retriever that cannot say which store answered has
+    nothing to merge on. The original file name is still in the stored row
+    under ``_rag_source_name``.
+    """
     from core_types import Chunk
 
     user = {
@@ -149,6 +197,8 @@ def _deserialise(
         source_name=name,
         chunk_index=int(metadata.get(f"{RESERVED_PREFIX}chunk_index", 0)),
         text=text,
+        page_start=_optional_int(metadata.get(f"{RESERVED_PREFIX}page_start")),
+        page_end=_optional_int(metadata.get(f"{RESERVED_PREFIX}page_end")),
         metadata=user,
     )
     return ScoredDocument.from_chunk(chunk, score=score, source_name=name)

@@ -1,6 +1,7 @@
 # CLI reference
 
-`ragkit` lists, inspects and adds copy-ready RAG components.
+`ragkit` lists, inspects and adds copy-ready RAG components, and runs them as
+an ingestion pipeline.
 
 ```
 usage: ragkit [-h] [--version] <command> ...
@@ -187,6 +188,84 @@ conflict, so re-adding an unchanged component tells you nothing has drifted.
 
 The second point is deliberate. A tool that silently edits your lockfile is a
 tool you cannot run in CI without reviewing a diff first.
+
+## `ragkit ingest SOURCE DESTINATION`
+
+Runs the ingestion pipeline over every document under `SOURCE`, writing the
+index and a run summary into `DESTINATION`.
+
+```
+usage: ragkit ingest [-h] [--stages MODULE:FACTORY] [--failure-policy POLICY]
+                     [--fingerprint TEXT] [--summary PATH] [--quiet]
+                     SOURCE DESTINATION
+```
+
+Exit codes are the same as every other command: `0` when every document
+completed, `1` when the configuration was unusable or a document failed.
+
+### Where the stages come from
+
+`ingest` runs a list of stages that a factory function returns. Naming that
+factory is the one required piece of configuration:
+
+```
+RAG_PIPELINE__STAGES   module:factory   dotted path to the function
+RAG_PIPELINE__FAILURE_POLICY   stop | skip | quarantine
+RAG_PIPELINE__FINGERPRINT       text recorded against each document
+```
+
+Every one of them has a flag equivalent; the flag wins over the environment.
+
+No stages are configured by default, and this is not an omission. The
+orchestration layer imports no component and no parsing library, so a built-in
+pipeline would have to import them, which is precisely the coupling the design
+exists to avoid. Without configuration the command says so:
+
+```console
+$ ragkit ingest {scratch} {scratch}/index # exit:1
+ragkit: no stages are configured; set RAG_PIPELINE__STAGES
+```
+
+The factory returns `Stage` objects, each a name and a callable. Stages are
+either corpus-scoped, running once over the whole source, or document-scoped,
+running once per document. Discovery is where a document can be refused;
+refusal recorded there means no later stage is ever handed the file.
+
+The repository's own assembly of the shipped components into thirteen stages
+lives in `tests/integration/pipeline_stages.py`. It is a worked example of the
+convention, not something `ingest` reaches for.
+
+### What a run writes
+
+| Path | Contents |
+|---|---|
+| `DESTINATION/run-summary.json` | counts, per-stage status and timings, per-document outcome |
+| `DESTINATION/_ragkit.checkpoints.json` | one record per document: content hash, fingerprint, stages completed |
+| `DESTINATION/_ragkit.lock` | present only while a run is in progress |
+
+The summary carries no document text and no credentials — counts, names,
+durations and short failure reasons only. A document is identified by the hash
+of its content, so renaming a file does not reprocess it and editing one does.
+
+### Resuming
+
+A run interrupted partway through leaves its checkpoints behind. Running again
+picks up at the first stage that never finished, rather than starting over. A
+fingerprint that no longer matches the recorded one invalidates the record and
+forces the document to be reprocessed, which is the behaviour to expect after
+changing chunking or embedding configuration.
+
+A second run while one is already in progress is refused, naming the run that
+holds the lock and the process holding it.
+
+### What `ingest` will never do
+
+- **It never installs packages.** No extraction, embedding or vector library is
+  installed, and no dependency file is touched.
+- **It never guesses a format.** A file whose type the configured stages cannot
+  handle is refused with a reason, not parsed on a hunch.
+- **It never writes outside `DESTINATION`.** Every write goes through the same
+  path-safety checks `add` uses.
 
 ## Where files land
 
